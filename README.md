@@ -4,6 +4,10 @@ This is a demonstration game to find all drone light show combinations, based on
 
 The goal is to prove my ability to create SaaS (Software as a Service), using various frameworks with good practices.
 
+## Product
+
+See [PRODUCT.md](./PRODUCT.md) for the full product documentation: vision, target users, core features, and roadmap.
+
 ## Testing & Code Quality
 
 [![CI/CD](https://github.com/ostefanini/drawn-lights-demo-os/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ostefanini/drawn-lights-demo/actions)
