@@ -133,6 +133,10 @@ pnpm typecheck            # Run all typechecks
 |------|------|
 | Karine | Product Manager |
 
+## Feedback
+
+[Share feedback or feature requests](https://app.userjot.com/cmpv6si161nie0ipjv3kgdhvz/d/requests)
+
 # Hire me
 
 oscar[dot]stefanini1[at]gmail.com
