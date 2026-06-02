@@ -29,7 +29,7 @@ services:
         condition: service_started
 
   api-nestjs:
-    image: ghcr.io/ostefanini/drawn-lights-demo-os/api-nestjs:latest
+    image: ghcr.io/ostefanini/drawn-lights-game/api-nestjs:latest
     container_name: "api-nestjs"
     ports:
       - 127.0.0.1:4000:4000
