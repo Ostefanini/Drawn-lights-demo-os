@@ -1,4 +1,4 @@
-name: demo-os-test
+name: game-test
 
 services:
   migrate-test:

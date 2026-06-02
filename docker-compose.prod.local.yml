@@ -1,4 +1,4 @@
-name: demo-os-prod-local
+name: game-prod-local
 
 services:
   migrate:

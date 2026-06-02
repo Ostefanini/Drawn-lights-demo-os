@@ -11,7 +11,7 @@ permissions:
 env:
   REGISTRY: ghcr.io
   OWNER: ostefanini
-  REPO: drawn-lights-demo-os
+  REPO: drawn-lights-game
 
 jobs:
   ci:
@@ -149,7 +149,7 @@ jobs:
       - name: Deploy (SSH -> docker compose)
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: demo-os.drawnlights.show
+          host: game.drawnlights.show
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}

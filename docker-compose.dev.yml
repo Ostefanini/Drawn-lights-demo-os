@@ -1,4 +1,4 @@
-name: demo-os-dev
+name: game-dev
 
 services:
   postgres:

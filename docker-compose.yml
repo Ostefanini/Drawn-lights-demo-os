@@ -1,6 +1,6 @@
 services:
   migrate:
-    image: ghcr.io/ostefanini/drawn-lights-demo-os/prisma-migrate:latest
+    image: ghcr.io/ostefanini/drawn-lights-game/prisma-migrate:latest
     env_file:
       - .env
     networks:
@@ -10,7 +10,7 @@ services:
         condition: service_healthy
 
   web-react:
-    image: ghcr.io/ostefanini/drawn-lights-demo-os/web-react:latest
+    image: ghcr.io/ostefanini/drawn-lights-game/web-react:latest
     container_name: "web-react"
     group_add:
       - "120"
@@ -23,7 +23,7 @@ services:
     networks:
       public:
         aliases:
-          - demo-os-web-react
+          - game-web-react
     depends_on:
       api-nestjs:
         condition: service_started
@@ -62,25 +62,8 @@ services:
       timeout: 3s
       retries: 20
 
-  pgadmin:
-    image: dpage/pgadmin4:8
-    container_name: prod_pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "${PGADMIN_PORT}:80"
-    networks:
-      - public
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-
 volumes:
   postgres_data:
-  pgadmin_data:
 
 networks:
   public:
