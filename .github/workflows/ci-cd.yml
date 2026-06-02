@@ -11,7 +11,7 @@ permissions:
 env:
   REGISTRY: ghcr.io
   OWNER: ostefanini
-  REPO: drawn-lights-game
+  REPO: drawn-lights-demo-os
 
 jobs:
   ci:
