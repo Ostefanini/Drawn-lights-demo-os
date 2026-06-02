@@ -8,6 +8,10 @@ The goal is to prove my ability to create SaaS (Software as a Service), using va
 
 See [PRODUCT.md](./PRODUCT.md) for the full product documentation: vision, target users, core features, and roadmap.
 
+## AI Workflow
+
+See [AI_WORKFLOW.md](./AI_WORKFLOW.md) for how AI (Claude) is used to support product tasks: spec generation, ticket generation, acceptance test generation, and release notes.
+
 ## Testing & Code Quality
 
 [![CI/CD](https://github.com/ostefanini/drawn-lights-demo-os/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ostefanini/drawn-lights-demo/actions)
