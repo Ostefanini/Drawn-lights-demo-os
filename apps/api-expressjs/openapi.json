@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "TS Drones API",
+    "title": "Drawn lights game API",
     "version": "1.0.0"
   },
   "servers": [

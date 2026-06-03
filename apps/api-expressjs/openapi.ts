@@ -41,7 +41,7 @@ const combinationQuerySchema = z.object({
 export const document = createDocument({
     openapi: "3.1.0",
     info: {
-        title: "TS Drones API",
+        title: "Drawn lights game API",
         version: "1.0.0",
     },
     servers: [{ url: "http://localhost:4000" }],
