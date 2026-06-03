@@ -145,6 +145,8 @@ pnpm typecheck            # Run all typechecks
 
 [Share feedback or feature requests](https://app.userjot.com/cmpv6si161nie0ipjv3kgdhvz/d/requests)
 
+See [FEEDBACK.md](./FEEDBACK.md) for the full feedback policy: how to share feedback, what we do with it, and expected response times.
+
 # Hire me
 
 oscar[dot]stefanini1[at]gmail.com
