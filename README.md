@@ -148,3 +148,5 @@ pnpm typecheck            # Run all typechecks
 # Hire me
 
 oscar[dot]stefanini1[at]gmail.com
+
+karine.majdalani@gmail.com
