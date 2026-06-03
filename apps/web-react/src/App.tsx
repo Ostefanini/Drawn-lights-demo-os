@@ -122,7 +122,7 @@ function App() {
         href="https://github.com/Ostefanini/drawn-lights-demo"
       />
       <div
-        style={{ marginTop: "30px" }}
+        style={{ marginTop: "60px" }}
       >
         <Title ta='center' order={1}>{t('title')}</Title>
         <Title ta="center" order={3}>{t('subtitle')}</Title>

@@ -7,17 +7,18 @@
         "test": "pnpm -r --filter './apps/*' test",
         "test:cov:badges": "pnpm -r --filter './apps/*' test:cov:badges",
         "typecheck": "pnpm -r --filter './apps/*' --filter './packages/*' typecheck",
-        "migrate": "pnpm --filter @drawn-lights-demo/prisma migrate:dev",
-        "migrate:deploy": "pnpm --filter @drawn-lights-demo/prisma migrate:deploy",
-        "showDb": "pnpm --filter @drawn-lights-demo/prisma studio",
-        "stack:dev": "docker compose -f docker-compose.dev.yml up -d --wait",
-        "stack:dev:down": "docker compose -f docker-compose.dev.yml down",
-        "stack:tests": "docker compose -f docker-compose.tests.yml up -d --wait",
-        "stack:tests:down": "docker compose -f docker-compose.tests.yml down",
-        "stack:prod:local": "docker compose -f docker-compose.prod.local.yml up -d --wait",
-        "stack:prod:local:down": "docker compose -f docker-compose.prod.local.yml down"
+        "migrate": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-demo/prisma migrate:dev",
+        "migrate:deploy": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-demo/prisma migrate:deploy",
+        "showDb": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-demo/prisma studio",
+        "stack:dev": "dotenv -e .env.dev -- docker compose -f docker-compose.dev.yml up -d --wait",
+        "stack:dev:down": "dotenv -e .env.dev -- docker compose -f docker-compose.dev.yml down",
+        "stack:tests": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml up -d --wait",
+        "stack:tests:down": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml down",
+        "stack:prod:local": "dotenv -e .env.prod.local -- docker compose -f docker-compose.prod.local.yml up -d --wait",
+        "stack:prod:local:down": "dotenv -e .env.prod.local -- docker compose -f docker-compose.prod.local.yml down"
     },
     "devDependencies": {
+        "dotenv-cli": "^8.0.0",
         "typescript": "^5.9.3"
     },
     "pnpm": {

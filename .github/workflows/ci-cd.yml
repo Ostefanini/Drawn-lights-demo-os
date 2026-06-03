@@ -14,7 +14,24 @@ env:
   REPO: drawn-lights-game
 
 jobs:
+  test_ssh:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Test SSH connection
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: game.drawnlights.show
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            echo "SSH connection successful"
+            whoami
+            pwd
+
   ci:
+    needs: test_ssh
     runs-on: ubuntu-latest
     services:
       postgres:
