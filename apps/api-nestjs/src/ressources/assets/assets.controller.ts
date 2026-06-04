@@ -1,5 +1,5 @@
-import type { AssetCreateDTO } from '@drawn-lights-demo/shared';
-import { assetCreateTextFieldsSchema } from '@drawn-lights-demo/shared';
+import type { AssetCreateDTO } from '@drawn-lights-game/shared';
+import { assetCreateTextFieldsSchema } from '@drawn-lights-game/shared';
 import {
   Body,
   Controller,

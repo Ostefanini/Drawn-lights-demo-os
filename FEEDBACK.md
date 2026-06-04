@@ -71,4 +71,4 @@ Feedback that is accepted will be converted into a ticket and added to the roadm
 
 ## Contact
 
-For anything that doesn't fit the feedback board, you can reach us by opening a [GitHub issue](https://github.com/Ostefanini/drawn-lights-demo-os/issues).
+For anything that doesn't fit the feedback board, you can reach us by opening a [GitHub issue](https://github.com/Ostefanini/drawn-lights-game/issues).

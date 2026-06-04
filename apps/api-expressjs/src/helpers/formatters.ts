@@ -1,4 +1,4 @@
-import { Asset, AssetType as AssetTypeZod, Sound } from "@drawn-lights-demo/shared";
+import { Asset, AssetType as AssetTypeZod, Sound } from "@drawn-lights-game/shared";
 import { AssetModel, AssetName, AssetType as AssetTypeDB, Sound as SoundModel } from "../services/prisma.js";
 
 const formatAssetType = (assetType: AssetTypeZod): AssetTypeDB => {

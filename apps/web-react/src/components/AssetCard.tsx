@@ -1,4 +1,4 @@
-import { type Asset } from "@drawn-lights-demo/shared";
+import { type Asset } from "@drawn-lights-game/shared";
 import { Card, Image, Group, Text, Badge, Button, Title } from '@mantine/core';
 import { IconDrone, IconHourglassEmpty, IconPlaylistAdd } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";

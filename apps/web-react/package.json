@@ -15,7 +15,7 @@
     "@mantine/hooks": "^8.3.10",
     "@mantine/notifications": "^8.3.10",
     "@tabler/icons-react": "^3.35.0",
-    "@drawn-lights-demo/shared": "workspace:*",
+    "@drawn-lights-game/shared": "workspace:*",
     "@wavesurfer/react": "^1.0.12",
     "axios": "^1.13.2",
     "emoji-blast": "^0.11.0",

@@ -1,4 +1,4 @@
-import { AssetName } from '@drawn-lights-demo/prisma';
+import { AssetName } from '@drawn-lights-game/prisma';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { PrismaTestService } from '../../prisma-test.service.js';

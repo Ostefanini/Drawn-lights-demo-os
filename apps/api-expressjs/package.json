@@ -1,5 +1,5 @@
 {
-    "name": "@drawn-lights-demo/api",
+    "name": "@drawn-lights-game/api",
     "version": "1.0.0",
     "type": "module",
     "scripts": {
@@ -10,14 +10,14 @@
         "openapi": "tsx openapi.ts",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "showDb": "pnpm --filter @drawn-lights-demo/prisma studio",
+        "showDb": "pnpm --filter @drawn-lights-game/prisma studio",
         "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
         "test:cov": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
         "test:cov:badges": "pnpm run test:cov && npx jest-coverage-badges --output ./badges"
     },
     "dependencies": {
-        "@drawn-lights-demo/prisma": "workspace:*",
-        "@drawn-lights-demo/shared": "workspace:*",
+        "@drawn-lights-game/prisma": "workspace:*",
+        "@drawn-lights-game/shared": "workspace:*",
         "@idrisay/profanity-check": "^1.6.0",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",

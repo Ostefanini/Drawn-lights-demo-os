@@ -1,4 +1,4 @@
-import { type Asset } from "@drawn-lights-demo/shared";
+import { type Asset } from "@drawn-lights-game/shared";
 import { formatAssetType } from "../../src/helpers/formatters.js";
 
 const assetPayload = {

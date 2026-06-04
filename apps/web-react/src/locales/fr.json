@@ -22,5 +22,6 @@
     "save": "Enregistrer",
     "success": "Succès",
     "discovery_recorded": "Votre découverte a été enregistrée !",
-    "technologies_used": "Technologies utilisées"
+    "technologies_used": "Technologies utilisées",
+    "compute": "Calculer"
 }

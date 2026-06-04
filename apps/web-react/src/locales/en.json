@@ -22,5 +22,6 @@
     "save": "Save",
     "success": "Success",
     "discovery_recorded": "Your discovery has been recorded!",
-    "technologies_used": "Technologies used"
+    "technologies_used": "Technologies used",
+    "compute": "Compute"
 }

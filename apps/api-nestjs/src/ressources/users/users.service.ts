@@ -1,4 +1,4 @@
-import { UserListHighscore } from '@drawn-lights-demo/shared';
+import { UserListHighscore } from '@drawn-lights-game/shared';
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository.js';
 

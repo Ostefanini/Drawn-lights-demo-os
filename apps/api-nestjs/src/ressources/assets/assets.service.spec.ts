@@ -1,5 +1,5 @@
-import { AssetName, AssetType } from '@drawn-lights-demo/prisma';
-import { AssetCreateDTO } from '@drawn-lights-demo/shared';
+import { AssetName, AssetType } from '@drawn-lights-game/prisma';
+import { AssetCreateDTO } from '@drawn-lights-game/shared';
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetsRepository } from './assets.repository.js';

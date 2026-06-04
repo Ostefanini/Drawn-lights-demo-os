@@ -2,7 +2,7 @@ import {
   Asset,
   AssetCreateDTO,
   demoPlaystationModels,
-} from '@drawn-lights-demo/shared';
+} from '@drawn-lights-game/shared';
 import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
 import { AssetsRepository } from './assets.repository.js';

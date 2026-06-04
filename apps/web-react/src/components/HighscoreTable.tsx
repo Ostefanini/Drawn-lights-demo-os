@@ -1,4 +1,4 @@
-import { type UserListHighscore } from "@drawn-lights-demo/shared";
+import { type UserListHighscore } from "@drawn-lights-game/shared";
 import { Center, Table } from '@mantine/core';
 import { useTranslation } from "react-i18next";
 

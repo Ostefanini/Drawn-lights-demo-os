@@ -1,5 +1,5 @@
-import { AssetName, Sound as SoundModel } from '@drawn-lights-demo/prisma';
-import { Sound } from '@drawn-lights-demo/shared';
+import { AssetName, Sound as SoundModel } from '@drawn-lights-game/prisma';
+import { Sound } from '@drawn-lights-game/shared';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { CombinationQuery } from './combinations.type.js';

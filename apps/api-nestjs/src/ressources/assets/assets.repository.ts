@@ -2,12 +2,12 @@ import {
   AssetModel,
   AssetName,
   AssetType as AssetTypeDB,
-} from '@drawn-lights-demo/prisma';
+} from '@drawn-lights-game/prisma';
 import {
   Asset,
   AssetCreateDTO,
   AssetType as AssetTypeZod,
-} from '@drawn-lights-demo/shared';
+} from '@drawn-lights-game/shared';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 

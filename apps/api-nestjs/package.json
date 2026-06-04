@@ -26,8 +26,8 @@
     "test:integration:cov": "NODE_OPTIONS='--experimental-vm-modules' jest --config ./test/jest-e2e.json --coverage --runInBand"
   },
   "dependencies": {
-    "@drawn-lights-demo/prisma": "workspace:*",
-    "@drawn-lights-demo/shared": "workspace:*",
+    "@drawn-lights-game/prisma": "workspace:*",
+    "@drawn-lights-game/shared": "workspace:*",
     "@idrisay/profanity-check": "^1.6.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",

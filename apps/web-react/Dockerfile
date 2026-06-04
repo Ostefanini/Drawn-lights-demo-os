@@ -16,7 +16,7 @@ RUN pnpm -C packages/shared build
 RUN pnpm -C apps/web-react build
 
 FROM dhi.io/nginx:1-alpine3.21 AS runtime
-LABEL org.opencontainers.image.source=https://github.com/Ostefanini/drawn-lights-demo
+LABEL org.opencontainers.image.source=https://github.com/Ostefanini/drawn-lights-game
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /workspace/apps/web-react/dist ./
 EXPOSE 80

@@ -1,7 +1,7 @@
 import {
   combinationAttributionBodySchema,
   type CombinationAttributionBody,
-} from '@drawn-lights-demo/shared';
+} from '@drawn-lights-game/shared';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import {
   ApiBody,

@@ -1,4 +1,4 @@
-import { CombinationStatus, userNicknameSchema } from "@drawn-lights-demo/shared";
+import { CombinationStatus, userNicknameSchema } from "@drawn-lights-game/shared";
 import isProfane from '@idrisay/profanity-check';
 import express, { Request, Response } from "express";
 
