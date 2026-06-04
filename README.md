@@ -40,7 +40,7 @@ This demo is inspired from a previous demonstration.
 
 ## Shared packages
 
-We use shared packages to factorize code between different tech versions, when possible.
+I use shared packages to factorize code between different tech versions, when possible.
 
 ### Data Transfer Objects (DTO)
 
