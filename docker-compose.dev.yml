@@ -1,4 +1,4 @@
-name: game-dev
+name: drawn_lights_game-dev
 
 services:
   postgres:
@@ -15,7 +15,7 @@ services:
     networks:
       - dev_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app} -d ${POSTGRES_DB:-app}"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -38,7 +38,7 @@ services:
 
 networks:
   dev_network:
-    name: demo_os_dev
+    name: drawn_lights_game_dev
 
 volumes:
   dev_postgres_data:

@@ -3,7 +3,7 @@ import {
     assetCreateTextFieldsSchema,
     AssetListDTO,
     assetUpdateSchema
-} from "@drawn-lights-demo/shared";
+} from "@drawn-lights-game/shared";
 import express from "express";
 import * as z from "zod";
 

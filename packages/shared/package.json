@@ -1,5 +1,5 @@
 {
-    "name": "@drawn-lights-demo/shared",
+    "name": "@drawn-lights-game/shared",
     "version": "1.0.0",
     "type": "module",
     "main": "dist/index.js",

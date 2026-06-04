@@ -1,4 +1,4 @@
-import { AssetCreateDTO, demoPlaystationModels, Sound, soundSchema } from "@drawn-lights-demo/shared";
+import { AssetCreateDTO, demoPlaystationModels, Sound, soundSchema } from "@drawn-lights-game/shared";
 import { NextFunction, Request, Response } from "express";
 import _ from "lodash";
 import sharp from "sharp";

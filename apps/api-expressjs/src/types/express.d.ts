@@ -1,5 +1,5 @@
-import type { AssetModel as Asset, Combination, User } from "@drawn-lights-demo/prisma";
-import { Sound } from "@drawn-lights-demo/shared";
+import type { AssetModel as Asset, Combination, User } from "@drawn-lights-game/prisma";
+import { Sound } from "@drawn-lights-game/shared";
 
 declare global {
     namespace Express {

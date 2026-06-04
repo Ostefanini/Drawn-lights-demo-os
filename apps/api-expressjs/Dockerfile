@@ -38,12 +38,12 @@ RUN pnpm -C apps/api-expressjs build
 RUN pnpm --filter ./apps/api-expressjs deploy /deploy --prod
 
 # Copy generated Prisma client into the deployed bundle
-RUN cp -r ./packages/prisma/generated /deploy/node_modules/@drawn-lights-demo/prisma/generated
+RUN cp -r ./packages/prisma/generated /deploy/node_modules/@drawn-lights-game/prisma/generated
 
 
 # --- Runtime Stage ---
 FROM dhi.io/node:24-alpine3.22 AS runtime
-LABEL org.opencontainers.image.source="https://github.com/Ostefanini/drawn-lights-demo"
+LABEL org.opencontainers.image.source="https://github.com/Ostefanini/drawn-lights-game"
 WORKDIR /app
 ENV NODE_ENV=production
 

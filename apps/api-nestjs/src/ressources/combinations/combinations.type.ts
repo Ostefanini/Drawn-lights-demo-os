@@ -1,5 +1,5 @@
-import { AssetName } from '@drawn-lights-demo/prisma';
-import { soundSchema } from '@drawn-lights-demo/shared';
+import { AssetName } from '@drawn-lights-game/prisma';
+import { soundSchema } from '@drawn-lights-game/shared';
 import * as z from 'zod';
 
 export const querySchema = z

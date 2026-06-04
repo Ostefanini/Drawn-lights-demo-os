@@ -1,4 +1,4 @@
-import { AssetName } from '@drawn-lights-demo/prisma';
+import { AssetName } from '@drawn-lights-game/prisma';
 import { jest } from '@jest/globals';
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';

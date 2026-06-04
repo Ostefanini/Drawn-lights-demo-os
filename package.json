@@ -1,5 +1,5 @@
 {
-    "name": "drawn-lights-demo",
+    "name": "drawn-lights-game",
     "private": true,
     "version": "1.0.0",
     "scripts": {
@@ -7,9 +7,9 @@
         "test": "pnpm -r --filter './apps/*' test",
         "test:cov:badges": "pnpm -r --filter './apps/*' test:cov:badges",
         "typecheck": "pnpm -r --filter './apps/*' --filter './packages/*' typecheck",
-        "migrate": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-demo/prisma migrate:dev",
-        "migrate:deploy": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-demo/prisma migrate:deploy",
-        "showDb": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-demo/prisma studio",
+        "migrate": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-game/prisma migrate:dev",
+        "migrate:deploy": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-game/prisma migrate:deploy",
+        "showDb": "dotenv -e .env.dev -- pnpm --filter @drawn-lights-game/prisma studio",
         "stack:dev": "dotenv -e .env.dev -- docker compose -f docker-compose.dev.yml up -d --wait",
         "stack:dev:down": "dotenv -e .env.dev -- docker compose -f docker-compose.dev.yml down",
         "stack:tests": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml up -d --wait",

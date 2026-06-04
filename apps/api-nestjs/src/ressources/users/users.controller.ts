@@ -1,4 +1,4 @@
-import { UserListHighscore } from '@drawn-lights-demo/shared';
+import { UserListHighscore } from '@drawn-lights-game/shared';
 import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service.js';
 

@@ -1,4 +1,4 @@
-name: game-prod-local
+name: drawn_lights_game-prod-local
 
 services:
   migrate:
@@ -49,15 +49,15 @@ services:
     env_file:
       - .env.prod.local
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app.local.prod}
-      POSTGRES_USER: ${POSTGRES_USER:-app.local.prod}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app.local.prod}
+      POSTGRES_DB: ${POSTGRES_DB:-drawn_lights_game.local.prod}
+      POSTGRES_USER: ${POSTGRES_USER:-drawn_lights_game.local.prod}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-drawn_lights_game.local.prod}
     ports:
       - "127.0.0.1:5434:5432"
     volumes:
       - prod_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U app.local.prod -d app.local.prod"]
+      test: ["CMD-SHELL", "pg_isready -U drawn_lights_game.local.prod -d drawn_lights_game.local.prod"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -77,7 +77,7 @@ services:
         condition: service_healthy
     volumes:
       - prod_pgadmin_data:/var/lib/pgadmin
-
+  
 volumes:
   prod_postgres_data:
   prod_pgadmin_data:

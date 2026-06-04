@@ -14,7 +14,7 @@ See [AI_WORKFLOW.md](./AI_WORKFLOW.md) for how AI (Claude) is used to support pr
 
 ## Testing & Code Quality
 
-[![CI/CD](https://github.com/ostefanini/drawn-lights-game/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ostefanini/drawn-lights-demo/actions)
+[![CI/CD](https://github.com/ostefanini/drawn-lights-game/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ostefanini/drawn-lights-game/actions)
 
 **api-nestjs** [![coverage](./apps/api-nestjs/badges/badge-statements.svg)](./apps/api-nestjs)  
 **api-expressjs** [![coverage](./apps/api-expressjs/badges/badge-statements.svg)](./apps/api-expressjs)

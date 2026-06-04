@@ -1,4 +1,4 @@
-import { demoPlaystationModels } from '@drawn-lights-demo/shared';
+import { demoPlaystationModels } from '@drawn-lights-game/shared';
 import { INestApplication } from '@nestjs/common';
 import * as path from 'path';
 import request from 'supertest';

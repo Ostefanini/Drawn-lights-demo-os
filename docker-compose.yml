@@ -1,3 +1,5 @@
+name: drawn_lights_game-prod
+
 services:
   migrate:
     image: ghcr.io/ostefanini/drawn-lights-game/prisma-migrate:latest
@@ -45,7 +47,7 @@ services:
 
   postgres:
     image: postgres:16
-    container_name: prod_postgres
+    container_name: drawn_lights_game_prod_postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -55,7 +57,7 @@ services:
     networks:
       - public
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - drawn_lights_game_prod_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -63,7 +65,7 @@ services:
       retries: 20
 
 volumes:
-  postgres_data:
+  drawn_lights_game_prod_postgres_data:
 
 networks:
   public:

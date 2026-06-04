@@ -1,4 +1,4 @@
-import { UserListHighscore } from "@drawn-lights-demo/shared";
+import { UserListHighscore } from "@drawn-lights-game/shared";
 import { Router } from "express";
 
 import { prisma } from "./services/prisma.js";

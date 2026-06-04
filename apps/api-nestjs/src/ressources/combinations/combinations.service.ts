@@ -1,5 +1,5 @@
-import { AssetName } from '@drawn-lights-demo/prisma';
-import { CombinationStatus } from '@drawn-lights-demo/shared';
+import { AssetName } from '@drawn-lights-game/prisma';
+import { CombinationStatus } from '@drawn-lights-game/shared';
 import isProfane from '@idrisay/profanity-check';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CombinationsRepository } from './combinations.repository.js';

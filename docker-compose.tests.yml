@@ -1,4 +1,4 @@
-name: game-test
+name: drawn_lights_game-test
 
 services:
   migrate-test:
@@ -9,7 +9,7 @@ services:
       - .env.test
     environment:
       # Override host for Docker network
-      DATABASE_URL: "postgresql://test_user:test_password@postgres-test:5432/drawn_lights_demo_test"
+      DATABASE_URL: "postgresql://test_user:test_password@postgres-test:5432/drawn_lights_game_test"
     networks:
       - test_network
     depends_on:
@@ -20,7 +20,7 @@ services:
     image: postgres:16
     container_name: test_postgres
     environment:
-      POSTGRES_DB: drawn_lights_demo_test
+      POSTGRES_DB: drawn_lights_game_test
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test_password
     ports:
@@ -28,7 +28,7 @@ services:
     networks:
       - test_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U test_user -d drawn_lights_demo_test"]
+      test: ["CMD-SHELL", "pg_isready -U test_user -d drawn_lights_game_test"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -38,4 +38,4 @@ services:
 
 networks:
   test_network:
-    name: demo_os_test
+    name: drawn_lights_game_test

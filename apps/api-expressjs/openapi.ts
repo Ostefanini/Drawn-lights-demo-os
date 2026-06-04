@@ -10,7 +10,7 @@ import {
     soundSchema,
     tagSchema,
     userNicknameSchema,
-} from "@drawn-lights-demo/shared";
+} from "@drawn-lights-game/shared";
 
 import { AssetName } from "./src/services/prisma.js";
 

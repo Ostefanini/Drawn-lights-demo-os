@@ -1,4 +1,4 @@
-import { PrismaClient, PrismaPg } from '@drawn-lights-demo/prisma';
+import { PrismaClient, PrismaPg } from '@drawn-lights-game/prisma';
 import {
   Injectable,
   Logger,

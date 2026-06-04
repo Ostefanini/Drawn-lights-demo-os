@@ -1,4 +1,4 @@
-import { type Asset, type Sound } from "@drawn-lights-demo/shared";
+import { type Asset, type Sound } from "@drawn-lights-game/shared";
 import { Box, Button, Indicator, Menu, Text } from '@mantine/core';
 import { IconCloudComputing, IconPlaylist, IconTrash } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
@@ -23,13 +23,20 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute }
                 radius="md"
             >
                 <Menu.Target>
-                    <Indicator inline label={playlist.length} size={24}>
+                    <Indicator 
+                    styles={{
+                        indicator: {
+                            transform: "translateY(-40px)"
+                        }
+                    }}
+                    inline label={playlist.length} size={24}>
                         <Button
                             size="xl"
                             p={20}
                             radius="xl"
                             styles={{
                                 root: {
+                                    top: -40,
                                     background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                                     boxShadow: "0 8px 16px rgba(102, 126, 234, 0.4)",
                                     border: "3px solid rgba(255, 255, 255, 0.3)",
@@ -50,6 +57,7 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute }
                         backgroundColor: "#663399",
                         border: "2px solid #667eea",
                         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                        transform: "translateY(-30px)",
                     }}
                 >
                     <Menu.Label c="white">{t('figures')}</Menu.Label>
@@ -110,7 +118,7 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute }
                                     stroke={1.5}
                                     style={{ cursor: "pointer", marginRight: "8px" }}
                                 />
-                                Compute
+                                {t('compute')}
                             </Text>
                         </Button>
                     </Menu.Item>

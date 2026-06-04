@@ -2,7 +2,7 @@ import {
     Title, Center, Group, Combobox, InputBase, Button, Divider, useCombobox
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { type Asset, type Sound, type UserListHighscore } from "@drawn-lights-demo/shared";
+import { type Asset, type Sound, type UserListHighscore } from "@drawn-lights-game/shared";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { computeAssetQueryParams } from "../helpers";

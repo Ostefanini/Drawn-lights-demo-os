@@ -16,7 +16,7 @@ import {
     type Asset, type CombinationStatus,
     demoPlaystationModels, type Sound,
     type UserListHighscore
-} from "@drawn-lights-demo/shared";
+} from "@drawn-lights-game/shared";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
 import { useEffect, useState } from "react";
@@ -119,7 +119,7 @@ function App() {
         </div>
       </div>
       <GithubCorner
-        href="https://github.com/Ostefanini/drawn-lights-demo"
+        href="https://github.com/Ostefanini/drawn-lights-game"
       />
       <div
         style={{ marginTop: "60px" }}

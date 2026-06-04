@@ -20,11 +20,11 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_DB: drawn_lights_demo_test
+          POSTGRES_DB: drawn_lights_game_test
           POSTGRES_USER: test_user
           POSTGRES_PASSWORD: test_password
         options: >-
-          --health-cmd "pg_isready -U test_user -d drawn_lights_demo_test"
+          --health-cmd "pg_isready -U test_user -d drawn_lights_game_test"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 20
@@ -44,7 +44,7 @@ jobs:
       - run: pnpm -v
       - run: pnpm install --frozen-lockfile
         env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_demo_test"
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Build packages
         run: |
@@ -61,19 +61,19 @@ jobs:
         run: pnpm typecheck
 
       - name: Prisma generate
-        run: pnpm --filter @drawn-lights-demo/prisma exec prisma generate --config prisma.config.ts
+        run: pnpm --filter @drawn-lights-game/prisma exec prisma generate --config prisma.config.ts
         env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_demo_test"
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Prisma migrate
-        run: pnpm --filter @drawn-lights-demo/prisma exec prisma migrate deploy --config prisma.config.ts
+        run: pnpm --filter @drawn-lights-game/prisma exec prisma migrate deploy --config prisma.config.ts
         env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_demo_test"
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Tests & coverage badges
         run: pnpm test:cov:badges
         env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_demo_test"
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Commit coverage badges
         uses: EndBug/add-and-commit@v9
@@ -133,7 +133,7 @@ jobs:
           file: ${{ matrix.image.dockerfile }}
           target: ${{ matrix.image.target }}
           build-args: |
-            DATABASE_URL="postgresql://user:pass@localhost:5432/db?schema=public"
+            DATABASE_URL="postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.REPO }}/${{ matrix.image.name }}:latest
