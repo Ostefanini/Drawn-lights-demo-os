@@ -33,27 +33,15 @@ export function AssetCard({ asset, onAddToPlaylist }: AssetCardProps) {
         >
             <Card.Section style={{ position: "relative" }}>
                 {asset.video ? (
-                    <div
-                        style={{
-                            width: "100%",
-                            aspectRatio: "16 / 9",
-                            overflow: "hidden",
-                            position: "relative",
-                        }}
-                    >
-                        <iframe
-                            src={asset.video}
-                            style={{
-                                position: "absolute",
-                                inset: 0,
-                                width: "100%",
-                                height: "100%",
-                                border: "none",
-                                transform: "scale(1.2)",
-                            }}
-                            allow="autoplay"
-                        />
-                    </div>
+                    <video
+                        src={`/${asset.name}_preview.mp4`}
+                        style={{ width: "100%", display: "block" }}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        controls={false}
+                    />
                 ) : (
                     <Image
                         height={200}
