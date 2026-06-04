@@ -1,7 +1,7 @@
 {
     "loading": "Loading…",
-    "title": "Guess the Drone Show !",
-    "subtitle": "A minimalist gamified version of the drawn lights app",
+    "title": "Guess the Drone Show...",
+    "subtitle": "...And win a chocolate bar !",
     "try_discovering": "Try discovering an exclusive drone show combination right now !",
     "hide_scores": "Hide Scores",
     "show_scores": "Show Scores",
@@ -23,5 +23,14 @@
     "success": "Success",
     "discovery_recorded": "Your discovery has been recorded!",
     "technologies_used": "Technologies used",
-    "compute": "Compute"
+    "compute": "Compute",
+    "team_title": "By the O.K team",
+    "team_learn_more": "Learn more",
+    "team_oscar_role": "Fullstack engineer",
+    "team_karine_role": "Product manager",
+    "about_title": "About this project",
+    "about_intro": "This mini game is a joint portfolio project by Oscar and Karine, who combined their strengths around a unique idea to showcase their respective skills.",
+    "about_roles": "Oscar handles the technical side, Karine takes care of product design.",
+    "about_tech_title": "Technologies used",
+    "about_product_title": "Tools & product process"
 }

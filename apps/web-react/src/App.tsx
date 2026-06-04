@@ -1,33 +1,34 @@
 import {
-    Button,
-    Center,
-    Group,
-    Radio,
-    SimpleGrid,
-    Stack,
-    Text,
-    Title,
+  type Asset, type CombinationStatus,
+  demoPlaystationModels, type Sound,
+  type UserListHighscore
+} from "@drawn-lights-game/shared";
+import {
+  Button,
+  Center,
+  Group,
+  Radio,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title
 } from '@mantine/core';
 import '@mantine/core/styles.css';
 import {
-    IconDatabase,
+  IconDatabase,
 } from "@tabler/icons-react";
-import {
-    type Asset, type CombinationStatus,
-    demoPlaystationModels, type Sound,
-    type UserListHighscore
-} from "@drawn-lights-game/shared";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
 import { useEffect, useState } from "react";
 import GithubCorner from 'react-github-corner';
 import { useTranslation } from "react-i18next";
 
+import { AboutModal } from "./components/AboutModal.js";
 import { AssetCard } from "./components/AssetCard.js";
 import { ComputeMenu } from "./components/ComputeMenu.js";
 import { HighscoreTable } from "./components/HighscoreTable.js";
 import { ResultSection } from "./components/ResultSection.js";
-import { TechnologiesSection } from "./components/TechnologiesSection.js";
+import { TeamInformations } from "./components/TeamInformations.js";
 import { WaveSurferPlayer } from "./components/WaveSurferPlayer.js";
 import { computeAssetQueryParams } from "./helpers.js";
 import showsConst from "./playstation_shows.json";
@@ -44,6 +45,7 @@ function App() {
   const [users, setUsers] = useState<string[]>([]);
   const [isNew, setIsNew] = useState<boolean | null>(null);
   const [sound, setSound] = useState<Sound>("none");
+  const [openAboutModal, setOpenAboutModal] = useState(false);
   const [foundBy, setFoundBy] = useState<string | null>(null);
   const [showScore, setShowScore] = useState(false);
   const [highscore, setHighscore] = useState<UserListHighscore[]>([]);
@@ -90,7 +92,7 @@ function App() {
 
   return (
     <>
-      <div style={{ position: 'absolute', top: 20, left: 20, display: 'flex', gap: 10, zIndex: 1000 }}>
+      <div style={{ position: 'fixed', top: 20, left: 20, display: 'flex', gap: 10, zIndex: 1000 }}>
         <div
           onClick={() => void i18n.changeLanguage('fr')}
           style={{
@@ -127,9 +129,12 @@ function App() {
         <Title ta='center' order={1}>{t('title')}</Title>
         <Title ta="center" order={3}>{t('subtitle')}</Title>
 
-        <TechnologiesSection />
+        <TeamInformations setOpenAboutModal={setOpenAboutModal} />
+        <AboutModal opened={openAboutModal} onClose={() => setOpenAboutModal(false)} />
+            
+        {/* <TechnologiesSection /> */}
 
-        <Text fs="italic" ta="center">{t('try_discovering')}</Text>
+        <Text style={{marginTop: "16px"}} fs="italic" ta="center">{t('try_discovering')}</Text>
         <Center style={{ marginTop: "8px" }}><Button onClick={() => setShowScore((prev) => !prev)}>{showScore ? t('hide_scores') : t('show_scores')}</Button></Center>
         <div style={{ marginTop: "24px" }}>
           {!showScore && (
