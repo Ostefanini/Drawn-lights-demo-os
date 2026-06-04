@@ -157,6 +157,6 @@ jobs:
             set -e
             cd "${{ secrets.DEPLOY_PATH }}"
             git pull
-            docker compose pull migrate web-react api-nestjs
-            docker compose up -d --remove-orphans
+            docker compose pull
+            docker compose up -d --force-recreate --remove-orphans
             docker image prune -f
