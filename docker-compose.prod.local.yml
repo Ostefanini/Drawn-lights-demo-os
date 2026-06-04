@@ -49,15 +49,15 @@ services:
     env_file:
       - .env.prod.local
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-drawn_lights_game.local.prod}
-      POSTGRES_USER: ${POSTGRES_USER:-drawn_lights_game.local.prod}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-drawn_lights_game.local.prod}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "127.0.0.1:5434:5432"
     volumes:
       - prod_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U drawn_lights_game.local.prod -d drawn_lights_game.local.prod"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 3s
       retries: 20
