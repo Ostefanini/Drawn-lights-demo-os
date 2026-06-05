@@ -5,27 +5,40 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CombinationsRepository } from './combinations.repository.js';
 import { CombinationsService } from './combinations.service.js';
 import { CombinationQuery } from './combinations.type.js';
+import { SecretCombinationsRepository } from './secret-combinations.repository.js';
 
 describe('CombinationsService', () => {
   let service: CombinationsService;
   let repository: jest.Mocked<CombinationsRepository>;
+  let secretCombinationsRepository: jest.Mocked<SecretCombinationsRepository>;
 
   beforeEach(async () => {
     const mockRepository = {
+      isCombinationFound: jest.fn(),
       checkExistingAssets: jest.fn(),
       checkExistingCombination: jest.fn(),
       createCombination: jest.fn(),
+    };
+
+    const mockSecretCombinationsRepository = {
+      isSecretCombinationFound: jest.fn(),
+      markSecretCombinationAsFound: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CombinationsService,
         { provide: CombinationsRepository, useValue: mockRepository },
+        {
+          provide: SecretCombinationsRepository,
+          useValue: mockSecretCombinationsRepository,
+        },
       ],
     }).compile();
 
     service = module.get<CombinationsService>(CombinationsService);
     repository = module.get(CombinationsRepository);
+    secretCombinationsRepository = module.get(SecretCombinationsRepository);
   });
 
   describe('attributeCombination', () => {
@@ -42,7 +55,7 @@ describe('CombinationsService', () => {
       repository.checkExistingCombination.mockResolvedValue(undefined);
       repository.createCombination.mockResolvedValue({} as any);
 
-      await service.attributeCombination(params, nickname);
+      await service.attributeCombination(params, nickname, undefined);
 
       expect(repository.createCombination).toHaveBeenCalledWith(
         params,
@@ -63,10 +76,10 @@ describe('CombinationsService', () => {
       repository.checkExistingCombination.mockResolvedValue(undefined);
 
       await expect(
-        service.attributeCombination(params, profaneNickname),
+        service.attributeCombination(params, profaneNickname, undefined),
       ).rejects.toThrow(BadRequestException);
       await expect(
-        service.attributeCombination(params, profaneNickname),
+        service.attributeCombination(params, profaneNickname, undefined),
       ).rejects.toThrow('Nickname contains profanity');
     });
 
@@ -85,10 +98,10 @@ describe('CombinationsService', () => {
       } as any);
 
       await expect(
-        service.attributeCombination(params, nickname),
+        service.attributeCombination(params, nickname, undefined),
       ).rejects.toThrow(BadRequestException);
       await expect(
-        service.attributeCombination(params, nickname),
+        service.attributeCombination(params, nickname, undefined),
       ).rejects.toThrow('Combination already exists');
     });
 
@@ -101,16 +114,96 @@ describe('CombinationsService', () => {
       const nickname = 'validUser';
 
       await expect(
-        service.attributeCombination(params, nickname),
+        service.attributeCombination(params, nickname, undefined),
       ).rejects.toThrow(BadRequestException);
       await expect(
-        service.attributeCombination(params, nickname),
+        service.attributeCombination(params, nickname, undefined),
       ).rejects.toThrow('Assets must be continuous');
+    });
+
+    it('should mark secret combination as found when email is provided and combination is secret', async () => {
+      const params: CombinationQuery = {
+        assetOne: AssetName.TRIANGLE,
+        sound: 'healing',
+      };
+      const nickname = 'secretFinder';
+      const email = 'finder@example.com';
+
+      repository.checkExistingAssets.mockResolvedValue([
+        { name: AssetName.TRIANGLE } as any,
+      ]);
+      repository.checkExistingCombination.mockResolvedValue(undefined);
+      secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
+        true,
+      );
+      secretCombinationsRepository.markSecretCombinationAsFound.mockResolvedValue(
+        {} as any,
+      );
+
+      await service.attributeCombination(params, nickname, email);
+
+      expect(
+        secretCombinationsRepository.markSecretCombinationAsFound,
+      ).toHaveBeenCalledWith(params, nickname, email);
+      expect(repository.createCombination).not.toHaveBeenCalled();
+    });
+
+    it('should throw BadRequestException when email is provided but params do not match the secret combination', async () => {
+      const params: CombinationQuery = {
+        assetOne: AssetName.TRIANGLE,
+        sound: 'healing',
+      };
+      const nickname = 'player1';
+      const email = 'player1@example.com';
+
+      repository.checkExistingAssets.mockResolvedValue([
+        { name: AssetName.TRIANGLE } as any,
+      ]);
+      repository.checkExistingCombination.mockResolvedValue(undefined);
+      secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
+        false,
+      );
+
+      await expect(
+        service.attributeCombination(params, nickname, email),
+      ).rejects.toThrow(BadRequestException);
+      await expect(
+        service.attributeCombination(params, nickname, email),
+      ).rejects.toThrow(
+        'Email can only be provided if the combination is the secret one',
+      );
+    });
+
+    it('should throw BadRequestException when markSecretCombinationAsFound returns null', async () => {
+      const params: CombinationQuery = {
+        assetOne: AssetName.TRIANGLE,
+        sound: 'healing',
+      };
+      const nickname = 'secretFinder';
+      const email = 'finder@example.com';
+
+      repository.checkExistingAssets.mockResolvedValue([
+        { name: AssetName.TRIANGLE } as any,
+      ]);
+      repository.checkExistingCombination.mockResolvedValue(undefined);
+      secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
+        true,
+      );
+      secretCombinationsRepository.markSecretCombinationAsFound.mockResolvedValue(
+        null,
+      );
+
+      await expect(
+        service.attributeCombination(params, nickname, email),
+      ).rejects.toThrow(BadRequestException);
+      await expect(
+        service.attributeCombination(params, nickname, email),
+      ).rejects.toThrow('Failed to mark the secret combination as found.');
     });
   });
 
   describe('isCombinationFound', () => {
-    it('should return exist:true and foundBy when combination exists', async () => {
+    it('should return exist:true, foundBy and isSecretCombinationFound:false when combination exists but is not the secret one', async () => {
       const params: CombinationQuery = {
         assetOne: AssetName.TRIANGLE,
         sound: 'healing',
@@ -122,16 +215,20 @@ describe('CombinationsService', () => {
       repository.checkExistingCombination.mockResolvedValue({
         foundBy: { nickname: 'player1' },
       } as any);
+      secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
+        false,
+      );
 
       const result = await service.isCombinationFound(params);
 
       expect(result).toEqual({
         exist: true,
         foundBy: 'player1',
+        isSecretCombinationFound: false,
       });
     });
 
-    it('should return exist:false and null foundBy when combination does not exist', async () => {
+    it('should return isSecretCombinationFound:true when params match the unfound secret combination', async () => {
       const params: CombinationQuery = {
         assetOne: AssetName.TRIANGLE,
         sound: 'healing',
@@ -141,12 +238,39 @@ describe('CombinationsService', () => {
         { name: AssetName.TRIANGLE } as any,
       ]);
       repository.checkExistingCombination.mockResolvedValue(undefined);
+      secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
+        true,
+      );
 
       const result = await service.isCombinationFound(params);
 
       expect(result).toEqual({
         exist: false,
         foundBy: null,
+        isSecretCombinationFound: true,
+      });
+    });
+
+    it('should return exist:false, null foundBy and isSecretCombinationFound:false when combination does not exist', async () => {
+      const params: CombinationQuery = {
+        assetOne: AssetName.TRIANGLE,
+        sound: 'healing',
+      };
+
+      repository.checkExistingAssets.mockResolvedValue([
+        { name: AssetName.TRIANGLE } as any,
+      ]);
+      repository.checkExistingCombination.mockResolvedValue(undefined);
+      secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
+        false,
+      );
+
+      const result = await service.isCombinationFound(params);
+
+      expect(result).toEqual({
+        exist: false,
+        foundBy: null,
+        isSecretCombinationFound: false,
       });
     });
 

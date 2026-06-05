@@ -11,10 +11,12 @@ import {
   Post,
   StreamableFile,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js';
+import { ProductionAssetsGuard } from './assets.guard.js';
 import { AssetsService } from './assets.service.js';
 import { type MulterFile } from './assets.type.js';
 import { ThumbnailValidationPipe } from './assets.validator.js';
@@ -29,14 +31,13 @@ export class AssetsController {
   }
 
   @Post('/')
-  //@UseGuards(ProductionAssetsGuard)
+  @UseGuards(ProductionAssetsGuard)
   @UseInterceptors(FileInterceptor('thumbnail'))
   async uploadThumbnail(
     @UploadedFile(ThumbnailValidationPipe) thumbnail: MulterFile,
     @Body(new ZodValidationPipe(assetCreateTextFieldsSchema))
     assetCreateDTO: AssetCreateDTO,
   ) {
-    console.log('Received asset creation request:', assetCreateDTO);
     return await this.assetsService.createAsset(
       assetCreateDTO,
       thumbnail.buffer,

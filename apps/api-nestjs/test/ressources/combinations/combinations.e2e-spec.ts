@@ -57,6 +57,15 @@ describe('CombinationsController (e2e)', () => {
       ],
     });
 
+    await prismaTest.secretCombination.create({
+      data: {
+        assetOne: AssetName.TRIANGLE,
+        assetTwo: AssetName.SQUARE,
+        sound: Sound.HEALING,
+        foundById: null,
+      },
+    });
+
     // Create a test user
     await prismaTest.user.create({
       data: testData.users.user1,
@@ -84,6 +93,7 @@ describe('CombinationsController (e2e)', () => {
       expect(response.body).toEqual({
         exist: false,
         foundBy: null,
+        isSecretCombinationFound: false,
       });
     });
 
@@ -109,6 +119,7 @@ describe('CombinationsController (e2e)', () => {
       expect(response.body).toEqual({
         exist: true,
         foundBy: 'testuser1',
+        isSecretCombinationFound: false,
       });
     });
 

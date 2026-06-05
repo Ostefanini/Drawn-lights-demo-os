@@ -28,6 +28,11 @@ export type Asset = $Result.DefaultSelection<Prisma.$AssetPayload>
  * 
  */
 export type Combination = $Result.DefaultSelection<Prisma.$CombinationPayload>
+/**
+ * Model SecretCombination
+ * 
+ */
+export type SecretCombination = $Result.DefaultSelection<Prisma.$SecretCombinationPayload>
 
 /**
  * Enums
@@ -225,6 +230,16 @@ export class PrismaClient<
     * ```
     */
   get combination(): Prisma.CombinationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.secretCombination`: Exposes CRUD operations for the **SecretCombination** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SecretCombinations
+    * const secretCombinations = await prisma.secretCombination.findMany()
+    * ```
+    */
+  get secretCombination(): Prisma.SecretCombinationDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -661,7 +676,8 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Asset: 'Asset',
-    Combination: 'Combination'
+    Combination: 'Combination',
+    SecretCombination: 'SecretCombination'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -677,7 +693,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "asset" | "combination"
+      modelProps: "user" | "asset" | "combination" | "secretCombination"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -903,6 +919,80 @@ export namespace Prisma {
           }
         }
       }
+      SecretCombination: {
+        payload: Prisma.$SecretCombinationPayload<ExtArgs>
+        fields: Prisma.SecretCombinationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SecretCombinationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SecretCombinationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>
+          }
+          findFirst: {
+            args: Prisma.SecretCombinationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SecretCombinationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>
+          }
+          findMany: {
+            args: Prisma.SecretCombinationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>[]
+          }
+          create: {
+            args: Prisma.SecretCombinationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>
+          }
+          createMany: {
+            args: Prisma.SecretCombinationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SecretCombinationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>[]
+          }
+          delete: {
+            args: Prisma.SecretCombinationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>
+          }
+          update: {
+            args: Prisma.SecretCombinationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>
+          }
+          deleteMany: {
+            args: Prisma.SecretCombinationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SecretCombinationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SecretCombinationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>[]
+          }
+          upsert: {
+            args: Prisma.SecretCombinationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SecretCombinationPayload>
+          }
+          aggregate: {
+            args: Prisma.SecretCombinationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSecretCombination>
+          }
+          groupBy: {
+            args: Prisma.SecretCombinationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SecretCombinationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SecretCombinationCountArgs<ExtArgs>
+            result: $Utils.Optional<SecretCombinationCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1014,6 +1104,7 @@ export namespace Prisma {
     user?: UserOmit
     asset?: AssetOmit
     combination?: CombinationOmit
+    secretCombination?: SecretCombinationOmit
   }
 
   /* Types for Logging */
@@ -1095,10 +1186,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     combinations: number
+    secretCombinations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     combinations?: boolean | UserCountOutputTypeCountCombinationsArgs
+    secretCombinations?: boolean | UserCountOutputTypeCountSecretCombinationsArgs
   }
 
   // Custom InputTypes
@@ -1117,6 +1210,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCombinationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CombinationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSecretCombinationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SecretCombinationWhereInput
   }
 
 
@@ -1265,6 +1365,7 @@ export namespace Prisma {
     id?: boolean
     nickname?: boolean
     combinations?: boolean | User$combinationsArgs<ExtArgs>
+    secretCombinations?: boolean | User$secretCombinationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1286,6 +1387,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nickname", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     combinations?: boolean | User$combinationsArgs<ExtArgs>
+    secretCombinations?: boolean | User$secretCombinationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1295,6 +1397,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       combinations: Prisma.$CombinationPayload<ExtArgs>[]
+      secretCombinations: Prisma.$SecretCombinationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1694,6 +1797,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     combinations<T extends User$combinationsArgs<ExtArgs> = {}>(args?: Subset<T, User$combinationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CombinationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    secretCombinations<T extends User$secretCombinationsArgs<ExtArgs> = {}>(args?: Subset<T, User$secretCombinationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2139,6 +2243,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CombinationScalarFieldEnum | CombinationScalarFieldEnum[]
+  }
+
+  /**
+   * User.secretCombinations
+   */
+  export type User$secretCombinationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    where?: SecretCombinationWhereInput
+    orderBy?: SecretCombinationOrderByWithRelationInput | SecretCombinationOrderByWithRelationInput[]
+    cursor?: SecretCombinationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SecretCombinationScalarFieldEnum | SecretCombinationScalarFieldEnum[]
   }
 
   /**
@@ -4362,6 +4490,1140 @@ export namespace Prisma {
 
 
   /**
+   * Model SecretCombination
+   */
+
+  export type AggregateSecretCombination = {
+    _count: SecretCombinationCountAggregateOutputType | null
+    _min: SecretCombinationMinAggregateOutputType | null
+    _max: SecretCombinationMaxAggregateOutputType | null
+  }
+
+  export type SecretCombinationMinAggregateOutputType = {
+    id: string | null
+    assetOne: $Enums.AssetName | null
+    assetTwo: $Enums.AssetName | null
+    assetThree: $Enums.AssetName | null
+    assetFour: $Enums.AssetName | null
+    sound: $Enums.Sound | null
+    foundById: string | null
+    foundByEmail: string | null
+    foundAt: Date | null
+  }
+
+  export type SecretCombinationMaxAggregateOutputType = {
+    id: string | null
+    assetOne: $Enums.AssetName | null
+    assetTwo: $Enums.AssetName | null
+    assetThree: $Enums.AssetName | null
+    assetFour: $Enums.AssetName | null
+    sound: $Enums.Sound | null
+    foundById: string | null
+    foundByEmail: string | null
+    foundAt: Date | null
+  }
+
+  export type SecretCombinationCountAggregateOutputType = {
+    id: number
+    assetOne: number
+    assetTwo: number
+    assetThree: number
+    assetFour: number
+    sound: number
+    foundById: number
+    foundByEmail: number
+    foundAt: number
+    _all: number
+  }
+
+
+  export type SecretCombinationMinAggregateInputType = {
+    id?: true
+    assetOne?: true
+    assetTwo?: true
+    assetThree?: true
+    assetFour?: true
+    sound?: true
+    foundById?: true
+    foundByEmail?: true
+    foundAt?: true
+  }
+
+  export type SecretCombinationMaxAggregateInputType = {
+    id?: true
+    assetOne?: true
+    assetTwo?: true
+    assetThree?: true
+    assetFour?: true
+    sound?: true
+    foundById?: true
+    foundByEmail?: true
+    foundAt?: true
+  }
+
+  export type SecretCombinationCountAggregateInputType = {
+    id?: true
+    assetOne?: true
+    assetTwo?: true
+    assetThree?: true
+    assetFour?: true
+    sound?: true
+    foundById?: true
+    foundByEmail?: true
+    foundAt?: true
+    _all?: true
+  }
+
+  export type SecretCombinationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SecretCombination to aggregate.
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SecretCombinations to fetch.
+     */
+    orderBy?: SecretCombinationOrderByWithRelationInput | SecretCombinationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SecretCombinationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SecretCombinations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SecretCombinations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SecretCombinations
+    **/
+    _count?: true | SecretCombinationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SecretCombinationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SecretCombinationMaxAggregateInputType
+  }
+
+  export type GetSecretCombinationAggregateType<T extends SecretCombinationAggregateArgs> = {
+        [P in keyof T & keyof AggregateSecretCombination]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSecretCombination[P]>
+      : GetScalarType<T[P], AggregateSecretCombination[P]>
+  }
+
+
+
+
+  export type SecretCombinationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SecretCombinationWhereInput
+    orderBy?: SecretCombinationOrderByWithAggregationInput | SecretCombinationOrderByWithAggregationInput[]
+    by: SecretCombinationScalarFieldEnum[] | SecretCombinationScalarFieldEnum
+    having?: SecretCombinationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SecretCombinationCountAggregateInputType | true
+    _min?: SecretCombinationMinAggregateInputType
+    _max?: SecretCombinationMaxAggregateInputType
+  }
+
+  export type SecretCombinationGroupByOutputType = {
+    id: string
+    assetOne: $Enums.AssetName
+    assetTwo: $Enums.AssetName | null
+    assetThree: $Enums.AssetName | null
+    assetFour: $Enums.AssetName | null
+    sound: $Enums.Sound
+    foundById: string | null
+    foundByEmail: string | null
+    foundAt: Date | null
+    _count: SecretCombinationCountAggregateOutputType | null
+    _min: SecretCombinationMinAggregateOutputType | null
+    _max: SecretCombinationMaxAggregateOutputType | null
+  }
+
+  type GetSecretCombinationGroupByPayload<T extends SecretCombinationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SecretCombinationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SecretCombinationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SecretCombinationGroupByOutputType[P]>
+            : GetScalarType<T[P], SecretCombinationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SecretCombinationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    assetOne?: boolean
+    assetTwo?: boolean
+    assetThree?: boolean
+    assetFour?: boolean
+    sound?: boolean
+    foundById?: boolean
+    foundByEmail?: boolean
+    foundAt?: boolean
+    foundBy?: boolean | SecretCombination$foundByArgs<ExtArgs>
+  }, ExtArgs["result"]["secretCombination"]>
+
+  export type SecretCombinationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    assetOne?: boolean
+    assetTwo?: boolean
+    assetThree?: boolean
+    assetFour?: boolean
+    sound?: boolean
+    foundById?: boolean
+    foundByEmail?: boolean
+    foundAt?: boolean
+    foundBy?: boolean | SecretCombination$foundByArgs<ExtArgs>
+  }, ExtArgs["result"]["secretCombination"]>
+
+  export type SecretCombinationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    assetOne?: boolean
+    assetTwo?: boolean
+    assetThree?: boolean
+    assetFour?: boolean
+    sound?: boolean
+    foundById?: boolean
+    foundByEmail?: boolean
+    foundAt?: boolean
+    foundBy?: boolean | SecretCombination$foundByArgs<ExtArgs>
+  }, ExtArgs["result"]["secretCombination"]>
+
+  export type SecretCombinationSelectScalar = {
+    id?: boolean
+    assetOne?: boolean
+    assetTwo?: boolean
+    assetThree?: boolean
+    assetFour?: boolean
+    sound?: boolean
+    foundById?: boolean
+    foundByEmail?: boolean
+    foundAt?: boolean
+  }
+
+  export type SecretCombinationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assetOne" | "assetTwo" | "assetThree" | "assetFour" | "sound" | "foundById" | "foundByEmail" | "foundAt", ExtArgs["result"]["secretCombination"]>
+  export type SecretCombinationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    foundBy?: boolean | SecretCombination$foundByArgs<ExtArgs>
+  }
+  export type SecretCombinationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    foundBy?: boolean | SecretCombination$foundByArgs<ExtArgs>
+  }
+  export type SecretCombinationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    foundBy?: boolean | SecretCombination$foundByArgs<ExtArgs>
+  }
+
+  export type $SecretCombinationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SecretCombination"
+    objects: {
+      foundBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      assetOne: $Enums.AssetName
+      assetTwo: $Enums.AssetName | null
+      assetThree: $Enums.AssetName | null
+      assetFour: $Enums.AssetName | null
+      sound: $Enums.Sound
+      foundById: string | null
+      foundByEmail: string | null
+      foundAt: Date | null
+    }, ExtArgs["result"]["secretCombination"]>
+    composites: {}
+  }
+
+  type SecretCombinationGetPayload<S extends boolean | null | undefined | SecretCombinationDefaultArgs> = $Result.GetResult<Prisma.$SecretCombinationPayload, S>
+
+  type SecretCombinationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SecretCombinationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SecretCombinationCountAggregateInputType | true
+    }
+
+  export interface SecretCombinationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SecretCombination'], meta: { name: 'SecretCombination' } }
+    /**
+     * Find zero or one SecretCombination that matches the filter.
+     * @param {SecretCombinationFindUniqueArgs} args - Arguments to find a SecretCombination
+     * @example
+     * // Get one SecretCombination
+     * const secretCombination = await prisma.secretCombination.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SecretCombinationFindUniqueArgs>(args: SelectSubset<T, SecretCombinationFindUniqueArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SecretCombination that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SecretCombinationFindUniqueOrThrowArgs} args - Arguments to find a SecretCombination
+     * @example
+     * // Get one SecretCombination
+     * const secretCombination = await prisma.secretCombination.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SecretCombinationFindUniqueOrThrowArgs>(args: SelectSubset<T, SecretCombinationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SecretCombination that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationFindFirstArgs} args - Arguments to find a SecretCombination
+     * @example
+     * // Get one SecretCombination
+     * const secretCombination = await prisma.secretCombination.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SecretCombinationFindFirstArgs>(args?: SelectSubset<T, SecretCombinationFindFirstArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SecretCombination that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationFindFirstOrThrowArgs} args - Arguments to find a SecretCombination
+     * @example
+     * // Get one SecretCombination
+     * const secretCombination = await prisma.secretCombination.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SecretCombinationFindFirstOrThrowArgs>(args?: SelectSubset<T, SecretCombinationFindFirstOrThrowArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SecretCombinations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SecretCombinations
+     * const secretCombinations = await prisma.secretCombination.findMany()
+     * 
+     * // Get first 10 SecretCombinations
+     * const secretCombinations = await prisma.secretCombination.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const secretCombinationWithIdOnly = await prisma.secretCombination.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SecretCombinationFindManyArgs>(args?: SelectSubset<T, SecretCombinationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SecretCombination.
+     * @param {SecretCombinationCreateArgs} args - Arguments to create a SecretCombination.
+     * @example
+     * // Create one SecretCombination
+     * const SecretCombination = await prisma.secretCombination.create({
+     *   data: {
+     *     // ... data to create a SecretCombination
+     *   }
+     * })
+     * 
+     */
+    create<T extends SecretCombinationCreateArgs>(args: SelectSubset<T, SecretCombinationCreateArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SecretCombinations.
+     * @param {SecretCombinationCreateManyArgs} args - Arguments to create many SecretCombinations.
+     * @example
+     * // Create many SecretCombinations
+     * const secretCombination = await prisma.secretCombination.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SecretCombinationCreateManyArgs>(args?: SelectSubset<T, SecretCombinationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SecretCombinations and returns the data saved in the database.
+     * @param {SecretCombinationCreateManyAndReturnArgs} args - Arguments to create many SecretCombinations.
+     * @example
+     * // Create many SecretCombinations
+     * const secretCombination = await prisma.secretCombination.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SecretCombinations and only return the `id`
+     * const secretCombinationWithIdOnly = await prisma.secretCombination.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SecretCombinationCreateManyAndReturnArgs>(args?: SelectSubset<T, SecretCombinationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SecretCombination.
+     * @param {SecretCombinationDeleteArgs} args - Arguments to delete one SecretCombination.
+     * @example
+     * // Delete one SecretCombination
+     * const SecretCombination = await prisma.secretCombination.delete({
+     *   where: {
+     *     // ... filter to delete one SecretCombination
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SecretCombinationDeleteArgs>(args: SelectSubset<T, SecretCombinationDeleteArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SecretCombination.
+     * @param {SecretCombinationUpdateArgs} args - Arguments to update one SecretCombination.
+     * @example
+     * // Update one SecretCombination
+     * const secretCombination = await prisma.secretCombination.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SecretCombinationUpdateArgs>(args: SelectSubset<T, SecretCombinationUpdateArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SecretCombinations.
+     * @param {SecretCombinationDeleteManyArgs} args - Arguments to filter SecretCombinations to delete.
+     * @example
+     * // Delete a few SecretCombinations
+     * const { count } = await prisma.secretCombination.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SecretCombinationDeleteManyArgs>(args?: SelectSubset<T, SecretCombinationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SecretCombinations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SecretCombinations
+     * const secretCombination = await prisma.secretCombination.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SecretCombinationUpdateManyArgs>(args: SelectSubset<T, SecretCombinationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SecretCombinations and returns the data updated in the database.
+     * @param {SecretCombinationUpdateManyAndReturnArgs} args - Arguments to update many SecretCombinations.
+     * @example
+     * // Update many SecretCombinations
+     * const secretCombination = await prisma.secretCombination.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SecretCombinations and only return the `id`
+     * const secretCombinationWithIdOnly = await prisma.secretCombination.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SecretCombinationUpdateManyAndReturnArgs>(args: SelectSubset<T, SecretCombinationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SecretCombination.
+     * @param {SecretCombinationUpsertArgs} args - Arguments to update or create a SecretCombination.
+     * @example
+     * // Update or create a SecretCombination
+     * const secretCombination = await prisma.secretCombination.upsert({
+     *   create: {
+     *     // ... data to create a SecretCombination
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SecretCombination we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SecretCombinationUpsertArgs>(args: SelectSubset<T, SecretCombinationUpsertArgs<ExtArgs>>): Prisma__SecretCombinationClient<$Result.GetResult<Prisma.$SecretCombinationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SecretCombinations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationCountArgs} args - Arguments to filter SecretCombinations to count.
+     * @example
+     * // Count the number of SecretCombinations
+     * const count = await prisma.secretCombination.count({
+     *   where: {
+     *     // ... the filter for the SecretCombinations we want to count
+     *   }
+     * })
+    **/
+    count<T extends SecretCombinationCountArgs>(
+      args?: Subset<T, SecretCombinationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SecretCombinationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SecretCombination.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SecretCombinationAggregateArgs>(args: Subset<T, SecretCombinationAggregateArgs>): Prisma.PrismaPromise<GetSecretCombinationAggregateType<T>>
+
+    /**
+     * Group by SecretCombination.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SecretCombinationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SecretCombinationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SecretCombinationGroupByArgs['orderBy'] }
+        : { orderBy?: SecretCombinationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SecretCombinationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSecretCombinationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SecretCombination model
+   */
+  readonly fields: SecretCombinationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SecretCombination.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SecretCombinationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    foundBy<T extends SecretCombination$foundByArgs<ExtArgs> = {}>(args?: Subset<T, SecretCombination$foundByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SecretCombination model
+   */
+  interface SecretCombinationFieldRefs {
+    readonly id: FieldRef<"SecretCombination", 'String'>
+    readonly assetOne: FieldRef<"SecretCombination", 'AssetName'>
+    readonly assetTwo: FieldRef<"SecretCombination", 'AssetName'>
+    readonly assetThree: FieldRef<"SecretCombination", 'AssetName'>
+    readonly assetFour: FieldRef<"SecretCombination", 'AssetName'>
+    readonly sound: FieldRef<"SecretCombination", 'Sound'>
+    readonly foundById: FieldRef<"SecretCombination", 'String'>
+    readonly foundByEmail: FieldRef<"SecretCombination", 'String'>
+    readonly foundAt: FieldRef<"SecretCombination", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SecretCombination findUnique
+   */
+  export type SecretCombinationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * Filter, which SecretCombination to fetch.
+     */
+    where: SecretCombinationWhereUniqueInput
+  }
+
+  /**
+   * SecretCombination findUniqueOrThrow
+   */
+  export type SecretCombinationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * Filter, which SecretCombination to fetch.
+     */
+    where: SecretCombinationWhereUniqueInput
+  }
+
+  /**
+   * SecretCombination findFirst
+   */
+  export type SecretCombinationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * Filter, which SecretCombination to fetch.
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SecretCombinations to fetch.
+     */
+    orderBy?: SecretCombinationOrderByWithRelationInput | SecretCombinationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SecretCombinations.
+     */
+    cursor?: SecretCombinationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SecretCombinations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SecretCombinations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SecretCombinations.
+     */
+    distinct?: SecretCombinationScalarFieldEnum | SecretCombinationScalarFieldEnum[]
+  }
+
+  /**
+   * SecretCombination findFirstOrThrow
+   */
+  export type SecretCombinationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * Filter, which SecretCombination to fetch.
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SecretCombinations to fetch.
+     */
+    orderBy?: SecretCombinationOrderByWithRelationInput | SecretCombinationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SecretCombinations.
+     */
+    cursor?: SecretCombinationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SecretCombinations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SecretCombinations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SecretCombinations.
+     */
+    distinct?: SecretCombinationScalarFieldEnum | SecretCombinationScalarFieldEnum[]
+  }
+
+  /**
+   * SecretCombination findMany
+   */
+  export type SecretCombinationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * Filter, which SecretCombinations to fetch.
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SecretCombinations to fetch.
+     */
+    orderBy?: SecretCombinationOrderByWithRelationInput | SecretCombinationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SecretCombinations.
+     */
+    cursor?: SecretCombinationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SecretCombinations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SecretCombinations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SecretCombinations.
+     */
+    distinct?: SecretCombinationScalarFieldEnum | SecretCombinationScalarFieldEnum[]
+  }
+
+  /**
+   * SecretCombination create
+   */
+  export type SecretCombinationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SecretCombination.
+     */
+    data: XOR<SecretCombinationCreateInput, SecretCombinationUncheckedCreateInput>
+  }
+
+  /**
+   * SecretCombination createMany
+   */
+  export type SecretCombinationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SecretCombinations.
+     */
+    data: SecretCombinationCreateManyInput | SecretCombinationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SecretCombination createManyAndReturn
+   */
+  export type SecretCombinationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * The data used to create many SecretCombinations.
+     */
+    data: SecretCombinationCreateManyInput | SecretCombinationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SecretCombination update
+   */
+  export type SecretCombinationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SecretCombination.
+     */
+    data: XOR<SecretCombinationUpdateInput, SecretCombinationUncheckedUpdateInput>
+    /**
+     * Choose, which SecretCombination to update.
+     */
+    where: SecretCombinationWhereUniqueInput
+  }
+
+  /**
+   * SecretCombination updateMany
+   */
+  export type SecretCombinationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SecretCombinations.
+     */
+    data: XOR<SecretCombinationUpdateManyMutationInput, SecretCombinationUncheckedUpdateManyInput>
+    /**
+     * Filter which SecretCombinations to update
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * Limit how many SecretCombinations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SecretCombination updateManyAndReturn
+   */
+  export type SecretCombinationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * The data used to update SecretCombinations.
+     */
+    data: XOR<SecretCombinationUpdateManyMutationInput, SecretCombinationUncheckedUpdateManyInput>
+    /**
+     * Filter which SecretCombinations to update
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * Limit how many SecretCombinations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SecretCombination upsert
+   */
+  export type SecretCombinationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SecretCombination to update in case it exists.
+     */
+    where: SecretCombinationWhereUniqueInput
+    /**
+     * In case the SecretCombination found by the `where` argument doesn't exist, create a new SecretCombination with this data.
+     */
+    create: XOR<SecretCombinationCreateInput, SecretCombinationUncheckedCreateInput>
+    /**
+     * In case the SecretCombination was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SecretCombinationUpdateInput, SecretCombinationUncheckedUpdateInput>
+  }
+
+  /**
+   * SecretCombination delete
+   */
+  export type SecretCombinationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+    /**
+     * Filter which SecretCombination to delete.
+     */
+    where: SecretCombinationWhereUniqueInput
+  }
+
+  /**
+   * SecretCombination deleteMany
+   */
+  export type SecretCombinationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SecretCombinations to delete
+     */
+    where?: SecretCombinationWhereInput
+    /**
+     * Limit how many SecretCombinations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SecretCombination.foundBy
+   */
+  export type SecretCombination$foundByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * SecretCombination without action
+   */
+  export type SecretCombinationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretCombination
+     */
+    select?: SecretCombinationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SecretCombination
+     */
+    omit?: SecretCombinationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretCombinationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4411,6 +5673,21 @@ export namespace Prisma {
   };
 
   export type CombinationScalarFieldEnum = (typeof CombinationScalarFieldEnum)[keyof typeof CombinationScalarFieldEnum]
+
+
+  export const SecretCombinationScalarFieldEnum: {
+    id: 'id',
+    assetOne: 'assetOne',
+    assetTwo: 'assetTwo',
+    assetThree: 'assetThree',
+    assetFour: 'assetFour',
+    sound: 'sound',
+    foundById: 'foundById',
+    foundByEmail: 'foundByEmail',
+    foundAt: 'foundAt'
+  };
+
+  export type SecretCombinationScalarFieldEnum = (typeof SecretCombinationScalarFieldEnum)[keyof typeof SecretCombinationScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4550,12 +5827,14 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     nickname?: StringFilter<"User"> | string
     combinations?: CombinationListRelationFilter
+    secretCombinations?: SecretCombinationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     nickname?: SortOrder
     combinations?: CombinationOrderByRelationAggregateInput
+    secretCombinations?: SecretCombinationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4565,6 +5844,7 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     combinations?: CombinationListRelationFilter
+    secretCombinations?: SecretCombinationListRelationFilter
   }, "id" | "nickname">
 
   export type UserOrderByWithAggregationInput = {
@@ -4733,28 +6013,108 @@ export namespace Prisma {
     sound?: EnumSoundWithAggregatesFilter<"Combination"> | $Enums.Sound
   }
 
+  export type SecretCombinationWhereInput = {
+    AND?: SecretCombinationWhereInput | SecretCombinationWhereInput[]
+    OR?: SecretCombinationWhereInput[]
+    NOT?: SecretCombinationWhereInput | SecretCombinationWhereInput[]
+    id?: StringFilter<"SecretCombination"> | string
+    assetOne?: EnumAssetNameFilter<"SecretCombination"> | $Enums.AssetName
+    assetTwo?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetThree?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetFour?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    sound?: EnumSoundFilter<"SecretCombination"> | $Enums.Sound
+    foundById?: StringNullableFilter<"SecretCombination"> | string | null
+    foundByEmail?: StringNullableFilter<"SecretCombination"> | string | null
+    foundAt?: DateTimeNullableFilter<"SecretCombination"> | Date | string | null
+    foundBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type SecretCombinationOrderByWithRelationInput = {
+    id?: SortOrder
+    assetOne?: SortOrder
+    assetTwo?: SortOrderInput | SortOrder
+    assetThree?: SortOrderInput | SortOrder
+    assetFour?: SortOrderInput | SortOrder
+    sound?: SortOrder
+    foundById?: SortOrderInput | SortOrder
+    foundByEmail?: SortOrderInput | SortOrder
+    foundAt?: SortOrderInput | SortOrder
+    foundBy?: UserOrderByWithRelationInput
+  }
+
+  export type SecretCombinationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    assetOne_assetTwo_assetThree_assetFour_sound?: SecretCombinationAssetOneAssetTwoAssetThreeAssetFourSoundCompoundUniqueInput
+    AND?: SecretCombinationWhereInput | SecretCombinationWhereInput[]
+    OR?: SecretCombinationWhereInput[]
+    NOT?: SecretCombinationWhereInput | SecretCombinationWhereInput[]
+    assetOne?: EnumAssetNameFilter<"SecretCombination"> | $Enums.AssetName
+    assetTwo?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetThree?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetFour?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    sound?: EnumSoundFilter<"SecretCombination"> | $Enums.Sound
+    foundById?: StringNullableFilter<"SecretCombination"> | string | null
+    foundByEmail?: StringNullableFilter<"SecretCombination"> | string | null
+    foundAt?: DateTimeNullableFilter<"SecretCombination"> | Date | string | null
+    foundBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "assetOne_assetTwo_assetThree_assetFour_sound">
+
+  export type SecretCombinationOrderByWithAggregationInput = {
+    id?: SortOrder
+    assetOne?: SortOrder
+    assetTwo?: SortOrderInput | SortOrder
+    assetThree?: SortOrderInput | SortOrder
+    assetFour?: SortOrderInput | SortOrder
+    sound?: SortOrder
+    foundById?: SortOrderInput | SortOrder
+    foundByEmail?: SortOrderInput | SortOrder
+    foundAt?: SortOrderInput | SortOrder
+    _count?: SecretCombinationCountOrderByAggregateInput
+    _max?: SecretCombinationMaxOrderByAggregateInput
+    _min?: SecretCombinationMinOrderByAggregateInput
+  }
+
+  export type SecretCombinationScalarWhereWithAggregatesInput = {
+    AND?: SecretCombinationScalarWhereWithAggregatesInput | SecretCombinationScalarWhereWithAggregatesInput[]
+    OR?: SecretCombinationScalarWhereWithAggregatesInput[]
+    NOT?: SecretCombinationScalarWhereWithAggregatesInput | SecretCombinationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SecretCombination"> | string
+    assetOne?: EnumAssetNameWithAggregatesFilter<"SecretCombination"> | $Enums.AssetName
+    assetTwo?: EnumAssetNameNullableWithAggregatesFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetThree?: EnumAssetNameNullableWithAggregatesFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetFour?: EnumAssetNameNullableWithAggregatesFilter<"SecretCombination"> | $Enums.AssetName | null
+    sound?: EnumSoundWithAggregatesFilter<"SecretCombination"> | $Enums.Sound
+    foundById?: StringNullableWithAggregatesFilter<"SecretCombination"> | string | null
+    foundByEmail?: StringNullableWithAggregatesFilter<"SecretCombination"> | string | null
+    foundAt?: DateTimeNullableWithAggregatesFilter<"SecretCombination"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     nickname: string
     combinations?: CombinationCreateNestedManyWithoutFoundByInput
+    secretCombinations?: SecretCombinationCreateNestedManyWithoutFoundByInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     nickname: string
     combinations?: CombinationUncheckedCreateNestedManyWithoutFoundByInput
+    secretCombinations?: SecretCombinationUncheckedCreateNestedManyWithoutFoundByInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     nickname?: StringFieldUpdateOperationsInput | string
     combinations?: CombinationUpdateManyWithoutFoundByNestedInput
+    secretCombinations?: SecretCombinationUpdateManyWithoutFoundByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     nickname?: StringFieldUpdateOperationsInput | string
     combinations?: CombinationUncheckedUpdateManyWithoutFoundByNestedInput
+    secretCombinations?: SecretCombinationUncheckedUpdateManyWithoutFoundByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -4939,6 +6299,89 @@ export namespace Prisma {
     sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
   }
 
+  export type SecretCombinationCreateInput = {
+    id?: string
+    assetOne: $Enums.AssetName
+    assetTwo?: $Enums.AssetName | null
+    assetThree?: $Enums.AssetName | null
+    assetFour?: $Enums.AssetName | null
+    sound?: $Enums.Sound
+    foundByEmail?: string | null
+    foundAt?: Date | string | null
+    foundBy?: UserCreateNestedOneWithoutSecretCombinationsInput
+  }
+
+  export type SecretCombinationUncheckedCreateInput = {
+    id?: string
+    assetOne: $Enums.AssetName
+    assetTwo?: $Enums.AssetName | null
+    assetThree?: $Enums.AssetName | null
+    assetFour?: $Enums.AssetName | null
+    sound?: $Enums.Sound
+    foundById?: string | null
+    foundByEmail?: string | null
+    foundAt?: Date | string | null
+  }
+
+  export type SecretCombinationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    foundBy?: UserUpdateOneWithoutSecretCombinationsNestedInput
+  }
+
+  export type SecretCombinationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundById?: NullableStringFieldUpdateOperationsInput | string | null
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SecretCombinationCreateManyInput = {
+    id?: string
+    assetOne: $Enums.AssetName
+    assetTwo?: $Enums.AssetName | null
+    assetThree?: $Enums.AssetName | null
+    assetFour?: $Enums.AssetName | null
+    sound?: $Enums.Sound
+    foundById?: string | null
+    foundByEmail?: string | null
+    foundAt?: Date | string | null
+  }
+
+  export type SecretCombinationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SecretCombinationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundById?: NullableStringFieldUpdateOperationsInput | string | null
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -4960,7 +6403,17 @@ export namespace Prisma {
     none?: CombinationWhereInput
   }
 
+  export type SecretCombinationListRelationFilter = {
+    every?: SecretCombinationWhereInput
+    some?: SecretCombinationWhereInput
+    none?: SecretCombinationWhereInput
+  }
+
   export type CombinationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SecretCombinationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5257,6 +6710,80 @@ export namespace Prisma {
     _max?: NestedEnumSoundFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type SecretCombinationAssetOneAssetTwoAssetThreeAssetFourSoundCompoundUniqueInput = {
+    assetOne: $Enums.AssetName
+    assetTwo: $Enums.AssetName
+    assetThree: $Enums.AssetName
+    assetFour: $Enums.AssetName
+    sound: $Enums.Sound
+  }
+
+  export type SecretCombinationCountOrderByAggregateInput = {
+    id?: SortOrder
+    assetOne?: SortOrder
+    assetTwo?: SortOrder
+    assetThree?: SortOrder
+    assetFour?: SortOrder
+    sound?: SortOrder
+    foundById?: SortOrder
+    foundByEmail?: SortOrder
+    foundAt?: SortOrder
+  }
+
+  export type SecretCombinationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    assetOne?: SortOrder
+    assetTwo?: SortOrder
+    assetThree?: SortOrder
+    assetFour?: SortOrder
+    sound?: SortOrder
+    foundById?: SortOrder
+    foundByEmail?: SortOrder
+    foundAt?: SortOrder
+  }
+
+  export type SecretCombinationMinOrderByAggregateInput = {
+    id?: SortOrder
+    assetOne?: SortOrder
+    assetTwo?: SortOrder
+    assetThree?: SortOrder
+    assetFour?: SortOrder
+    sound?: SortOrder
+    foundById?: SortOrder
+    foundByEmail?: SortOrder
+    foundAt?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type CombinationCreateNestedManyWithoutFoundByInput = {
     create?: XOR<CombinationCreateWithoutFoundByInput, CombinationUncheckedCreateWithoutFoundByInput> | CombinationCreateWithoutFoundByInput[] | CombinationUncheckedCreateWithoutFoundByInput[]
     connectOrCreate?: CombinationCreateOrConnectWithoutFoundByInput | CombinationCreateOrConnectWithoutFoundByInput[]
@@ -5264,11 +6791,25 @@ export namespace Prisma {
     connect?: CombinationWhereUniqueInput | CombinationWhereUniqueInput[]
   }
 
+  export type SecretCombinationCreateNestedManyWithoutFoundByInput = {
+    create?: XOR<SecretCombinationCreateWithoutFoundByInput, SecretCombinationUncheckedCreateWithoutFoundByInput> | SecretCombinationCreateWithoutFoundByInput[] | SecretCombinationUncheckedCreateWithoutFoundByInput[]
+    connectOrCreate?: SecretCombinationCreateOrConnectWithoutFoundByInput | SecretCombinationCreateOrConnectWithoutFoundByInput[]
+    createMany?: SecretCombinationCreateManyFoundByInputEnvelope
+    connect?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+  }
+
   export type CombinationUncheckedCreateNestedManyWithoutFoundByInput = {
     create?: XOR<CombinationCreateWithoutFoundByInput, CombinationUncheckedCreateWithoutFoundByInput> | CombinationCreateWithoutFoundByInput[] | CombinationUncheckedCreateWithoutFoundByInput[]
     connectOrCreate?: CombinationCreateOrConnectWithoutFoundByInput | CombinationCreateOrConnectWithoutFoundByInput[]
     createMany?: CombinationCreateManyFoundByInputEnvelope
     connect?: CombinationWhereUniqueInput | CombinationWhereUniqueInput[]
+  }
+
+  export type SecretCombinationUncheckedCreateNestedManyWithoutFoundByInput = {
+    create?: XOR<SecretCombinationCreateWithoutFoundByInput, SecretCombinationUncheckedCreateWithoutFoundByInput> | SecretCombinationCreateWithoutFoundByInput[] | SecretCombinationUncheckedCreateWithoutFoundByInput[]
+    connectOrCreate?: SecretCombinationCreateOrConnectWithoutFoundByInput | SecretCombinationCreateOrConnectWithoutFoundByInput[]
+    createMany?: SecretCombinationCreateManyFoundByInputEnvelope
+    connect?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5289,6 +6830,20 @@ export namespace Prisma {
     deleteMany?: CombinationScalarWhereInput | CombinationScalarWhereInput[]
   }
 
+  export type SecretCombinationUpdateManyWithoutFoundByNestedInput = {
+    create?: XOR<SecretCombinationCreateWithoutFoundByInput, SecretCombinationUncheckedCreateWithoutFoundByInput> | SecretCombinationCreateWithoutFoundByInput[] | SecretCombinationUncheckedCreateWithoutFoundByInput[]
+    connectOrCreate?: SecretCombinationCreateOrConnectWithoutFoundByInput | SecretCombinationCreateOrConnectWithoutFoundByInput[]
+    upsert?: SecretCombinationUpsertWithWhereUniqueWithoutFoundByInput | SecretCombinationUpsertWithWhereUniqueWithoutFoundByInput[]
+    createMany?: SecretCombinationCreateManyFoundByInputEnvelope
+    set?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    disconnect?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    delete?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    connect?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    update?: SecretCombinationUpdateWithWhereUniqueWithoutFoundByInput | SecretCombinationUpdateWithWhereUniqueWithoutFoundByInput[]
+    updateMany?: SecretCombinationUpdateManyWithWhereWithoutFoundByInput | SecretCombinationUpdateManyWithWhereWithoutFoundByInput[]
+    deleteMany?: SecretCombinationScalarWhereInput | SecretCombinationScalarWhereInput[]
+  }
+
   export type CombinationUncheckedUpdateManyWithoutFoundByNestedInput = {
     create?: XOR<CombinationCreateWithoutFoundByInput, CombinationUncheckedCreateWithoutFoundByInput> | CombinationCreateWithoutFoundByInput[] | CombinationUncheckedCreateWithoutFoundByInput[]
     connectOrCreate?: CombinationCreateOrConnectWithoutFoundByInput | CombinationCreateOrConnectWithoutFoundByInput[]
@@ -5301,6 +6856,20 @@ export namespace Prisma {
     update?: CombinationUpdateWithWhereUniqueWithoutFoundByInput | CombinationUpdateWithWhereUniqueWithoutFoundByInput[]
     updateMany?: CombinationUpdateManyWithWhereWithoutFoundByInput | CombinationUpdateManyWithWhereWithoutFoundByInput[]
     deleteMany?: CombinationScalarWhereInput | CombinationScalarWhereInput[]
+  }
+
+  export type SecretCombinationUncheckedUpdateManyWithoutFoundByNestedInput = {
+    create?: XOR<SecretCombinationCreateWithoutFoundByInput, SecretCombinationUncheckedCreateWithoutFoundByInput> | SecretCombinationCreateWithoutFoundByInput[] | SecretCombinationUncheckedCreateWithoutFoundByInput[]
+    connectOrCreate?: SecretCombinationCreateOrConnectWithoutFoundByInput | SecretCombinationCreateOrConnectWithoutFoundByInput[]
+    upsert?: SecretCombinationUpsertWithWhereUniqueWithoutFoundByInput | SecretCombinationUpsertWithWhereUniqueWithoutFoundByInput[]
+    createMany?: SecretCombinationCreateManyFoundByInputEnvelope
+    set?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    disconnect?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    delete?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    connect?: SecretCombinationWhereUniqueInput | SecretCombinationWhereUniqueInput[]
+    update?: SecretCombinationUpdateWithWhereUniqueWithoutFoundByInput | SecretCombinationUpdateWithWhereUniqueWithoutFoundByInput[]
+    updateMany?: SecretCombinationUpdateManyWithWhereWithoutFoundByInput | SecretCombinationUpdateManyWithWhereWithoutFoundByInput[]
+    deleteMany?: SecretCombinationScalarWhereInput | SecretCombinationScalarWhereInput[]
   }
 
   export type AssetCreatetagsInput = {
@@ -5356,6 +6925,26 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutCombinationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCombinationsInput, UserUpdateWithoutCombinationsInput>, UserUncheckedUpdateWithoutCombinationsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSecretCombinationsInput = {
+    create?: XOR<UserCreateWithoutSecretCombinationsInput, UserUncheckedCreateWithoutSecretCombinationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSecretCombinationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneWithoutSecretCombinationsNestedInput = {
+    create?: XOR<UserCreateWithoutSecretCombinationsInput, UserUncheckedCreateWithoutSecretCombinationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSecretCombinationsInput
+    upsert?: UserUpsertWithoutSecretCombinationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSecretCombinationsInput, UserUpdateWithoutSecretCombinationsInput>, UserUncheckedUpdateWithoutSecretCombinationsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -5562,6 +7151,31 @@ export namespace Prisma {
     _max?: NestedEnumSoundFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type CombinationCreateWithoutFoundByInput = {
     id?: string
     assetOne: $Enums.AssetName
@@ -5589,6 +7203,38 @@ export namespace Prisma {
 
   export type CombinationCreateManyFoundByInputEnvelope = {
     data: CombinationCreateManyFoundByInput | CombinationCreateManyFoundByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SecretCombinationCreateWithoutFoundByInput = {
+    id?: string
+    assetOne: $Enums.AssetName
+    assetTwo?: $Enums.AssetName | null
+    assetThree?: $Enums.AssetName | null
+    assetFour?: $Enums.AssetName | null
+    sound?: $Enums.Sound
+    foundByEmail?: string | null
+    foundAt?: Date | string | null
+  }
+
+  export type SecretCombinationUncheckedCreateWithoutFoundByInput = {
+    id?: string
+    assetOne: $Enums.AssetName
+    assetTwo?: $Enums.AssetName | null
+    assetThree?: $Enums.AssetName | null
+    assetFour?: $Enums.AssetName | null
+    sound?: $Enums.Sound
+    foundByEmail?: string | null
+    foundAt?: Date | string | null
+  }
+
+  export type SecretCombinationCreateOrConnectWithoutFoundByInput = {
+    where: SecretCombinationWhereUniqueInput
+    create: XOR<SecretCombinationCreateWithoutFoundByInput, SecretCombinationUncheckedCreateWithoutFoundByInput>
+  }
+
+  export type SecretCombinationCreateManyFoundByInputEnvelope = {
+    data: SecretCombinationCreateManyFoundByInput | SecretCombinationCreateManyFoundByInput[]
     skipDuplicates?: boolean
   }
 
@@ -5622,14 +7268,47 @@ export namespace Prisma {
     sound?: EnumSoundFilter<"Combination"> | $Enums.Sound
   }
 
+  export type SecretCombinationUpsertWithWhereUniqueWithoutFoundByInput = {
+    where: SecretCombinationWhereUniqueInput
+    update: XOR<SecretCombinationUpdateWithoutFoundByInput, SecretCombinationUncheckedUpdateWithoutFoundByInput>
+    create: XOR<SecretCombinationCreateWithoutFoundByInput, SecretCombinationUncheckedCreateWithoutFoundByInput>
+  }
+
+  export type SecretCombinationUpdateWithWhereUniqueWithoutFoundByInput = {
+    where: SecretCombinationWhereUniqueInput
+    data: XOR<SecretCombinationUpdateWithoutFoundByInput, SecretCombinationUncheckedUpdateWithoutFoundByInput>
+  }
+
+  export type SecretCombinationUpdateManyWithWhereWithoutFoundByInput = {
+    where: SecretCombinationScalarWhereInput
+    data: XOR<SecretCombinationUpdateManyMutationInput, SecretCombinationUncheckedUpdateManyWithoutFoundByInput>
+  }
+
+  export type SecretCombinationScalarWhereInput = {
+    AND?: SecretCombinationScalarWhereInput | SecretCombinationScalarWhereInput[]
+    OR?: SecretCombinationScalarWhereInput[]
+    NOT?: SecretCombinationScalarWhereInput | SecretCombinationScalarWhereInput[]
+    id?: StringFilter<"SecretCombination"> | string
+    assetOne?: EnumAssetNameFilter<"SecretCombination"> | $Enums.AssetName
+    assetTwo?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetThree?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    assetFour?: EnumAssetNameNullableFilter<"SecretCombination"> | $Enums.AssetName | null
+    sound?: EnumSoundFilter<"SecretCombination"> | $Enums.Sound
+    foundById?: StringNullableFilter<"SecretCombination"> | string | null
+    foundByEmail?: StringNullableFilter<"SecretCombination"> | string | null
+    foundAt?: DateTimeNullableFilter<"SecretCombination"> | Date | string | null
+  }
+
   export type UserCreateWithoutCombinationsInput = {
     id?: string
     nickname: string
+    secretCombinations?: SecretCombinationCreateNestedManyWithoutFoundByInput
   }
 
   export type UserUncheckedCreateWithoutCombinationsInput = {
     id?: string
     nickname: string
+    secretCombinations?: SecretCombinationUncheckedCreateNestedManyWithoutFoundByInput
   }
 
   export type UserCreateOrConnectWithoutCombinationsInput = {
@@ -5651,11 +7330,53 @@ export namespace Prisma {
   export type UserUpdateWithoutCombinationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     nickname?: StringFieldUpdateOperationsInput | string
+    secretCombinations?: SecretCombinationUpdateManyWithoutFoundByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCombinationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     nickname?: StringFieldUpdateOperationsInput | string
+    secretCombinations?: SecretCombinationUncheckedUpdateManyWithoutFoundByNestedInput
+  }
+
+  export type UserCreateWithoutSecretCombinationsInput = {
+    id?: string
+    nickname: string
+    combinations?: CombinationCreateNestedManyWithoutFoundByInput
+  }
+
+  export type UserUncheckedCreateWithoutSecretCombinationsInput = {
+    id?: string
+    nickname: string
+    combinations?: CombinationUncheckedCreateNestedManyWithoutFoundByInput
+  }
+
+  export type UserCreateOrConnectWithoutSecretCombinationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSecretCombinationsInput, UserUncheckedCreateWithoutSecretCombinationsInput>
+  }
+
+  export type UserUpsertWithoutSecretCombinationsInput = {
+    update: XOR<UserUpdateWithoutSecretCombinationsInput, UserUncheckedUpdateWithoutSecretCombinationsInput>
+    create: XOR<UserCreateWithoutSecretCombinationsInput, UserUncheckedCreateWithoutSecretCombinationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSecretCombinationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSecretCombinationsInput, UserUncheckedUpdateWithoutSecretCombinationsInput>
+  }
+
+  export type UserUpdateWithoutSecretCombinationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nickname?: StringFieldUpdateOperationsInput | string
+    combinations?: CombinationUpdateManyWithoutFoundByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSecretCombinationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nickname?: StringFieldUpdateOperationsInput | string
+    combinations?: CombinationUncheckedUpdateManyWithoutFoundByNestedInput
   }
 
   export type CombinationCreateManyFoundByInput = {
@@ -5666,6 +7387,17 @@ export namespace Prisma {
     assetFour?: $Enums.AssetName | null
     foundAt?: Date | string
     sound?: $Enums.Sound
+  }
+
+  export type SecretCombinationCreateManyFoundByInput = {
+    id?: string
+    assetOne: $Enums.AssetName
+    assetTwo?: $Enums.AssetName | null
+    assetThree?: $Enums.AssetName | null
+    assetFour?: $Enums.AssetName | null
+    sound?: $Enums.Sound
+    foundByEmail?: string | null
+    foundAt?: Date | string | null
   }
 
   export type CombinationUpdateWithoutFoundByInput = {
@@ -5696,6 +7428,39 @@ export namespace Prisma {
     assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
     foundAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+  }
+
+  export type SecretCombinationUpdateWithoutFoundByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SecretCombinationUncheckedUpdateWithoutFoundByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SecretCombinationUncheckedUpdateManyWithoutFoundByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetOne?: EnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName
+    assetTwo?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetThree?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    assetFour?: NullableEnumAssetNameFieldUpdateOperationsInput | $Enums.AssetName | null
+    sound?: EnumSoundFieldUpdateOperationsInput | $Enums.Sound
+    foundByEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    foundAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

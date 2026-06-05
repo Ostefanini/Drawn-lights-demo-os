@@ -46,7 +46,7 @@ export function AssetCard({ asset, onAddToPlaylist }: AssetCardProps) {
                     <Image
                         height={200}
                         width={"auto"}
-                        src={`http://localhost:4000/assets/thumbnail/${asset.thumbnail}`}
+                        src={`/apis/assets/thumbnail/${asset.thumbnail}`}
                         alt={asset.name}
                     />
                 )}

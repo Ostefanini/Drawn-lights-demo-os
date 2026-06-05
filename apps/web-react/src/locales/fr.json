@@ -32,5 +32,14 @@
     "about_intro": "Ce mini jeu est un projet portfolio commun d'Oscar et Karine, qui ont uni leurs forces autour d'un projet original pour mettre en valeur leurs savoir-faire respectifs.",
     "about_roles": "Oscar s'occupe de la partie technique, Karine de la conception produit et du design.",
     "about_tech_title": "Technologies utilisées",
-    "about_product_title": "Outils & démarche produit"
+    "about_product_title": "Outils & démarche produit",
+    "email": "Email",
+    "email_placeholder": "votre@email.com",
+    "try_again": "Réessayer",
+    "combination_already_found_title": "Cette combinaison a déjà été trouvée !",
+    "combination_already_found_msg": "Malheureusement, cette combinaison a déjà été découverte par <strong>{{foundBy}}</strong>.<br/> N'hésitez pas à essayer d'autres combinaisons pour tenter de trouver une nouvelle découverte !",
+    "new_combination_title": "Bravo, vous venez de trouver une nouvelle combinaison !",
+    "new_combination_msg": "Entrez votre pseudo pour enregistrer votre découverte dans le classement.<br/> Merci d'utiliser un pseudo respectueux et unique.<br/><br/> PS : Ce n'est pas la combinaison secrète, continuez à chercher pour tenter de la trouver !",
+    "secret_combination_title": "Incroyable, vous avez trouvé la combinaison secrète !",
+    "secret_combination_msg": "Vous êtes le premier à trouver la combinaison secrète, félicitations !<br/> Entrez votre pseudo pour immortaliser votre découverte dans le classement.<br/> > Vous pouvez également renseigner une adresse mail pour être re-contacté et récupérer votre prix"
 }

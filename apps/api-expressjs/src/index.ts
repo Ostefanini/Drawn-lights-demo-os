@@ -4,6 +4,7 @@ import express from "express";
 import { assetsRouter } from "./assets.js";
 import { combinationsRouter } from "./combinations.js";
 import { prisma } from "./services/prisma.js";
+import { seedSecretCombination } from "./services/database-seeder.js";
 import { userRouter } from "./user.js";
 
 
@@ -36,6 +37,7 @@ if (process.env.NODE_ENV !== "test") {
 
     prisma.$connect()
         .then(() => prisma.$queryRaw`SELECT 1`)
+        .then(() => seedSecretCombination())
         .then(() => {
             console.log("Connected to database");
             const server = app.listen(PORT, '0.0.0.0', () => {
