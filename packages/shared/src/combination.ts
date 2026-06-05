@@ -6,6 +6,7 @@ export const soundSchema = z.enum(["healing", "emerveille", "glossy", "none"]);
 export const combinationStatusSchema = z.object({
     exist: z.boolean(),
     foundBy: userNicknameSchema.nullable(),
+    isSecretCombinationFound: z.boolean(),
 });
 
 export const combinationAttributionBodySchema = z.object({

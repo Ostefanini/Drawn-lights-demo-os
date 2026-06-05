@@ -51,6 +51,7 @@ export class CombinationsController {
       properties: {
         exist: { type: 'boolean' },
         foundBy: { type: 'string', nullable: true },
+        isSecretCombinationFound: { type: 'boolean' },
       },
     },
   })

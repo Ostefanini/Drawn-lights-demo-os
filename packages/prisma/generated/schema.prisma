@@ -39,9 +39,10 @@ enum Sound {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  nickname     String        @unique
-  combinations Combination[]
+  id                 String              @id @default(uuid())
+  nickname           String              @unique
+  combinations       Combination[]
+  secretCombinations SecretCombination[]
 }
 
 model Asset {
@@ -70,4 +71,19 @@ model Combination {
   sound      Sound      @default(NONE)
 
   @@unique([assetOne, assetTwo, assetThree, assetFour, sound, foundById])
+}
+
+model SecretCombination {
+  id           String     @id @default(uuid())
+  assetOne     AssetName
+  assetTwo     AssetName?
+  assetThree   AssetName?
+  assetFour    AssetName?
+  sound        Sound      @default(NONE)
+  foundBy      User?      @relation(fields: [foundById], references: [id])
+  foundById    String?
+  foundByEmail String?
+  foundAt      DateTime?
+
+  @@unique([assetOne, assetTwo, assetThree, assetFour, sound])
 }

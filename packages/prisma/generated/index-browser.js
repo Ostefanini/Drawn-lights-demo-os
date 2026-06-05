@@ -149,6 +149,18 @@ exports.Prisma.CombinationScalarFieldEnum = {
   sound: 'sound'
 };
 
+exports.Prisma.SecretCombinationScalarFieldEnum = {
+  id: 'id',
+  assetOne: 'assetOne',
+  assetTwo: 'assetTwo',
+  assetThree: 'assetThree',
+  assetFour: 'assetFour',
+  sound: 'sound',
+  foundById: 'foundById',
+  foundByEmail: 'foundByEmail',
+  foundAt: 'foundAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -186,7 +198,8 @@ exports.Sound = exports.$Enums.Sound = {
 exports.Prisma.ModelName = {
   User: 'User',
   Asset: 'Asset',
-  Combination: 'Combination'
+  Combination: 'Combination',
+  SecretCombination: 'SecretCombination'
 };
 
 /**

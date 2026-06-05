@@ -12,9 +12,20 @@ combinationsRouter.get("/is-found",
     validateCombinationQuery,
     checkCombination,
     async (_req: Request, res: Response) => {
+        const isSecretCombinationFound = await prisma.secretCombination.findFirst({
+            where: {
+                assetOne: res.locals.assetOne,
+                assetTwo: res.locals.assetTwo ?? null,
+                assetThree: res.locals.assetThree ?? null,
+                assetFour: res.locals.assetFour ?? null,
+                sound: formatSound(res.locals.sound || "none"),
+                foundBy: null,
+            }
+        }) ? true : false;
         const data: CombinationStatus = {
             exist: res.locals.combination ? true : false,
             foundBy: res.locals.combination ? res.locals.combination.foundBy.nickname : null,
+            isSecretCombinationFound,
         };
         res.json(data);
     }

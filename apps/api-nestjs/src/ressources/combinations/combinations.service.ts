@@ -4,12 +4,14 @@ import isProfane from '@idrisay/profanity-check';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CombinationsRepository } from './combinations.repository.js';
 import { CombinationQuery } from './combinations.type.js';
+import { SecretCombinationsRepository } from './secret-combinations.repository.js';
 
 @Injectable()
 export class CombinationsService {
   private readonly logger = new Logger(CombinationsService.name);
   constructor(
     private readonly combinationsRepository: CombinationsRepository,
+    private readonly secretCombinationsRepository: SecretCombinationsRepository,
   ) {}
 
   public async attributeCombination(
@@ -33,9 +35,12 @@ export class CombinationsService {
     params: CombinationQuery,
   ): Promise<CombinationStatus> {
     const existingCombination = await this.checkCombination(params);
+    const isSecretCombinationFound =
+      await this.secretCombinationsRepository.isSecretCombinationFound(params);
     return {
       exist: existingCombination ? true : false,
       foundBy: existingCombination?.foundBy.nickname ?? null,
+      isSecretCombinationFound,
     };
   }
 

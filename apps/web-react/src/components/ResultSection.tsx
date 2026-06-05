@@ -1,33 +1,41 @@
+import { type Asset, type CombinationStatus, type Sound, type UserListHighscore } from "@drawn-lights-game/shared";
 import {
-    Title, Center, Group, Combobox, InputBase, Button, Divider, useCombobox
+    Alert,
+    Button,
+    Center,
+    Combobox,
+    Divider,
+    Group,
+    InputBase,
+    Title,
+    useCombobox
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { type Asset, type Sound, type UserListHighscore } from "@drawn-lights-game/shared";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import api from "../services/api";
 import { computeAssetQueryParams } from "../helpers";
+import api from "../services/api";
+import type { EmojisInstructions } from "../types/app";
 
 interface ResultSectionProps {
     showVideo: string;
-    foundBy: string | null;
-    setFoundBy: (val: string | null) => void;
+    computationResult: CombinationStatus | null;
     users: string[];
     setUsers: React.Dispatch<React.SetStateAction<string[]>>;
-    isNew: boolean | null;
-    setIsNew: (val: boolean | null) => void;
+    setEmojisInstructions: (val: EmojisInstructions | null) => void;
     playlist: Asset[];
     sound: Sound;
+    reset: () => void;
     setHighscore: (val: UserListHighscore[]) => void;
 }
 
 export const ResultSection = ({
     showVideo,
-    foundBy,
-    setFoundBy,
+    computationResult,
     users,
     setUsers,
-    isNew,
-    setIsNew,
+    setEmojisInstructions,
+    reset,
     playlist,
     sound,
     setHighscore
@@ -36,6 +44,9 @@ export const ResultSection = ({
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
+
+    const [foundBy, setFoundBy] = React.useState<string | null>(computationResult?.foundBy ?? null);
+    const [canTryAgain, setCanTryAgain] = React.useState<boolean>(computationResult?.foundBy ? true : false);
 
     const exactOptionMatch = users.some((item) => item === foundBy);
     const filteredOptions = exactOptionMatch || !foundBy
@@ -52,7 +63,35 @@ export const ResultSection = ({
         <>
             <Divider my="sm" />
             <Title ta='center' order={2}>{t('render_result')}</Title>
+            
+                        <Center>
+                
+                      {computationResult?.foundBy && (
+                            <Alert 
+                            style={{marginBottom: "20px"}}
+                            title="Cette combinaison a déjà été trouvée !"
+                            color="red" mt="sm">
+                                Malheureusement, cette combinaison a déjà été découverte par <strong>{computationResult.foundBy}</strong>.<br />N'hésitez pas à essayer d'autres combinaisons pour tenter de trouver une nouvelle découverte !
+                           </Alert>
+                        )}
+</Center>
             <Center>
+                
+                      {!computationResult?.foundBy && !computationResult?.isSecretCombinationFound && (
+                            <Alert 
+                            style={{marginBottom: "20px"}}
+                            title="Bravo, vous venez trouver une nouvelle combinaison !"
+                            color="green" mt="sm">
+                                Entrez votre pseudo pour enregistrer votre découverte dans le classement.
+                                <br />
+                                Merci d'utiliser un pseudo respectueux et unique.
+                                <br/>
+                                <br/>
+                                PS: Ce n'est pas la combinaison secrète, continuez à chercher pour tenter de la trouver !
+                            </Alert>
+                        )}
+</Center>
+<Center>
                 <Group align="flex-end" gap="sm">
                     <Combobox
                         store={combobox}
@@ -75,7 +114,7 @@ export const ResultSection = ({
                                 label={t('found_by')}
                                 rightSection={<Combobox.Chevron />}
                                 value={foundBy || ''}
-                                disabled={!isNew}
+                                disabled={computationResult?.foundBy !== null || canTryAgain}
                                 onChange={(event) => {
                                     combobox.openDropdown();
                                     combobox.updateSelectedOptionIndex();
@@ -102,7 +141,7 @@ export const ResultSection = ({
                         </Combobox.Dropdown>
                     </Combobox>
                     <Button
-                        disabled={!isNew}
+                        disabled={computationResult?.foundBy !== null || foundBy === null || foundBy.trim().length === 0 || canTryAgain}
                         onClick={() => {
                             void (async () => {
                                 try {
@@ -114,14 +153,20 @@ export const ResultSection = ({
                                         message: t('discovery_recorded'),
                                         color: 'green',
                                     });
-                                    setIsNew(null);
+                                    setEmojisInstructions(null);
                                     setHighscore(await api.get<UserListHighscore[]>("/users").then(res => res.data));
+                                    setCanTryAgain(true);
                                 } catch (e) {
                                     console.error("Failed to save combination", e);
                                 }
                             })();
                         }}
                     >{t('save')}</Button>
+                    <Button
+                    disabled={!canTryAgain}
+                    color="purple"
+                    onClick={reset}
+                    >Try again</Button>
                 </Group>
             </Center>
             <Center>

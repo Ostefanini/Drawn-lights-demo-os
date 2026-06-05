@@ -1,5 +1,5 @@
 import {
-  type Asset, type CombinationStatus,
+  type Asset, type CombinationStatus, combinationStatusSchema,
   demoPlaystationModels, type Sound,
   type UserListHighscore
 } from "@drawn-lights-game/shared";
@@ -33,7 +33,7 @@ import { WaveSurferPlayer } from "./components/WaveSurferPlayer.js";
 import { computeAssetQueryParams } from "./helpers.js";
 import showsConst from "./playstation_shows.json";
 import api from "./services/api.js";
-
+import type { EmojisInstructions } from "./types/app.js";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -43,10 +43,10 @@ function App() {
   const [playlist, setPlaylist] = useState<Asset[]>([]);
   const [showVideo, setShowVideo] = useState<string | null>(null);
   const [users, setUsers] = useState<string[]>([]);
-  const [isNew, setIsNew] = useState<boolean | null>(null);
+  const [emojisInstructions, setEmojisInstructions] = useState<EmojisInstructions | null>(null);
   const [sound, setSound] = useState<Sound>("none");
   const [openAboutModal, setOpenAboutModal] = useState(false);
-  const [foundBy, setFoundBy] = useState<string | null>(null);
+  const [computationResult, setComputationResult] = useState<CombinationStatus | null>(null);
   const [showScore, setShowScore] = useState(false);
   const [highscore, setHighscore] = useState<UserListHighscore[]>([]);
 
@@ -78,14 +78,39 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (isNew === null) return;
-    const emojis = isNew ? "✅🎉🚀" : "❌😢";
+    if (emojisInstructions === null) {
+      return;
+    }
+    let emojis: string;
+    if (emojisInstructions.isSecretCombinationFound) {
+      emojis = "✅🎉🚀";
+    } else if (emojisInstructions.isNew) {
+      emojis = "🕵️‍♂️🔍✨";
+    } else {
+      emojis = "❌😢";
+    }
     const { cancel } = emojiBlasts({
       interval: 150,
       emojis: [emojis],
     });
     setTimeout(cancel, 600);
-  }, [isNew])
+  }, [emojisInstructions])
+
+  const reset = () =>{
+     setTimeout(() => {
+      const intro = document.getElementById("intro");
+      if (intro) {
+        intro.scrollIntoView({ behavior: "smooth" });
+      }
+      setTimeout(() => {
+        setShowVideo(null);
+    setPlaylist([]);
+    setSound("none");
+    setEmojisInstructions(null);
+    setComputationResult(null);
+    }, 100);
+      }, 200);   
+  }
 
 
   if (loading) return <div>{t('loading')}</div>;
@@ -134,7 +159,7 @@ function App() {
             
         {/* <TechnologiesSection /> */}
 
-        <Text style={{marginTop: "16px"}} fs="italic" ta="center">{t('try_discovering')}</Text>
+        <Text id='intro' style={{marginTop: "16px"}} fs="italic" ta="center">{t('try_discovering')}</Text>
         <Center style={{ marginTop: "8px" }}><Button onClick={() => setShowScore((prev) => !prev)}>{showScore ? t('hide_scores') : t('show_scores')}</Button></Center>
         <div style={{ marginTop: "24px" }}>
           {!showScore && (
@@ -229,12 +254,18 @@ function App() {
                   void (async () => {
                     try {
                       const { data } = await api.get<CombinationStatus>(`/combinations/is-found?${computeAssetQueryParams(playlist, sound)}`);
-                      if (data.exist && data.foundBy) {
-                        setFoundBy(data.foundBy);
-                      }
-                      setIsNew(null)
+                      const combinationStatus = combinationStatusSchema.parse(data);
+                     /*  if (data.exist && data.foundBy) {
+                        setComputationResult(data.foundBy);
+                      } */
+                      setComputationResult(combinationStatus);
+                      setEmojisInstructions(null);
+                      const nextEmojis: EmojisInstructions = {
+                        isNew: !combinationStatus.exist,
+                        isSecretCombinationFound: combinationStatus.isSecretCombinationFound as boolean,
+                      };
                       setTimeout(() => {
-                        setIsNew(!data.exist);
+                        setEmojisInstructions(nextEmojis);
                       }, 100);
 
                       const combinationName = playlist.map(({ name }) => name).join(",");
@@ -260,12 +291,11 @@ function App() {
               {showVideo && (
                 <ResultSection
                   showVideo={showVideo}
-                  foundBy={foundBy}
-                  setFoundBy={setFoundBy}
+                  computationResult={computationResult} 
+                  reset={reset}
                   users={users}
                   setUsers={setUsers}
-                  isNew={isNew}
-                  setIsNew={setIsNew}
+                  setEmojisInstructions={setEmojisInstructions}
                   playlist={playlist}
                   sound={sound}
                   setHighscore={setHighscore}

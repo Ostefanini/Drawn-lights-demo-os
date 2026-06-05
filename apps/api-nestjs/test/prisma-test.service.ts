@@ -27,6 +27,7 @@ export class PrismaTestService extends PrismaClient {
   async cleanDatabase(): Promise<void> {
     // Delete in order to respect foreign key constraints
     await this.combination.deleteMany({});
+    await this.secretCombination.deleteMany({});
     await this.user.deleteMany({});
     await this.asset.deleteMany({});
   }
@@ -38,6 +39,7 @@ export class PrismaTestService extends PrismaClient {
   async resetDatabase(): Promise<void> {
     await this.$transaction([
       this.combination.deleteMany({}),
+      this.secretCombination.deleteMany({}),
       this.user.deleteMany({}),
       this.asset.deleteMany({}),
     ]);

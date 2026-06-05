@@ -1,12 +1,27 @@
-import { AssetName, Sound as SoundModel } from '@drawn-lights-game/prisma';
-import { Sound } from '@drawn-lights-game/shared';
+import { AssetName } from '@drawn-lights-game/prisma';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { CombinationQuery } from './combinations.type.js';
+import { formatSound } from './combinations.utils.js';
 
 @Injectable()
 export class CombinationsRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  public async isSecretCombinationFound(params: CombinationQuery) {
+    const secretCombination = await this.prisma.secretCombination.findFirst({
+      where: {
+        assetOne: params.assetOne,
+        assetTwo: params.assetTwo ?? null,
+        assetThree: params.assetThree ?? null,
+        assetFour: params.assetFour ?? null,
+        sound: formatSound(params.sound),
+        foundBy: null,
+      },
+    });
+
+    return secretCombination ? true : false;
+  }
 
   public async checkExistingAssets(assets: AssetName[]) {
     return (
@@ -28,7 +43,7 @@ export class CombinationsRepository {
           assetTwo: params.assetTwo ?? null,
           assetThree: params.assetThree ?? null,
           assetFour: params.assetFour ?? null,
-          sound: this.formatSound(params.sound),
+          sound: formatSound(params.sound),
         },
         include: {
           foundBy: true,
@@ -44,7 +59,7 @@ export class CombinationsRepository {
         assetTwo: params.assetTwo ?? null,
         assetThree: params.assetThree ?? null,
         assetFour: params.assetFour ?? null,
-        sound: this.formatSound(params.sound),
+        sound: formatSound(params.sound),
         foundBy: {
           connectOrCreate: {
             where: { nickname: nickname },
@@ -54,18 +69,4 @@ export class CombinationsRepository {
       },
     });
   }
-
-  private formatSound = (sound: Sound): SoundModel => {
-    switch (sound) {
-      case 'healing':
-        return SoundModel.HEALING;
-      case 'emerveille':
-        return SoundModel.EMERVEILLE;
-      case 'glossy':
-        return SoundModel.GLOSSY;
-      case 'none':
-      default:
-        return SoundModel.NONE;
-    }
-  };
 }

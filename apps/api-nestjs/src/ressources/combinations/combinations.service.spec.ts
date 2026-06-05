@@ -5,27 +5,39 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CombinationsRepository } from './combinations.repository.js';
 import { CombinationsService } from './combinations.service.js';
 import { CombinationQuery } from './combinations.type.js';
+import { SecretCombinationsRepository } from './secret-combinations.repository.js';
 
 describe('CombinationsService', () => {
   let service: CombinationsService;
   let repository: jest.Mocked<CombinationsRepository>;
+  let secretCombinationsRepository: jest.Mocked<SecretCombinationsRepository>;
 
   beforeEach(async () => {
     const mockRepository = {
+      isCombinationFound: jest.fn(),
       checkExistingAssets: jest.fn(),
       checkExistingCombination: jest.fn(),
       createCombination: jest.fn(),
+    };
+
+    const mockSecretCombinationsRepository = {
+      isSecretCombinationFound: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CombinationsService,
         { provide: CombinationsRepository, useValue: mockRepository },
+        {
+          provide: SecretCombinationsRepository,
+          useValue: mockSecretCombinationsRepository,
+        },
       ],
     }).compile();
 
     service = module.get<CombinationsService>(CombinationsService);
     repository = module.get(CombinationsRepository);
+    secretCombinationsRepository = module.get(SecretCombinationsRepository);
   });
 
   describe('attributeCombination', () => {

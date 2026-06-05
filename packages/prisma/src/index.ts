@@ -7,6 +7,7 @@ import {
     Sound,
     type Asset,
     type Combination,
+    type SecretCombination,
     type User,
 } from '../generated/client.js'
 
@@ -18,5 +19,5 @@ const adapter = new PrismaPg({ connectionString })
 const prisma = new PrismaClient({ adapter })
 
 export { AssetName, AssetType, prisma, PrismaClient, PrismaPg, Sound }
-export type { Asset, Asset as AssetModel, Combination, User }
+export type { Asset, Asset as AssetModel, Combination, SecretCombination, User }
 
