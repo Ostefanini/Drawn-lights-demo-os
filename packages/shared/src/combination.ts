@@ -9,8 +9,11 @@ export const combinationStatusSchema = z.object({
     isSecretCombinationFound: z.boolean(),
 });
 
+export const emailSchema = z.string().email();
+
 export const combinationAttributionBodySchema = z.object({
     userNickname: userNicknameSchema,
+    email: emailSchema.optional(),
 })
 
 export type CombinationStatus = z.infer<typeof combinationStatusSchema>;

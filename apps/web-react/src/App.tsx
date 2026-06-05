@@ -35,6 +35,8 @@ import showsConst from "./playstation_shows.json";
 import api from "./services/api.js";
 import type { EmojisInstructions } from "./types/app.js";
 
+const AUDIO_TRACKS = ['healing', 'emerveille', 'glossy'] as const;
+
 function App() {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
@@ -96,20 +98,28 @@ function App() {
     setTimeout(cancel, 600);
   }, [emojisInstructions])
 
-  const reset = () =>{
-     setTimeout(() => {
+  const reset = () => {
+    setTimeout(() => {
       const intro = document.getElementById("intro");
       if (intro) {
         intro.scrollIntoView({ behavior: "smooth" });
       }
       setTimeout(() => {
         setShowVideo(null);
-    setPlaylist([]);
-    setSound("none");
-    setEmojisInstructions(null);
-    setComputationResult(null);
-    }, 100);
-      }, 200);   
+        setPlaylist([]);
+        setSound("none");
+        setEmojisInstructions(null);
+        setComputationResult(null);
+        void (async () => {
+          try {
+            const { data: assetsData } = await api.get<Asset[]>("/assets");
+            setAssets(assetsData);
+          } catch (e) {
+            console.error("Failed to reload assets", e);
+          }
+        })();
+      }, 100);
+    }, 200);
   }
 
 
@@ -226,14 +236,14 @@ function App() {
                 <Radio.Group
                   value={sound || 'none'}
                   onChange={(val) => {
-                    const validatedSound = ['healing', 'emerveille', 'glossy'].includes(val) ? val : null;
+                    const validatedSound = AUDIO_TRACKS.includes(val as typeof AUDIO_TRACKS[number]) ? val : null;
                     setSound(validatedSound as Sound);
                   }}
                   label={t('select_audio')}
                 >
                   <Stack gap="xs" mt="xs">
                     <Radio value="none" label={t('no_sound')} />
-                    {['healing', 'emerveille', 'glossy'].map((track) => (
+                    {AUDIO_TRACKS.map((track) => (
                       <Group key={track}>
                         <Radio value={track} label={track} />
                         <WaveSurferPlayer url={`/${track}-cut.mp3`} />

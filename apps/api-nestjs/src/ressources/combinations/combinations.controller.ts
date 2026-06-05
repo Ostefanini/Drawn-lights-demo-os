@@ -78,6 +78,7 @@ export class CombinationsController {
       type: 'object',
       properties: {
         userNickname: { type: 'string', minLength: 3, maxLength: 20 },
+        email: { type: 'string', format: 'email', nullable: true },
       },
       required: ['userNickname'],
     },
@@ -96,6 +97,7 @@ export class CombinationsController {
     return await this.combinationsService.attributeCombination(
       params,
       body.userNickname,
+      body.email,
     );
   }
 }

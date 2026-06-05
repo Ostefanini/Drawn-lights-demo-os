@@ -32,5 +32,14 @@
     "about_intro": "This mini game is a joint portfolio project by Oscar and Karine, who combined their strengths around a unique idea to showcase their respective skills.",
     "about_roles": "Oscar handles the technical side, Karine takes care of product design.",
     "about_tech_title": "Technologies used",
-    "about_product_title": "Tools & product workflow"
+    "about_product_title": "Tools & product workflow",
+    "email": "Email",
+    "email_placeholder": "your@email.com",
+    "try_again": "Try again",
+    "combination_already_found_title": "This combination has already been found!",
+    "combination_already_found_msg": "Unfortunately, this combination has already been discovered by <strong>{{foundBy}}</strong>.<br/> Feel free to try other combinations to find a new discovery!",
+    "new_combination_title": "Well done, you found a new combination!",
+    "new_combination_msg": "Enter your nickname to record your discovery in the leaderboard.<br/> Please use a respectful and unique nickname.<br/><br/> PS: This is not the secret combination, keep searching to find it!",
+    "secret_combination_title": "Incredible, you found the secret combination!",
+    "secret_combination_msg": "You are the first to find the secret combination, congratulations!<br/> Enter your nickname to immortalize your discovery in the leaderboard.<br/> > You can also provide an email address to be contacted and claim your prize"
 }
