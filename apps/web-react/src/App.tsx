@@ -272,7 +272,7 @@ function App() {
                       setEmojisInstructions(null);
                       const nextEmojis: EmojisInstructions = {
                         isNew: !combinationStatus.exist,
-                        isSecretCombinationFound: combinationStatus.isSecretCombinationFound as boolean,
+                        isSecretCombinationFound: combinationStatus.isSecretCombinationFound,
                       };
                       setTimeout(() => {
                         setEmojisInstructions(nextEmojis);

@@ -30,7 +30,11 @@ describe('CombinationsController', () => {
         assetOne: AssetName.TRIANGLE,
         sound: 'healing',
       };
-      const mockResult = { exist: true, foundBy: 'player1' };
+      const mockResult = {
+        exist: true,
+        foundBy: 'player1',
+        isSecretCombinationFound: false,
+      };
       service.isCombinationFound.mockResolvedValue(mockResult);
 
       const result = await controller.isCombinationFound(params);
@@ -38,10 +42,27 @@ describe('CombinationsController', () => {
       expect(result).toEqual(mockResult);
       expect(service.isCombinationFound).toHaveBeenCalledWith(params);
     });
+
+    it('should return isSecretCombinationFound:true when params match the secret combination', async () => {
+      const params: CombinationQuery = {
+        assetOne: AssetName.TRIANGLE,
+        sound: 'healing',
+      };
+      const mockResult = {
+        exist: false,
+        foundBy: null,
+        isSecretCombinationFound: true,
+      };
+      service.isCombinationFound.mockResolvedValue(mockResult);
+
+      const result = await controller.isCombinationFound(params);
+
+      expect(result).toEqual(mockResult);
+    });
   });
 
   describe('attributeCombination', () => {
-    it('should call service to attribute combination', async () => {
+    it('should call service without email for a regular combination', async () => {
       const params: CombinationQuery = {
         assetOne: AssetName.TRIANGLE,
         sound: 'healing',
@@ -54,6 +75,27 @@ describe('CombinationsController', () => {
       expect(service.attributeCombination).toHaveBeenCalledWith(
         params,
         'player1',
+        undefined,
+      );
+    });
+
+    it('should call service with email when discovering the secret combination', async () => {
+      const params: CombinationQuery = {
+        assetOne: AssetName.TRIANGLE,
+        sound: 'healing',
+      };
+      const body = {
+        userNickname: 'secretFinder',
+        email: 'finder@example.com',
+      };
+      service.attributeCombination.mockResolvedValue(undefined);
+
+      await controller.attributeCombination(params, body);
+
+      expect(service.attributeCombination).toHaveBeenCalledWith(
+        params,
+        'secretFinder',
+        'finder@example.com',
       );
     });
   });

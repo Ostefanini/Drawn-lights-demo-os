@@ -25,9 +25,10 @@ describe('Combinations endpoints', () => {
     };
 
     describe('GET /combinations/is-found', () => {
-        test('responds with 200 and exist: true when combination exists', async () => {
+        test('responds with 200 and exist: true, isSecretCombinationFound: false when combination exists but is not the secret one', async () => {
             prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
             prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validCombination as any);
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
 
             const response = await request(app)
                 .get('/combinations/is-found')
@@ -40,13 +41,15 @@ describe('Combinations endpoints', () => {
             expect(response.status).toBe(200);
             expect(response.body).toEqual({
                 exist: true,
-                foundBy: 'TestUser'
+                foundBy: 'TestUser',
+                isSecretCombinationFound: false,
             });
         });
 
-        test('responds with 200 and exist: false when combination does not exist', async () => {
+        test('responds with 200 and isSecretCombinationFound: true when params match the unfound secret combination', async () => {
             prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
             prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce({ id: 'secret1' } as any);
 
             const response = await request(app)
                 .get('/combinations/is-found')
@@ -59,7 +62,29 @@ describe('Combinations endpoints', () => {
             expect(response.status).toBe(200);
             expect(response.body).toEqual({
                 exist: false,
-                foundBy: null
+                foundBy: null,
+                isSecretCombinationFound: true,
+            });
+        });
+
+        test('responds with 200 and exist: false when combination does not exist', async () => {
+            prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
+            prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+
+            const response = await request(app)
+                .get('/combinations/is-found')
+                .query({
+                    assetOne: AssetName.TRIANGLE,
+                    assetTwo: AssetName.SQUARE,
+                    sound: 'none'
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({
+                exist: false,
+                foundBy: null,
+                isSecretCombinationFound: false,
             });
         });
 
@@ -177,6 +202,49 @@ describe('Combinations endpoints', () => {
 
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('error', 'Nickname contains inappropriate language');
+        });
+
+        test('responds with 201 when discovering the secret combination with email', async () => {
+            prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
+            prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce({ id: 'secret1' } as any);
+            prismaMock.user.upsert.calledWith(expect.any(Object) as any).mockResolvedValueOnce({ id: 'user1', nickname: 'SecretFinder' } as any);
+            prismaMock.secretCombination.update.calledWith(expect.any(Object) as any).mockResolvedValueOnce({} as any);
+
+            const response = await request(app)
+                .post('/combinations/attribute')
+                .query({
+                    assetOne: AssetName.TRIANGLE,
+                    assetTwo: AssetName.SQUARE,
+                    sound: 'none'
+                })
+                .send({
+                    userNickname: 'SecretFinder',
+                    email: 'finder@example.com'
+                });
+
+            expect(response.status).toBe(201);
+        });
+
+        test('responds with 400 when email is provided but params do not match the secret combination', async () => {
+            prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
+            prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+
+            const response = await request(app)
+                .post('/combinations/attribute')
+                .query({
+                    assetOne: AssetName.TRIANGLE,
+                    assetTwo: AssetName.SQUARE,
+                    sound: 'none'
+                })
+                .send({
+                    userNickname: 'Player1',
+                    email: 'player1@example.com'
+                });
+
+            expect(response.status).toBe(400);
+            expect(response.body).toHaveProperty('error', 'Email can only be provided if the combination is the secret one');
         });
     });
 });

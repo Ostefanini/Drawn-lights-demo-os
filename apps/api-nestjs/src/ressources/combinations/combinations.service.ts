@@ -80,6 +80,10 @@ export class CombinationsService {
   }
 
   private async checkCombination(params: CombinationQuery) {
+    if (!params.sound) {
+      throw new BadRequestException('Sound parameter is required');
+    }
+
     const { assetOne, assetTwo, assetThree, assetFour } = params;
 
     const assetsToCheck: AssetName[] = this.validateAssetOrder([
