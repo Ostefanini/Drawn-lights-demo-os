@@ -8,9 +8,10 @@ interface ComputeMenuProps {
     audio: Sound;
     onRemoveFromPlaylist: (asset: Asset) => void;
     onCompute: () => void;
+    disabled?: boolean;
 }
 
-export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute }: ComputeMenuProps) {
+export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute, disabled }: ComputeMenuProps) {
     const { t } = useTranslation();
     if (playlist.length === 0) return null;
 
@@ -110,6 +111,7 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute }
                                 background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                             }}
                             fullWidth
+                            disabled={disabled}
                             onClick={onCompute}
                         >
                             <Text c="white">
