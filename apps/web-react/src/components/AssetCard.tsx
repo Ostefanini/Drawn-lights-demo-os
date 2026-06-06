@@ -6,9 +6,10 @@ import { useTranslation } from "react-i18next";
 interface AssetCardProps {
     asset: Asset;
     onAddToPlaylist: (asset: Asset) => void;
+    disabled?: boolean;
 }
 
-export function AssetCard({ asset, onAddToPlaylist }: AssetCardProps) {
+export function AssetCard({ asset, onAddToPlaylist, disabled }: AssetCardProps) {
     const { t } = useTranslation();
     return (
         <Card
@@ -77,6 +78,7 @@ export function AssetCard({ asset, onAddToPlaylist }: AssetCardProps) {
                 size={"xs"}
                 color="blue"
                 mt="md"
+                disabled={disabled}
             >
                 <IconPlaylistAdd />
             </Button>

@@ -6,6 +6,7 @@ import { combinationsRouter } from "./combinations.js";
 import { prisma } from "./services/prisma.js";
 import { seedSecretCombination } from "./services/database-seeder.js";
 import { userRouter } from "./user.js";
+import { videoRouter } from "./video.js";
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.get('/ping', (_req, res) => {
 app.use("/assets", assetsRouter);
 app.use("/combinations", combinationsRouter);
 app.use("/users", userRouter);
+app.use("/video", videoRouter);
 
 if (process.env.NODE_ENV !== "test") {
     const PORT = 4000;

@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { AssetsModule } from './ressources/assets/assets.module.js';
 import { CombinationsModule } from './ressources/combinations/combinations.module.js';
 import { UsersModule } from './ressources/users/users.module.js';
+import { VideoModule } from './ressources/video/video.module.js';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsersModule } from './ressources/users/users.module.js';
     AssetsModule,
     CombinationsModule,
     UsersModule,
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

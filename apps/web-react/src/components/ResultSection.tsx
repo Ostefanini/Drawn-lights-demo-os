@@ -195,7 +195,7 @@ export const ResultSection = ({
                             })();
                         }}
                     >{t('save')}</Button>
-                    {computationResult?.foundBy && (
+                    {computationResult !== null && (
                         <Button
                             disabled={!canTryAgain}
                             color="purple"
@@ -205,25 +205,21 @@ export const ResultSection = ({
                 </Group>
             </Center>
             <Center>
-                <div style={{
-                    width: "100%",
-                    maxWidth: "900px",
-                    aspectRatio: "16 / 9",
-                    margin: "20px 0"
-                }}>
-                    <iframe
-                        src={showVideo}
-                        allow="autoplay; fullscreen"
-                        id="videoFrame"
-                        allowFullScreen
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                            borderRadius: "8px"
-                        }}
-                    />
-                </div>
+                <video
+                    id="videoFrame"
+                    src={showVideo}
+                    controls
+                    autoPlay
+                    playsInline
+                    style={{
+                        width: "100%",
+                        maxWidth: "900px",
+                        aspectRatio: "16 / 9",
+                        margin: "20px 0",
+                        borderRadius: "8px",
+                        backgroundColor: "#000"
+                    }}
+                />
             </Center>
         </>
     );

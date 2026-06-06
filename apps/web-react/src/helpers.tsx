@@ -9,3 +9,10 @@ export const computeAssetQueryParams = (playlist: Asset[], sound: Sound): string
     if (playlist[3]) params.set('assetFour', playlist[3].name.toUpperCase());
     return params.toString();
 }
+
+export const buildVideoProxyUrl = (previewUrl: string) => {
+    const match = previewUrl.match(/\/file\/d\/([^/]+)/);
+    if (!match) return previewUrl;
+    const id = match[1];
+    return `/apis/video/proxy?id=${id}`;
+}

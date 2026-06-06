@@ -30,7 +30,7 @@ import { HighscoreTable } from "./components/HighscoreTable.js";
 import { ResultSection } from "./components/ResultSection.js";
 import { TeamInformations } from "./components/TeamInformations.js";
 import { WaveSurferPlayer } from "./components/WaveSurferPlayer.js";
-import { computeAssetQueryParams } from "./helpers.js";
+import { buildVideoProxyUrl, computeAssetQueryParams } from "./helpers.js";
 import showsConst from "./playstation_shows.json";
 import api from "./services/api.js";
 import type { EmojisInstructions } from "./types/app.js";
@@ -221,6 +221,7 @@ function App() {
                       <AssetCard
                         key={asset.id}
                         asset={asset}
+                        disabled={computationResult !== null}
                         onAddToPlaylist={(asset) => {
                           setPlaylist([...playlist, asset]);
                           setAssets(assets.filter(a => a.id !== asset.id));
@@ -240,6 +241,7 @@ function App() {
                     setSound(validatedSound as Sound);
                   }}
                   label={t('select_audio')}
+                  style={{ pointerEvents: computationResult !== null ? 'none' : undefined, opacity: computationResult !== null ? 0.5 : undefined }}
                 >
                   <Stack gap="xs" mt="xs">
                     <Radio value="none" label={t('no_sound')} />
@@ -255,6 +257,7 @@ function App() {
 
               <ComputeMenu
                 playlist={playlist}
+                disabled={computationResult !== null}
                 onRemoveFromPlaylist={(asset) => {
                   setAssets([...assets, asset]);
                   setPlaylist(playlist.filter((a) => a.id !== asset.id));
@@ -284,7 +287,7 @@ function App() {
                         (show) => show.isVr === false && show.fullName === fullNameNotVr
                       )?.link;
                       if (linkNotVr) {
-                        setShowVideo(linkNotVr);
+                        setShowVideo(buildVideoProxyUrl(linkNotVr));
                         setTimeout(() => {
                           const videoFrame = document.getElementById("videoFrame");
                           if (videoFrame) {
