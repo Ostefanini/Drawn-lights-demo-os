@@ -9,7 +9,36 @@ permissions:
   pull-requests: write
 
 jobs:
-  setup:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
+      - name: Lint
+        run: pnpm lint
+
+  typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,91 +69,10 @@ jobs:
           pnpm -C packages/shared build
           pnpm -C packages/prisma build
 
-      - name: Cache workspace
-        uses: actions/cache@v4
-        with:
-          path: |
-            .
-            !node_modules
-          key: workspace-${{ github.sha }}
-
-  lint:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - uses: pnpm/action-setup@v4
-
-      - name: Restore workspace
-        uses: actions/cache@v4
-        with:
-          path: |
-            .
-            !node_modules
-          key: workspace-${{ github.sha }}
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - run: pnpm install --frozen-lockfile
-        env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
-
-      - name: Build packages
-        run: pnpm -C packages/shared build
-
-      - name: Lint
-        run: pnpm lint
-
-  typecheck:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - uses: pnpm/action-setup@v4
-
-      - name: Restore workspace
-        uses: actions/cache@v4
-        with:
-          path: |
-            .
-            !node_modules
-          key: workspace-${{ github.sha }}
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - run: pnpm install --frozen-lockfile
-        env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
-
       - name: Type check
         run: pnpm typecheck
 
   test:
-    needs: setup
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -149,14 +97,6 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: Restore workspace
-        uses: actions/cache@v4
-        with:
-          path: |
-            .
-            !node_modules
-          key: workspace-${{ github.sha }}
-
       - name: Get pnpm store directory
         id: pnpm-cache
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
@@ -165,10 +105,17 @@ jobs:
         with:
           path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - run: pnpm install --frozen-lockfile
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
+      - name: Build packages
+        run: |
+          pnpm -C packages/shared build
+          pnpm -C packages/prisma build
 
       - name: Prisma generate
         run: pnpm --filter @drawn-lights-game/prisma exec prisma generate --config prisma.config.ts
