@@ -15,18 +15,24 @@ import {
 } from '@mantine/core';
 import '@mantine/core/styles.css';
 import {
-  IconDatabase,
+  IconBrandFigma,
+  IconBrandGithub,
+  IconBrandNotion,
+  IconDatabase
 } from "@tabler/icons-react";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
 import { useEffect, useState } from "react";
-import GithubCorner from 'react-github-corner';
+import {
+  CircleMenu
+} from "react-circular-menu";
 import { useTranslation } from "react-i18next";
 
 import { AboutModal } from "./components/AboutModal.js";
 import { AssetCard } from "./components/AssetCard.js";
 import { ComputeMenu } from "./components/ComputeMenu.js";
 import { HighscoreTable } from "./components/HighscoreTable.js";
+import { renderCircleMenuItem } from "./components/renderCircleMenuItem.js";
 import { ResultSection } from "./components/ResultSection.js";
 import { TeamInformations } from "./components/TeamInformations.js";
 import { WaveSurferPlayer } from "./components/WaveSurferPlayer.js";
@@ -40,6 +46,8 @@ const AUDIO_TRACKS = ['healing', 'emerveille', 'glossy'] as const;
 function App() {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [isCircleMenuOpen, setIsCircleMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
   const [assets, setAssets] = useState<Asset[]>([]);
   const [playlist, setPlaylist] = useState<Asset[]>([]);
@@ -158,11 +166,44 @@ function App() {
           🇬🇧
         </div>
       </div>
-      <GithubCorner
-        href="https://github.com/Ostefanini/drawn-lights-game"
-      />
+
+      <div style={{ position: 'fixed', top: 10, right: 10, zIndex: 1000 }}>
+        <CircleMenu
+          startAngle={90}
+          rotationAngle={120}
+          itemSize={2}
+          radius={5}
+          rotationAngleInclusive={false}
+          onMenuToggle={(isOpen) => setIsCircleMenuOpen(isOpen)}
+        >
+          {renderCircleMenuItem(
+            0,
+            <IconBrandNotion size={24} color={hoveredItem === 0 ? "white" : "black"} />,
+            setHoveredItem,
+            "https://cord-blue-7a0.notion.site/379ca6cfbb9280d5a5e6f5a08bc57e97"
+          )}
+          {renderCircleMenuItem(
+            1,
+            <IconBrandFigma size={24} color={hoveredItem === 1 ? "white" : "black"} />,
+            setHoveredItem,
+            "https://www.figma.com/design/tRJl6AUPSn3TkirgklS4V8/game.drawnlights.show?node-id=0-1&p=f&t=jgIV8WMtoLMg7T8C-0"
+          )}
+          {renderCircleMenuItem(
+            2,
+            <IconBrandGithub size={24} color={hoveredItem === 2 ? "white" : "black"} />,
+            setHoveredItem,
+            "https://github.com/ostefanini/drawn-lights-game"
+          )}
+        </CircleMenu>
+      </div>
+
       <div
-        style={{ marginTop: "60px" }}
+        style={{
+          marginTop: "60px",
+          filter: isCircleMenuOpen ? 'blur(5px)' : 'none',
+          transition: 'filter 0.3s ease',
+          pointerEvents: isCircleMenuOpen ? 'none' : 'auto'
+        }}
       >
         <Title ta='center' order={1}>{t('title')}</Title>
         <Title ta="center" order={3}>{t('subtitle')}</Title>

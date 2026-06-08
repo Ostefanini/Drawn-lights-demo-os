@@ -11,11 +11,11 @@ export function TeamInformations({ setOpenAboutModal }: { setOpenAboutModal: (op
                 <Title ta="center" order={4}>{t('team_title')}</Title>
                 <Button 
                 onClick={() => setOpenAboutModal(true)}
-                size="compact-xs" variant="subtle">{t('team_learn_more')}</Button>
+                size="compact-xs" variant="outline">{t('team_learn_more')}</Button>
             </div>
             <div style={{ display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap", marginTop: "8px" }}>
-                <TeamMember src="/oscar.png" name="Oscar S." role={t('team_oscar_role')} />
-                <TeamMember src="/karine.jpg" name="Karine M." role={t('team_karine_role')} />
+                <TeamMember src="/oscar.png" name="Oscar S." role={t('team_oscar_role')} mail="oscar.stefanini1@gmail.com" linkedin="https://www.linkedin.com/in/oscar-stefanini1/" />
+                <TeamMember src="/karine.jpg" name="Karine M." role={t('team_karine_role')} mail="karine.majdalani@gmail.com" linkedin="https://www.linkedin.com/in/karine-majdalani" />
             </div>
         </div>
     );
