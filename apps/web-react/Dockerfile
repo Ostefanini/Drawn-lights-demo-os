@@ -13,6 +13,7 @@ COPY packages/shared ./packages/shared
 COPY apps/web-react ./apps/web-react
 
 RUN pnpm -C packages/shared build
+RUN pnpm install --frozen-lockfile
 RUN pnpm -C apps/web-react build
 
 FROM dhi.io/nginx:1-alpine3.21 AS runtime
