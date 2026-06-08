@@ -51,6 +51,11 @@ jobs:
           pnpm -C packages/shared build
           pnpm -C packages/prisma build
 
+      - name: Re-inject workspace packages
+        run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
       - run: node -v
       - run: pnpm --filter web-react exec eslint -v
 

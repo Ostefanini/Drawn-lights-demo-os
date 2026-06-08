@@ -69,6 +69,11 @@ jobs:
           pnpm -C packages/shared build
           pnpm -C packages/prisma build
 
+      - name: Re-inject workspace packages
+        run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
       - name: Type check
         run: pnpm typecheck
 
@@ -116,6 +121,11 @@ jobs:
         run: |
           pnpm -C packages/shared build
           pnpm -C packages/prisma build
+
+      - name: Re-inject workspace packages
+        run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Prisma generate
         run: pnpm --filter @drawn-lights-game/prisma exec prisma generate --config prisma.config.ts
