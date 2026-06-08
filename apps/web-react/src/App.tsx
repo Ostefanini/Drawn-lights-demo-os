@@ -99,27 +99,30 @@ function App() {
   }, [emojisInstructions])
 
   const reset = () => {
+    // Reset state immediately so assets become clickable again
+    setShowVideo(null);
+    setPlaylist([]);
+    setSound("none");
+    setEmojisInstructions(null);
+    setComputationResult(null);
+    
+    // Reload assets
+    void (async () => {
+      try {
+        const { data: assetsData } = await api.get<Asset[]>("/assets");
+        setAssets(assetsData);
+      } catch (e) {
+        console.error("Failed to reload assets", e);
+      }
+    })();
+
+    // Scroll after a short delay (to give animations time)
     setTimeout(() => {
       const intro = document.getElementById("intro");
       if (intro) {
         intro.scrollIntoView({ behavior: "smooth" });
       }
-      setTimeout(() => {
-        setShowVideo(null);
-        setPlaylist([]);
-        setSound("none");
-        setEmojisInstructions(null);
-        setComputationResult(null);
-        void (async () => {
-          try {
-            const { data: assetsData } = await api.get<Asset[]>("/assets");
-            setAssets(assetsData);
-          } catch (e) {
-            console.error("Failed to reload assets", e);
-          }
-        })();
-      }, 100);
-    }, 200);
+    }, 100);
   }
 
 
