@@ -12,17 +12,17 @@ import {
     useCombobox
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import React from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { computeAssetQueryParams } from "../helpers";
-import api from "../services/api";
-import type { EmojisInstructions } from "../types/app";
+import { computeAssetQueryParams } from "../helpers.js";
+import api from "../services/api.js";
+import type { EmojisInstructions } from "../types/app.js";
 
 interface ResultSectionProps {
     showVideo: string;
     computationResult: CombinationStatus | null;
     users: string[];
-    setUsers: React.Dispatch<React.SetStateAction<string[]>>;
+    setUsers: Dispatch<SetStateAction<string[]>>;
     setEmojisInstructions: (val: EmojisInstructions | null) => void;
     playlist: Asset[];
     sound: Sound;
@@ -82,10 +82,29 @@ export const ResultSection = ({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    const [foundBy, setFoundBy] = React.useState<string | null>(computationResult?.foundBy ?? null);
-    const [canTryAgain, setCanTryAgain] = React.useState<boolean>(!!computationResult?.foundBy);
-    const [email, setEmail] = React.useState<string>("");
+    const [foundBy, setFoundBy] = useState<string | null>(computationResult?.foundBy ?? null);
+    const [canTryAgain, setCanTryAgain] = useState<boolean>(!!computationResult?.foundBy);
+    const [email, setEmail] = useState<string>("");
     const isEmailValid: boolean = email.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    const handleSave = async () => {
+        try {
+            await api.post(`/combinations/attribute?${computeAssetQueryParams(playlist, sound)}`, {
+                userNickname: foundBy,
+                email: email.length > 0 ? email : undefined
+            });
+            notifications.show({
+                title: t('success'),
+                message: t('discovery_recorded'),
+                color: 'green',
+            });
+            setEmojisInstructions(null);
+            setHighscore(await api.get<UserListHighscore[]>("/users").then(res => res.data));
+            setCanTryAgain(true);
+        } catch (e) {
+            console.error("Failed to save combination", e);
+        }
+    };
 
     const exactOptionMatch = users.some((item) => item === foundBy);
     const filteredOptions = exactOptionMatch || !foundBy
@@ -174,26 +193,7 @@ export const ResultSection = ({
                     )}
                     <Button
                         disabled={isSaveDisabled}
-                        onClick={() => {
-                            void (async () => {
-                                try {
-                                    await api.post(`/combinations/attribute?${computeAssetQueryParams(playlist, sound)}`, {
-                                        userNickname: foundBy,
-                                        email: email.length > 0 ? email : undefined
-                                    });
-                                    notifications.show({
-                                        title: t('success'),
-                                        message: t('discovery_recorded'),
-                                        color: 'green',
-                                    });
-                                    setEmojisInstructions(null);
-                                    setHighscore(await api.get<UserListHighscore[]>("/users").then(res => res.data));
-                                    setCanTryAgain(true);
-                                } catch (e) {
-                                    console.error("Failed to save combination", e);
-                                }
-                            })();
-                        }}
+                        onClick={() => void handleSave()}
                     >{t('save')}</Button>
                     {computationResult !== null && (
                         <Button

@@ -22,7 +22,7 @@ import {
 } from "@tabler/icons-react";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CircleMenu
 } from "react-circular-menu";
@@ -59,6 +59,7 @@ function App() {
   const [computationResult, setComputationResult] = useState<CombinationStatus | null>(null);
   const [showScore, setShowScore] = useState(false);
   const [highscore, setHighscore] = useState<UserListHighscore[]>([]);
+  const introRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -107,14 +108,12 @@ function App() {
   }, [emojisInstructions])
 
   const reset = () => {
-    // Reset state immediately so assets become clickable again
     setShowVideo(null);
     setPlaylist([]);
     setSound("none");
     setEmojisInstructions(null);
     setComputationResult(null);
-    
-    // Reload assets
+
     void (async () => {
       try {
         const { data: assetsData } = await api.get<Asset[]>("/assets");
@@ -124,15 +123,61 @@ function App() {
       }
     })();
 
-    // Scroll after a short delay (to give animations time)
     setTimeout(() => {
-      const intro = document.getElementById("intro");
-      if (intro) {
-        intro.scrollIntoView({ behavior: "smooth" });
-      }
+      introRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   }
 
+
+  const handlePopulate = async () => {
+    try {
+      await Promise.all(
+        demoPlaystationModels.map(async (model) => {
+          const filename = `${model.name}.png`;
+          const res = await fetch(`/${filename}`);
+          const imgBlob = await res.blob();
+          const sendData = {
+            thumbnail: new File([imgBlob], filename, { type: "image/png" }),
+            ...model,
+          };
+          const serializedData = serialize(sendData);
+          const { data } = await api.post<Asset>("/assets", serializedData);
+          setAssets((prev) => [...prev, data]);
+        })
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleCompute = async () => {
+    try {
+      const { data } = await api.get<CombinationStatus>(`/combinations/is-found?${computeAssetQueryParams(playlist, sound)}`);
+      const combinationStatus = combinationStatusSchema.parse(data);
+      setComputationResult(combinationStatus);
+      setEmojisInstructions(null);
+      const nextEmojis: EmojisInstructions = {
+        isNew: !combinationStatus.exist,
+        isSecretCombinationFound: combinationStatus.isSecretCombinationFound,
+      };
+      setTimeout(() => {
+        setEmojisInstructions(nextEmojis);
+      }, 100);
+      const combinationName = playlist.map(({ name }) => name).join(",");
+      const fullNameNotVr = `source_0_${combinationName}${sound !== "none" ? `_${sound}` : "-optimized"}.mp4`;
+      const linkNotVr = showsConst.find(
+        (show) => show.isVr === false && show.fullName === fullNameNotVr
+      )?.link;
+      if (linkNotVr) {
+        setShowVideo(buildVideoProxyUrl(linkNotVr));
+        setTimeout(() => {
+          document.getElementById("videoFrame")?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    } catch (e) {
+      console.error("Failed to compute show", e);
+    }
+  };
 
   if (loading) return <div>{t('loading')}</div>;
 
@@ -213,7 +258,7 @@ function App() {
             
         {/* <TechnologiesSection /> */}
 
-        <Text id='intro' style={{marginTop: "16px"}} fs="italic" ta="center">{t('try_discovering')}</Text>
+        <Text ref={introRef} style={{marginTop: "16px"}} fs="italic" ta="center">{t('try_discovering')}</Text>
         <Center style={{ marginTop: "8px" }}><Button onClick={() => setShowScore((prev) => !prev)}>{showScore ? t('hide_scores') : t('show_scores')}</Button></Center>
         <div style={{ marginTop: "24px" }}>
           {!showScore && (
@@ -223,30 +268,7 @@ function App() {
                   <Center>{t('no_asset')}</Center>
                   <Center style={{ marginTop: "12px" }}>
                     <Button
-                      onClick={() => {
-                        void (async () => {
-                          try {
-                            await Promise.all(
-                              demoPlaystationModels.map(async (model) => {
-                                const filename = `${model.name}.png`;
-                                const res = await fetch(`/${filename}`);
-                                const imgBlob = await res.blob();
-
-                                const sendData = {
-                                  thumbnail: new File([imgBlob], filename, { type: "image/png" }),
-                                  ...model,
-                                };
-
-                                const serializedData = serialize(sendData);
-                                const { data } = await api.post<Asset>("/assets", serializedData);
-                                setAssets((prev) => [...prev, data]);
-                              })
-                            );
-                          } catch (e) {
-                            console.error(e);
-                          }
-                        })();
-                      }}
+                      onClick={() => void handlePopulate()}
                     >
                       {t('populate')}
                       <IconDatabase />
@@ -307,46 +329,11 @@ function App() {
                   setPlaylist(playlist.filter((a) => a.id !== asset.id));
                 }}
                 audio={sound}
-                onCompute={() => {
-                  void (async () => {
-                    try {
-                      const { data } = await api.get<CombinationStatus>(`/combinations/is-found?${computeAssetQueryParams(playlist, sound)}`);
-                      const combinationStatus = combinationStatusSchema.parse(data);
-                     /*  if (data.exist && data.foundBy) {
-                        setComputationResult(data.foundBy);
-                      } */
-                      setComputationResult(combinationStatus);
-                      setEmojisInstructions(null);
-                      const nextEmojis: EmojisInstructions = {
-                        isNew: !combinationStatus.exist,
-                        isSecretCombinationFound: combinationStatus.isSecretCombinationFound,
-                      };
-                      setTimeout(() => {
-                        setEmojisInstructions(nextEmojis);
-                      }, 100);
-
-                      const combinationName = playlist.map(({ name }) => name).join(",");
-                      const fullNameNotVr = `source_0_${combinationName}${sound !== "none" ? `_${sound}` : "-optimized"}.mp4`;
-                      const linkNotVr = showsConst.find(
-                        (show) => show.isVr === false && show.fullName === fullNameNotVr
-                      )?.link;
-                      if (linkNotVr) {
-                        setShowVideo(buildVideoProxyUrl(linkNotVr));
-                        setTimeout(() => {
-                          const videoFrame = document.getElementById("videoFrame");
-                          if (videoFrame) {
-                            videoFrame.scrollIntoView({ behavior: "smooth" });
-                          }
-                        }, 100);
-                      }
-                    } catch (e) {
-                      console.error("Failed to compute show", e);
-                    }
-                  })();
-                }}
+                onCompute={() => void handleCompute()}
               />
               {showVideo && (
                 <ResultSection
+                  key={computationResult?.foundBy ?? 'new'}
                   showVideo={showVideo}
                   computationResult={computationResult} 
                   reset={reset}

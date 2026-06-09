@@ -44,11 +44,6 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute, 
                                     background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                                     boxShadow: "0 8px 16px rgba(102, 126, 234, 0.4)",
                                     border: "3px solid rgba(255, 255, 255, 0.3)",
-                                    '&:hover': {
-                                        background: "linear-gradient(135deg, #7c8ef5 0%, #8b5bb5 100%)",
-                                        boxShadow: "0 12px 24px rgba(102, 126, 234, 0.5)",
-                                        border: "1px solid rgba(255, 255, 255, 0.5)",
-                                    }
                                 }
                             }}
                         >
@@ -101,7 +96,6 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute, 
                     </>
 
                     <Menu.Item
-                        key={"compute"}
                         onClick={(e) => {
                             e.stopPropagation();
                         }}

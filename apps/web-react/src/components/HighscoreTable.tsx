@@ -18,7 +18,7 @@ export const HighscoreTable = ({ highscore }: HighscoreTableProps) => {
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                    {highscore.sort((a, b) => b.nbCombinationsFound - a.nbCombinationsFound).map((user) => (
+                    {[...highscore].sort((a, b) => b.nbCombinationsFound - a.nbCombinationsFound).map((user) => (
                         <Table.Tr key={user.nickname}>
                             <Table.Td>{user.nickname}</Table.Td>
                             <Table.Td>{user.nbCombinationsFound}</Table.Td>

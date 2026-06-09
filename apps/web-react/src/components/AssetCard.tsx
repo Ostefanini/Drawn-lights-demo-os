@@ -1,5 +1,6 @@
 import { type Asset } from "@drawn-lights-game/shared";
 import { Badge, Button, Card, Group, Image, Text, Title } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconDrone, IconHourglassEmpty, IconPlaylistAdd } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 
@@ -11,21 +12,21 @@ interface AssetCardProps {
 
 export function AssetCard({ asset, onAddToPlaylist, disabled }: AssetCardProps) {
     const { t } = useTranslation();
+    const isHoverDevice = useMediaQuery("(hover: hover)");
     return (
         <Card
-            key={asset.id}
             style={{
                 transition: "transform 0.2s ease-in-out",
                 cursor: "pointer",
                 position: "relative"
             }}
             onMouseEnter={(e) => {
-                if (window.matchMedia("(hover: hover)").matches) {
+                if (isHoverDevice) {
                     e.currentTarget.style.transform = "scale(1.1)";
                 }
             }}
             onMouseLeave={(e) => {
-                if (window.matchMedia("(hover: hover)").matches) {
+                if (isHoverDevice) {
                     e.currentTarget.style.transform = "scale(1)";
                 }
             }}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Group, Image, Modal, Stack, Text, Title, Tooltip } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useTranslation } from "react-i18next";
 
 const techLogos = [
@@ -32,6 +33,7 @@ const productLogos = [
 const LogoItem = ({ label, src }: { label: string; src: string }) => {
     const [opened, setOpened] = useState(false);
     const [imgError, setImgError] = useState(false);
+    const isHoverDevice = useMediaQuery("(hover: hover)");
 
     return (
         <Tooltip label={label} opened={opened}>
@@ -47,16 +49,8 @@ const LogoItem = ({ label, src }: { label: string; src: string }) => {
                         userSelect: "none",
                     }}
                     onClick={() => setOpened((o) => !o)}
-                    onMouseEnter={() =>
-                        typeof window !== "undefined" &&
-                        window.matchMedia("(hover: hover)").matches &&
-                        setOpened(true)
-                    }
-                    onMouseLeave={() =>
-                        typeof window !== "undefined" &&
-                        window.matchMedia("(hover: hover)").matches &&
-                        setOpened(false)
-                    }
+                    onMouseEnter={() => isHoverDevice && setOpened(true)}
+                    onMouseLeave={() => isHoverDevice && setOpened(false)}
                 >
                     {label}
                 </Text>
@@ -67,16 +61,8 @@ const LogoItem = ({ label, src }: { label: string; src: string }) => {
                     alt={label}
                     onError={() => setImgError(true)}
                     onClick={() => setOpened((o) => !o)}
-                    onMouseEnter={() =>
-                        typeof window !== "undefined" &&
-                        window.matchMedia("(hover: hover)").matches &&
-                        setOpened(true)
-                    }
-                    onMouseLeave={() =>
-                        typeof window !== "undefined" &&
-                        window.matchMedia("(hover: hover)").matches &&
-                        setOpened(false)
-                    }
+                    onMouseEnter={() => isHoverDevice && setOpened(true)}
+                    onMouseLeave={() => isHoverDevice && setOpened(false)}
                     style={{ cursor: "default" }}
                 />
             )}
