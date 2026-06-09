@@ -1,6 +1,7 @@
 import { type Asset, type Sound } from "@drawn-lights-game/shared";
 import { Box, Button, Indicator, Menu, Text } from '@mantine/core';
-import { IconCloudComputing, IconPlaylist, IconTrash } from "@tabler/icons-react";
+import { useMediaQuery } from '@mantine/hooks';
+import { IconCloudComputing, IconSend, IconTrash } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 
 interface ComputeMenuProps {
@@ -13,6 +14,7 @@ interface ComputeMenuProps {
 
 export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute, disabled }: ComputeMenuProps) {
     const { t } = useTranslation();
+    const isTablet = useMediaQuery('(min-width: 768px)');
     if (playlist.length === 0) return null;
 
     return (
@@ -27,14 +29,15 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute, 
                     <Indicator 
                     styles={{
                         indicator: {
-                            transform: "translateY(-40px)"
+                            transform: "translate(10px, -50px)"
                         }
                     }}
                     inline label={playlist.length} size={24}>
                         <Button
-                            size="xl"
-                            p={20}
+                            size="md"
+                            p={5}
                             radius="xl"
+                                                        leftSection={<IconSend size={20} />}
                             styles={{
                                 root: {
                                     top: -40,
@@ -49,7 +52,7 @@ export function ComputeMenu({ playlist, audio, onRemoveFromPlaylist, onCompute, 
                                 }
                             }}
                         >
-                            <IconPlaylist size={20} />
+                            {isTablet ? t('validate_show') : t('validate')}
                         </Button>
                     </Indicator>
                 </Menu.Target>
