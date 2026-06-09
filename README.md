@@ -22,12 +22,9 @@ See [AI_WORKFLOW.md](./AI_WORKFLOW.md) for how AI (Claude) is used to support pr
 
 ## Live demo
 
-The next.js + nestjs version is deployed at
+The react + nestjs version is deployed at
 
 https://game.drawnlights.show
-
-Observability is available at:
-
 
 
 ## Relation to Drawn Lights
@@ -53,10 +50,6 @@ With Prisma, the ORM (Object Relational Mapping), [here](./packages/prisma/)
 ## #1st Frontend app, in vanilla React
 
 React + Typescript + Mantine UI + Nginx [here](./apps/web-react/)
-
-## #2nd Frontend app, in Next.js (deployed)
-
-[here](./apps/web-nextjs)
 
 ## #1st Backend app, in Express.js
 
