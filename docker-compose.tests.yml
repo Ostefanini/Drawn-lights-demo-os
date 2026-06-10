@@ -36,6 +36,40 @@ services:
       # Use tmpfs for faster tests (data is not persisted)
       - /var/lib/postgresql/data
 
+  api-nestjs-test:
+    build:
+      context: .
+      dockerfile: apps/api-nestjs/Dockerfile
+    container_name: "api-nestjs-test"
+    ports:
+      - 4004:4000
+    networks:
+      - test_network
+    env_file:
+      - .env.test
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+      migrate-test:
+        condition: service_completed_successfully
+    profiles: ["e2e"]
+
+  web-react-test:
+    build:
+      context: .
+      dockerfile: apps/web-react/Dockerfile
+    container_name: "web-react-test"
+    volumes:
+      - ./nginx.test.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 3004:80
+    networks:
+      - test_network
+    depends_on:
+      api-nestjs-test:
+        condition: service_started
+    profiles: ["e2e"]
+
 networks:
   test_network:
     name: drawn_lights_game_test

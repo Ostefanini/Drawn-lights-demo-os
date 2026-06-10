@@ -16,6 +16,7 @@
         "stack:dev:down": "dotenv -e .env.dev -- docker compose -f docker-compose.dev.yml down",
         "stack:tests": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml up -d --build && dotenv -e .env.test -- docker compose -f docker-compose.tests.yml wait migrate-test",
         "test:integration": "pnpm run stack:tests && pnpm --filter api-nestjs test:integration",
+        "stack:tests:e2e": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml --profile e2e up -d --build",
         "stack:tests:down": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml down --remove-orphans",
         "stack:prod:local": "dotenv -e .env.prod.local -- docker compose -f docker-compose.prod.local.yml up -d --wait",
         "stack:prod:local:down": "dotenv -e .env.prod.local -- docker compose -f docker-compose.prod.local.yml down"
