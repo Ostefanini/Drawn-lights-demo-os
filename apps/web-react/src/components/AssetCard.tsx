@@ -54,15 +54,15 @@ export function AssetCard({ asset, onAddToPlaylist, disabled }: AssetCardProps) 
                 )}
             </Card.Section>
             <Group mt="md" mb="xs">
-                <Title order={3}>{asset.name}</Title>
+                <Title order={3}>{t(`assets.${asset.name}.name`) ?? asset.name}</Title>
                 <div style={{ position: "absolute", right: "12px" }}>
                     <Badge color="violet" key={asset.type}>{asset.type}</Badge>
                     {asset.tags.map((tag) => <Badge color="pink" key={tag}>#{tag}</Badge>)}
                 </div>
             </Group>
 
-            {asset.description && <Text size="sm" c="dimmed">
-                {asset.description}
+            {asset.description && <Text size="sm" c="RGB(125, 167, 215)">
+                {t(`assets.${asset.name}.description`) ?? asset.description}
             </Text>}
 
             <Group gap="xs" mt="xs">

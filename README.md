@@ -93,7 +93,7 @@ Integration tests are available for the NestJS API. See [apps/api-nestjs/TESTING
 
 ```bash
 # Start test database + migrations (one command)
-pnpm test:db:up
+pnpm stack:tests
 
 # Run all tests
 pnpm test

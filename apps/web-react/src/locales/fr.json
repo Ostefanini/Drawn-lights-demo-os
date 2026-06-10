@@ -1,4 +1,22 @@
 {
+    "assets": {
+        "cross": {
+            "name": "Croix",
+            "description": "Une formation de drones en croix."
+        },
+         "circle": {
+            "name": "Cercle",
+            "description": "Une formation de drones en cercle."
+        },
+         "triangle": {
+            "name": "Triangle",
+            "description": "Une formation de drones en triangle."
+        },
+         "square": {
+            "name": "Carré",
+            "description": "Une formation de drones en carré."
+        }
+    },
     "loading": "Chargement…",
     "title": "Trouvez le spectacle...",
     "subtitle": "...Et gagnez une tablette de chocolat !",

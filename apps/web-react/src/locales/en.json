@@ -1,4 +1,22 @@
 {
+    "assets": {
+        "cross": {
+            "name": "Cross",
+            "description": "A drone formation in the shape of a cross."
+        },
+        "circle": {
+            "name": "Circle",
+            "description": "A drone formation in the shape of a circle."
+        },
+        "triangle": {
+            "name": "Triangle",
+            "description": "A drone formation in the shape of a triangle."
+        },
+        "square": {
+            "name": "Square",
+            "description": "A drone formation in the shape of a square."
+        }
+    },
     "loading": "Loading…",
     "title": "Guess the Drone Show...",
     "subtitle": "...And win a chocolate bar !",
