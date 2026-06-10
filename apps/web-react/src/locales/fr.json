@@ -1,13 +1,13 @@
 {
     "loading": "Chargement…",
-    "title": "Trouvez le spectacle !",
+    "title": "Trouve le spectacle !",
     "subtitle": "Une version gamifiée minimaliste de l'application drawn lights",
-    "try_discovering": "Essayez de découvrir une combinaison exclusive de spectacle de drones dès maintenant !",
+    "try_discovering": "Essaie de découvrir une combinaison exclusive de spectacle de drones dès maintenant !",
     "hide_scores": "Masquer les scores",
     "show_scores": "Afficher les scores",
     "no_asset": "Aucun actif pour le moment, remplissons la base de données !",
     "populate": "Remplir",
-    "select_audio": "Sélectionner une piste audio",
+    "select_audio": "Sélectionne une piste audio",
     "no_sound": "Pas de son",
     "drones": "Drones",
     "seconds": "secondes",
@@ -22,5 +22,8 @@
     "save": "Enregistrer",
     "success": "Succès",
     "discovery_recorded": "Votre découverte a été enregistrée !",
-    "technologies_used": "Technologies utilisées"
+    "technologies_used": "Technologies utilisées",
+    "win_chocolate": "Et gagne une tablette de chocolat !",
+    "validate_show": "Valide le spectacle",
+    "calculate": "Calcule"
 }
