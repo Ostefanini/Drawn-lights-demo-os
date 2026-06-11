@@ -13,6 +13,7 @@ describe('CombinationsController', () => {
     const mockService = {
       isCombinationFound: jest.fn(),
       attributeCombination: jest.fn(),
+      getSecretCombinationStatus: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -97,6 +98,31 @@ describe('CombinationsController', () => {
         'secretFinder',
         'finder@example.com',
       );
+    });
+  });
+
+  describe('getSecretCombinationStatus', () => {
+    it('should return found:false when the secret combination has not been found', async () => {
+      service.getSecretCombinationStatus.mockResolvedValue({
+        found: false,
+        foundByNickname: null,
+      });
+
+      const result = await controller.getSecretCombinationStatus();
+
+      expect(result).toEqual({ found: false, foundByNickname: null });
+      expect(service.getSecretCombinationStatus).toHaveBeenCalled();
+    });
+
+    it('should return found:true with the nickname when the secret combination has been found', async () => {
+      service.getSecretCombinationStatus.mockResolvedValue({
+        found: true,
+        foundByNickname: 'heroPlayer',
+      });
+
+      const result = await controller.getSecretCombinationStatus();
+
+      expect(result).toEqual({ found: true, foundByNickname: 'heroPlayer' });
     });
   });
 });

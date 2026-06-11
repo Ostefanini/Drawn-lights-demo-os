@@ -140,8 +140,8 @@ pnpm typecheck            # Run all typechecks
 
 See [FEEDBACK.md](./FEEDBACK.md) for the full feedback policy: how to share feedback, what we do with it, and expected response times.
 
-# Hire me
+# Hire us
 
-oscar[dot]stefanini1[at]gmail.com
+oscar[dot]stefanini1[at]gmail.com (fullstack engineer, product oriented)
 
-karine.majdalani@gmail.com
+karine.majdalani@gmail.com (product manager)

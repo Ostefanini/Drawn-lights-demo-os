@@ -20,21 +20,18 @@ services:
       timeout: 3s
       retries: 20
 
-  pgadmin:
-    image: dpage/pgadmin4:8
-    container_name: dev_pgadmin
+  pgweb:
+    image: sosedoff/pgweb:latest
+    container_name: dev_pgweb
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
     ports:
-      - "5050:80"
+      - "5050:8081"
     networks:
       - dev_network
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - dev_pgadmin_data:/var/lib/pgadmin
 
 networks:
   dev_network:
@@ -42,4 +39,3 @@ networks:
 
 volumes:
   dev_postgres_data:
-  dev_pgadmin_data:

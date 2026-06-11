@@ -66,6 +66,13 @@ export class CombinationsService {
     }
   }
 
+  public async getSecretCombinationStatus(): Promise<{
+    found: boolean;
+    foundByNickname: string | null;
+  }> {
+    return this.secretCombinationsRepository.getSecretCombinationStatus();
+  }
+
   public async isCombinationFound(
     params: CombinationQuery,
   ): Promise<CombinationStatus> {

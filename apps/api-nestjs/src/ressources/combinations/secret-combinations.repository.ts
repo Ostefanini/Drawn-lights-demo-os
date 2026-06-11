@@ -26,6 +26,20 @@ export class SecretCombinationsRepository {
       : false;
   }
 
+  public async getSecretCombinationStatus(): Promise<{
+    found: boolean;
+    foundByNickname: string | null;
+  }> {
+    const secret = await this.prisma.secretCombination.findFirst({
+      include: { foundBy: true },
+    });
+    if (!secret) return { found: false, foundByNickname: null };
+    return {
+      found: secret.foundById !== null,
+      foundByNickname: secret.foundBy?.nickname ?? null,
+    };
+  }
+
   public async markSecretCombinationAsFound(
     params: CombinationQuery,
     nickname: string,
