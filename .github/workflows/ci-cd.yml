@@ -109,16 +109,14 @@ jobs:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Integration coverage badges
-        run: pnpm --filter api-nestjs test:integration:cov && npx jest-coverage-badges --output ./badges
+        run: pnpm --filter api-nestjs test:integration:cov -- --coverageDirectory=./coverage && npx jest-coverage-badges --output ./badges
         working-directory: apps/api-nestjs
-        continue-on-error: true
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Unit coverage badges (api-expressjs)
         run: pnpm run test:cov && npx jest-coverage-badges --output ./badges
         working-directory: apps/api-expressjs
-        continue-on-error: true
 
       - name: Commit coverage badges
         uses: EndBug/add-and-commit@v9
@@ -154,12 +152,12 @@ jobs:
 
       - name: Wait for E2E stack to be ready
         run: |
-          for i in {1..30}; do
-            if curl -f http://localhost:4004/api/assets > /dev/null 2>&1; then
+          for i in {1..90}; do
+            if curl -f http://localhost:4004/ping > /dev/null 2>&1; then
               echo "✅ Stack is ready (API responding)"
               exit 0
             fi
-            echo "⏳ Waiting for stack... ($i/30)"
+            echo "⏳ Waiting for stack... ($i/90)"
             sleep 2
           done
           echo "❌ Stack failed to start"

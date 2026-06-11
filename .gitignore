@@ -9,9 +9,11 @@ dist/
 dist-ssr/
 build/
 
-# Coverage
+# Coverage & Test Reports
 coverage
 .nyc_output
+playwright-report/
+test-results/
 
 # Logs
 logs
