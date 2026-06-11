@@ -29,9 +29,9 @@ services:
       - test_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U test_user -d drawn_lights_game_test"]
-      interval: 5s
+      interval: 1s
       timeout: 3s
-      retries: 20
+      retries: 30
     tmpfs:
       # Use tmpfs for faster tests (data is not persisted)
       - /var/lib/postgresql/data
