@@ -20,6 +20,7 @@ const techLogos = [
     { name: "Nginx", url: "https://cdn.simpleicons.org/nginx/009639" },
     { name: "Let's Encrypt", url: "https://cdn.simpleicons.org/letsencrypt/003A70" },
     { name: "Prisma", url: "https://cdn.simpleicons.org/prisma/2D3748" },
+    { name: "Playwright", url: "https://cdn.simpleicons.org/playwright/2EAD33" },
 ];
 
 const productLogos = [
@@ -28,6 +29,7 @@ const productLogos = [
     { name: "Markdown", url: "https://cdn.simpleicons.org/markdown/000000" },
     { name: "Claude", url: "https://cdn.simpleicons.org/anthropic/D4A574", fallback: true },
     { name: "Notion", url: "https://cdn.simpleicons.org/notion/000000" },
+    { name: "Locize", url: "https://cdn.simpleicons.org/locize/2096F3", fallback: true },
 ];
 
 const LogoItem = ({ label, src }: { label: string; src: string }) => {

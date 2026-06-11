@@ -19,6 +19,8 @@ See [AI_WORKFLOW.md](./AI_WORKFLOW.md) for how AI (Claude) is used to support pr
 **api-nestjs** [![coverage](https://raw.githubusercontent.com/ostefanini/drawn-lights-game/badges/apps/api-nestjs/badges/badge-statements.svg)](https://github.com/ostefanini/drawn-lights-game/tree/badges/apps/api-nestjs/badges)  
 **api-expressjs** [![coverage](https://raw.githubusercontent.com/ostefanini/drawn-lights-game/badges/apps/api-expressjs/badges/badge-statements.svg)](https://github.com/ostefanini/drawn-lights-game/tree/badges/apps/api-expressjs/badges)
 
+**Translations** [![translations](https://img.shields.io/badge/dynamic/json.svg?style=plastic&color=2096F3&label=locize&query=%24.translatedPercentage&url=https://api.lite.locize.app/badgedata/d4b20cc3-2dfc-4ea8-967b-e02a4810a14d&suffix=%+translated&link=https://www.locize.com)](https://www.locize.com)
+
 
 ## Live demo
 
