@@ -155,8 +155,8 @@ jobs:
       - name: Wait for E2E stack to be ready
         run: |
           for i in {1..30}; do
-            if curl -f http://localhost:3004 > /dev/null 2>&1; then
-              echo "✅ Stack is ready"
+            if curl -f http://localhost:4004/api/assets > /dev/null 2>&1; then
+              echo "✅ Stack is ready (API responding)"
               exit 0
             fi
             echo "⏳ Waiting for stack... ($i/30)"

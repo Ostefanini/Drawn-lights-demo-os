@@ -39,7 +39,8 @@ test('happy path — finds the secret combination and claims the prize with an e
   const populateButton = page.getByRole('button', { name: /populate|remplir/i });
   await expect(populateButton).toBeVisible({ timeout: 10_000 });
   await populateButton.click();
-  await page.waitForTimeout(1000);
+  // Wait for network to stabilize (assets fetched and rendered)
+  await page.waitForLoadState('networkidle');
 
   // Wait for at least one asset card heading to be visible
   await expect(
