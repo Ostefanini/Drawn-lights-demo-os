@@ -1,30 +1,30 @@
 import {
-  type Asset, type CombinationStatus, combinationStatusSchema,
-  demoPlaystationModels, type Sound,
-  type UserListHighscore
+    type Asset, type CombinationStatus, combinationStatusSchema,
+    demoPlaystationModels, type Sound,
+    type UserListHighscore
 } from "@drawn-lights-game/shared";
 import {
-  Button,
-  Center,
-  Group,
-  Radio,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title
+    Button,
+    Center,
+    Group,
+    Radio,
+    SimpleGrid,
+    Stack,
+    Text,
+    Title
 } from '@mantine/core';
 import '@mantine/core/styles.css';
 import {
-  IconBrandFigma,
-  IconBrandGithub,
-  IconBrandNotion,
-  IconDatabase
+    IconBrandFigma,
+    IconBrandGithub,
+    IconBrandNotion,
+    IconDatabase
 } from "@tabler/icons-react";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
 import { useEffect, useRef, useState } from "react";
 import {
-  CircleMenu
+    CircleMenu
 } from "react-circular-menu";
 import { useTranslation } from "react-i18next";
 
@@ -185,11 +185,11 @@ function App() {
     <>
       <div style={{ position: 'fixed', top: 20, left: 20, display: 'flex', gap: 10, zIndex: 1000 }}>
         <div
-          onClick={() => void i18n.changeLanguage('fr')}
+          onClick={() => void i18n.changeLanguage('fr-FR')}
           style={{
             cursor: 'pointer',
             fontSize: '24px',
-            border: i18n.language === 'fr' ? '2px solid white' : '2px solid transparent',
+            border: i18n.language === 'fr-FR' ? '2px solid white' : '2px solid transparent',
             borderRadius: '4px',
             padding: '2px',
             lineHeight: '1'
@@ -198,11 +198,11 @@ function App() {
           🇫🇷
         </div>
         <div
-          onClick={() => void i18n.changeLanguage('en')}
+          onClick={() => void i18n.changeLanguage('en-US')}
           style={{
             cursor: 'pointer',
             fontSize: '24px',
-            border: i18n.language === 'en' ? '2px solid white' : '2px solid transparent',
+            border: i18n.language === 'en-US' ? '2px solid white' : '2px solid transparent',
             borderRadius: '4px',
             padding: '2px',
             lineHeight: '1'
