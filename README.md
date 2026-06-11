@@ -16,8 +16,8 @@ See [AI_WORKFLOW.md](./AI_WORKFLOW.md) for how AI (Claude) is used to support pr
 
 [![CI/CD](https://github.com/ostefanini/drawn-lights-game/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ostefanini/drawn-lights-game/actions)
 
-**api-nestjs** [![coverage](./apps/api-nestjs/badges/badge-statements.svg)](./apps/api-nestjs)  
-**api-expressjs** [![coverage](./apps/api-expressjs/badges/badge-statements.svg)](./apps/api-expressjs)
+**api-nestjs** [![coverage](https://raw.githubusercontent.com/ostefanini/drawn-lights-game/badges/apps/api-nestjs/badges/badge-statements.svg)](https://github.com/ostefanini/drawn-lights-game/tree/badges/apps/api-nestjs/badges)  
+**api-expressjs** [![coverage](https://raw.githubusercontent.com/ostefanini/drawn-lights-game/badges/apps/api-expressjs/badges/badge-statements.svg)](https://github.com/ostefanini/drawn-lights-game/tree/badges/apps/api-expressjs/badges)
 
 
 ## Live demo

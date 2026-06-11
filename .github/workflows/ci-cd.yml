@@ -131,6 +131,8 @@ jobs:
           add: "apps/*/badges/*"
           message: "chore: update coverage badges [skip ci]"
           default_author: github_actions
+          new_branch: badges
+          push: origin badges --force
         continue-on-error: true
 
   e2e-tests:
