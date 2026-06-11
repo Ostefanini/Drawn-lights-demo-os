@@ -24,10 +24,7 @@ jobs:
           node-version: 24
 
       - uses: pnpm/action-setup@v4
-      - name: Create .env.dev and .env.test from example
-        run: |
-          cp .env.test.example .env.dev
-          cp .env.test.example .env.test
+
       - name: Create .env.dev from example
         run: cp .env.test.example .env.dev
 
@@ -141,6 +138,9 @@ jobs:
           node-version: 24
 
       - uses: pnpm/action-setup@v4
+
+      - name: Create .env.test from example
+        run: cp .env.test.example .env.test
 
       - run: pnpm -v
       - run: pnpm install --frozen-lockfile
