@@ -12,6 +12,7 @@ env:
   REGISTRY: ghcr.io
   OWNER: ostefanini
   REPO: drawn-lights-game
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   unit-tests:
@@ -116,8 +117,13 @@ jobs:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Unit coverage badges (api-expressjs)
-        run: pnpm run test:cov && npx jest-coverage-badges --output ./badges
+        run: pnpm exec jest --coverage && npx jest-coverage-badges --output ./badges
         working-directory: apps/api-expressjs
+        env:
+          NODE_OPTIONS: '--experimental-vm-modules'
+          NODE_ENV: test
+          FORCE_SECRET_COMBINATION: TRIANGLE,SQUARE,CIRCLE,NULL,GLOSSY
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Commit coverage badges
         uses: EndBug/add-and-commit@v9
