@@ -64,7 +64,6 @@ assetsRouter.get("/thumbnail/:id",
         if (!id.success) {
             return res.status(400).json({ error: "invalid id" });
         }
-        console.log("thumbnail id", id.data);
         const thumbnail = thumbnails.get(id.data);
         if (!thumbnail) {
             return res.status(404).json({ error: "not found" });

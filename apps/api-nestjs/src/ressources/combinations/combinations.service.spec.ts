@@ -23,6 +23,7 @@ describe('CombinationsService', () => {
     const mockSecretCombinationsRepository = {
       isSecretCombinationFound: jest.fn(),
       markSecretCombinationAsFound: jest.fn(),
+      getSecretCombinationStatus: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -285,6 +286,37 @@ describe('CombinationsService', () => {
       await expect(service.isCombinationFound(params)).rejects.toThrow(
         'Sound parameter is required',
       );
+    });
+  });
+
+  describe('getSecretCombinationStatus', () => {
+    it('should return found:false when no secret combination exists', async () => {
+      secretCombinationsRepository.getSecretCombinationStatus.mockResolvedValue(
+        {
+          found: false,
+          foundByNickname: null,
+        },
+      );
+
+      const result = await service.getSecretCombinationStatus();
+
+      expect(result).toEqual({ found: false, foundByNickname: null });
+      expect(
+        secretCombinationsRepository.getSecretCombinationStatus,
+      ).toHaveBeenCalled();
+    });
+
+    it('should return found:true with nickname when secret combination is claimed', async () => {
+      secretCombinationsRepository.getSecretCombinationStatus.mockResolvedValue(
+        {
+          found: true,
+          foundByNickname: 'heroPlayer',
+        },
+      );
+
+      const result = await service.getSecretCombinationStatus();
+
+      expect(result).toEqual({ found: true, foundByNickname: 'heroPlayer' });
     });
   });
 });

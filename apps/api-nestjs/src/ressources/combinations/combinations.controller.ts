@@ -100,4 +100,21 @@ export class CombinationsController {
       body.email,
     );
   }
+
+  @Get('/secret-status')
+  @ApiOperation({ summary: 'Get the status of the secret combination' })
+  @ApiResponse({
+    status: 200,
+    description: 'Secret combination status',
+    schema: {
+      type: 'object',
+      properties: {
+        found: { type: 'boolean' },
+        foundByNickname: { type: 'string', nullable: true },
+      },
+    },
+  })
+  async getSecretCombinationStatus() {
+    return await this.combinationsService.getSecretCombinationStatus();
+  }
 }

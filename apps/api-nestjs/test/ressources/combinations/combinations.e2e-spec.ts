@@ -395,4 +395,36 @@ describe('CombinationsController (e2e)', () => {
         .expect(400);
     });
   });
+
+  describe('GET /combinations/secret-status', () => {
+    it('should return found:false when the secret combination has not been claimed', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/combinations/secret-status')
+        .expect(200);
+
+      expect(response.body).toEqual({ found: false, foundByNickname: null });
+    });
+
+    it('should return found:true with the nickname after the secret combination is claimed', async () => {
+      // Claim the secret combination (TRIANGLE + SQUARE with HEALING sound)
+      await request(app.getHttpServer())
+        .post('/combinations/attribute')
+        .query({
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          sound: 'healing',
+        })
+        .send({ userNickname: 'secretWinner', email: 'winner@example.com' })
+        .expect(201);
+
+      const response = await request(app.getHttpServer())
+        .get('/combinations/secret-status')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        found: true,
+        foundByNickname: 'secretWinner',
+      });
+    });
+  });
 });

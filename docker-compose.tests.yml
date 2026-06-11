@@ -70,6 +70,21 @@ services:
         condition: service_started
     profiles: ["e2e"]
 
+  pgweb:
+    image: sosedoff/pgweb:latest
+    container_name: test_pgweb
+    command: --bind=0.0.0.0 --listen=8081
+    environment:
+      DATABASE_URL: "postgres://test_user:test_password@postgres-test:5432/drawn_lights_game_test?sslmode=disable"
+    ports:
+      - "5052:8081"
+    networks:
+      - test_network
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    profiles: ["e2e"]
+
 networks:
   test_network:
     name: drawn_lights_game_test

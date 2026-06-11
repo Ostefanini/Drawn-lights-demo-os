@@ -62,23 +62,17 @@ services:
       timeout: 3s
       retries: 20
 
-  pgadmin:
-    image: dpage/pgadmin4:8
-    container_name: local_prod_pgadmin
-    env_file:
-      - .env.prod.local
+  pgweb:
+    image: sosedoff/pgweb:latest
+    container_name: local_prod_pgweb
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@local.prod}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin.local.prod}
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
     ports:
-      - "5051:80"
+      - "5051:8081"
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - prod_pgadmin_data:/var/lib/pgadmin
   
 volumes:
   prod_postgres_data:
-  prod_pgadmin_data:
 

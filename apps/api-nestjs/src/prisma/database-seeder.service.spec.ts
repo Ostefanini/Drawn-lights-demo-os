@@ -1,5 +1,6 @@
 import { AssetName, Sound } from '@drawn-lights-game/prisma';
 import { jest } from '@jest/globals';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseSeederService } from './database-seeder.service.js';
 import { PrismaService } from './prisma.service.js';
@@ -38,6 +39,7 @@ describe('DatabaseSeederService', () => {
       providers: [
         DatabaseSeederService,
         { provide: PrismaService, useValue: prisma },
+        { provide: ConfigService, useValue: { get: jest.fn(() => false) } },
       ],
     }).compile();
 
