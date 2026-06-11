@@ -27,6 +27,8 @@ jobs:
 
       - run: pnpm -v
       - run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Build packages
         run: |
@@ -136,6 +138,8 @@ jobs:
 
       - run: pnpm -v
       - run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Start E2E test stack
         run: pnpm run stack:tests:e2e
