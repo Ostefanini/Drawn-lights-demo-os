@@ -14,7 +14,41 @@ env:
   REPO: drawn-lights-game
 
 jobs:
-  ci:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - run: pnpm -v
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: |
+          pnpm -C packages/shared build
+          pnpm -C packages/prisma build
+
+      - name: Re-inject workspace packages
+        run: pnpm install --frozen-lockfile
+
+      - run: node -v
+      - run: pnpm --filter web-react exec eslint -v
+
+      - name: Lint (workspace)
+        run: pnpm lint
+
+      - name: Type check (workspace)
+        run: pnpm typecheck
+
+      - name: Unit tests (all apps)
+        run: pnpm -r --filter './apps/*' test:unit
+
+  integration-tests:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -36,8 +70,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          #cache: pnpm
-          #cache-dependency-path: pnpm-lock.yaml
 
       - uses: pnpm/action-setup@v4
 
@@ -56,15 +88,6 @@ jobs:
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
-      - run: node -v
-      - run: pnpm --filter web-react exec eslint -v
-
-      - name: Lint (workspace)
-        run: pnpm lint
-
-      - name: Type check (workspace)
-        run: pnpm typecheck
-
       - name: Prisma generate
         run: pnpm --filter @drawn-lights-game/prisma exec prisma generate --config prisma.config.ts
         env:
@@ -75,20 +98,47 @@ jobs:
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
-      - name: Tests & coverage badges
-        run: pnpm test:cov:badges
+      - name: Integration tests (api-nestjs)
+        run: pnpm --filter api-nestjs test:integration
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+      - name: Integration coverage badges
+        run: pnpm --filter api-nestjs test:integration:cov && npx jest-coverage-badges --output ./badges
+        working-directory: apps/api-nestjs
+        continue-on-error: true
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
+      - name: Unit coverage badges (api-expressjs)
+        run: pnpm run test:cov && npx jest-coverage-badges --output ./badges
+        working-directory: apps/api-expressjs
+        continue-on-error: true
+
+      - name: Commit coverage badges
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "apps/*/badges/*"
+          message: "chore: update coverage badges [skip ci]"
+          default_author: github_actions
+        continue-on-error: true
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - run: pnpm -v
+      - run: pnpm install --frozen-lockfile
 
       - name: Start E2E test stack
         run: pnpm run stack:tests:e2e
-        env:
-          DOCKER_HOST: unix:///var/run/docker.sock
 
       - name: Wait for E2E stack to be ready
         run: |
@@ -123,16 +173,8 @@ jobs:
         run: pnpm run stack:tests:e2e:down
         continue-on-error: true
 
-      - name: Commit coverage badges
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: "apps/*/badges/*"
-          message: "chore: update coverage badges [skip ci]"
-          default_author: github_actions
-        continue-on-error: true
-
   build_and_push:
-    needs: ci
+    needs: [unit-tests, integration-tests, e2e-tests]
     runs-on: ubuntu-latest
     environment: production
     strategy:
