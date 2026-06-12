@@ -113,14 +113,14 @@ jobs:
         run: pnpm exec jest --config ./test/jest-e2e.json --coverage --coverageDirectory=./coverage --runInBand && npx jest-coverage-badges --output ./badges
         working-directory: apps/api-nestjs
         env:
-          NODE_OPTIONS: '--experimental-vm-modules'
+          NODE_OPTIONS: "--experimental-vm-modules"
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Unit coverage badges (api-expressjs)
         run: pnpm exec jest --coverage && npx jest-coverage-badges --output ./badges
         working-directory: apps/api-expressjs
         env:
-          NODE_OPTIONS: '--experimental-vm-modules'
+          NODE_OPTIONS: "--experimental-vm-modules"
           NODE_ENV: test
           FORCE_SECRET_COMBINATION: TRIANGLE,SQUARE,CIRCLE,NULL,GLOSSY
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
@@ -135,7 +135,7 @@ jobs:
           push: origin badges --force
         continue-on-error: true
 
-  e2e-tests:
+  e2e-playwright-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -156,7 +156,7 @@ jobs:
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
-      - name: Start E2E test stack
+      - name: Start E2E Playwright test stack
         run: pnpm run stack:tests:e2e
 
       - name: Wait for E2E stack to be ready
@@ -175,8 +175,8 @@ jobs:
       - name: Install Playwright Browsers (chromium only)
         run: pnpm exec playwright install chromium --with-deps
 
-      - name: Run E2E tests
-        run: pnpm run test:e2e
+      - name: Run E2E Playwright tests
+        run: pnpm run test:e2e-playwright
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
@@ -186,13 +186,70 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Stop E2E test stack
+      - name: Stop E2E Playwright test stack
+        if: ${{ always() }}
+        run: pnpm run stack:tests:e2e:down
+        continue-on-error: true
+
+  e2e-gherkin-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Create .env.test from example
+        run: cp .env.test.example .env.test
+
+      - run: pnpm -v
+      - run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
+      - name: Start E2E Gherkin test stack
+        run: pnpm run stack:tests:e2e
+
+      - name: Wait for E2E stack to be ready
+        run: |
+          for i in {1..90}; do
+            if curl -f http://localhost:3004/apis/ping > /dev/null 2>&1; then
+              echo "✅ Stack is ready (frontend responding)"
+              exit 0
+            fi
+            echo "⏳ Waiting for stack... ($i/90)"
+            sleep 2
+          done
+          echo "❌ Stack failed to start"
+          exit 1
+
+      - name: Install Playwright Browsers (chromium only)
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Run E2E Gherkin tests
+        run: pnpm run test:e2e-gherkin
+
+      - name: Upload Cucumber Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cucumber-report
+          path: cucumber-report/
+          retention-days: 30
+
+      - name: Stop E2E Gherkin test stack
         if: ${{ always() }}
         run: pnpm run stack:tests:e2e:down
         continue-on-error: true
 
   build_and_push:
-    needs: [unit-tests, integration-tests, e2e-tests]
+    needs:
+      [unit-tests, integration-tests, e2e-playwright-tests, e2e-gherkin-tests]
     runs-on: ubuntu-latest
     environment: production
     strategy:
