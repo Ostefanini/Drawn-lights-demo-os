@@ -19,6 +19,34 @@ import { querySchema, type CombinationQuery } from './combinations.type.js';
 export class CombinationsController {
   constructor(private readonly combinationsService: CombinationsService) {}
 
+  @Get('/secret-status')
+  @ApiOperation({ summary: 'Get the status of the secret combination' })
+  @ApiResponse({
+    status: 200,
+    description: 'Secret combination status',
+    schema: {
+      type: 'object',
+      properties: {
+        found: { type: 'boolean' },
+        foundBy: { type: 'string', nullable: true },
+        combination: {
+          nullable: true,
+          type: 'object',
+          properties: {
+            assetOne: { type: 'string' },
+            assetTwo: { type: 'string', nullable: true },
+            assetThree: { type: 'string', nullable: true },
+            assetFour: { type: 'string', nullable: true },
+            sound: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  async getSecretStatus() {
+    return await this.combinationsService.getSecretStatus();
+  }
+
   @Get('/is-found')
   @ApiOperation({ summary: 'Check if a combination has been found' })
   @ApiQuery({ name: 'assetOne', required: true, description: 'First asset' })

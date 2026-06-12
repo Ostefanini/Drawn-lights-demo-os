@@ -1,5 +1,5 @@
 import { AssetName } from '@drawn-lights-demo/prisma';
-import { CombinationStatus } from '@drawn-lights-demo/shared';
+import { CombinationStatus, SecretStatus } from '@drawn-lights-demo/shared';
 import isProfane from '@idrisay/profanity-check';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CombinationsRepository } from './combinations.repository.js';
@@ -27,6 +27,40 @@ export class CombinationsService {
 
     this.logger.log(`Creating new combination for nickname: ${nickname} 🎉`);
     await this.combinationsRepository.createCombination(params, nickname);
+  }
+
+  // The secret combination is configured via environment variables.
+  // Example: SECRET_ASSET_ONE=cross SECRET_ASSET_TWO=circle SECRET_SOUND=healing
+  private getSecretQuery(): CombinationQuery | null {
+    const assetOne = process.env.SECRET_ASSET_ONE as AssetName | undefined;
+    const sound = process.env.SECRET_SOUND as CombinationQuery['sound'] | undefined;
+    if (!assetOne || !sound) return null;
+    return {
+      assetOne,
+      assetTwo: (process.env.SECRET_ASSET_TWO as AssetName) ?? undefined,
+      assetThree: (process.env.SECRET_ASSET_THREE as AssetName) ?? undefined,
+      assetFour: (process.env.SECRET_ASSET_FOUR as AssetName) ?? undefined,
+      sound,
+    };
+  }
+
+  public async getSecretStatus(): Promise<SecretStatus> {
+    const secretQuery = this.getSecretQuery();
+    if (!secretQuery) {
+      return { found: false, foundBy: null, combination: null };
+    }
+    const existing = await this.combinationsRepository.checkExistingCombination(secretQuery);
+    return {
+      found: !!existing,
+      foundBy: existing?.foundBy.nickname ?? null,
+      combination: {
+        assetOne: secretQuery.assetOne,
+        assetTwo: secretQuery.assetTwo ?? null,
+        assetThree: secretQuery.assetThree ?? null,
+        assetFour: secretQuery.assetFour ?? null,
+        sound: secretQuery.sound,
+      },
+    };
   }
 
   public async isCombinationFound(

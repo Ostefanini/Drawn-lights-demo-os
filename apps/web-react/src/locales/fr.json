@@ -23,6 +23,12 @@
     "success": "Succès",
     "discovery_recorded": "Votre découverte a été enregistrée !",
     "technologies_used": "Technologies utilisées",
+    "secret_not_found_title": "Personne n'a encore trouvé !",
+    "secret_not_found_subtitle": "La tablette de chocolat t'attend.",
+    "secret_cta_challenge": "Je relève le défi",
+    "secret_found_title": "La combinaison secrète a été trouvée !",
+    "secret_found_subtitle": "Le jeu est terminé — merci à tous d'avoir joué.",
+    "secret_cta_watch": "Voir le spectacle gagnant",
     "win_chocolate": "Et gagne une tablette de chocolat !",
     "validate_show": "Valide le spectacle",
     "calculate": "Calcule"

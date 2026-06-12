@@ -15,7 +15,7 @@ import {
 import {
     type Asset, type CombinationStatus,
     demoPlaystationModels, type Sound,
-    type UserListHighscore
+    type UserListHighscore, type SecretStatus,
 } from "@drawn-lights-demo/shared";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 
 import { AssetCard } from "./components/AssetCard.js";
 import { ComputeMenu } from "./components/ComputeMenu.js";
+import { SecretStatusBlock } from "./components/SecretStatusBlock.js";
 import { HighscoreTable } from "./components/HighscoreTable.js";
 import { ResultSection } from "./components/ResultSection.js";
 import { TechnologiesSection } from "./components/TechnologiesSection.js";
@@ -47,20 +48,23 @@ function App() {
   const [foundBy, setFoundBy] = useState<string | null>(null);
   const [showScore, setShowScore] = useState(false);
   const [highscore, setHighscore] = useState<UserListHighscore[]>([]);
+  const [secretStatus, setSecretStatus] = useState<SecretStatus | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
-      const [{ data: assetsData }, { data: usersData }] = await Promise.all([
+      const [{ data: assetsData }, { data: usersData }, { data: secretData }] = await Promise.all([
         api.get<Asset[]>("/assets"),
-        api.get<UserListHighscore[]>("/users")
+        api.get<UserListHighscore[]>("/users"),
+        api.get<SecretStatus>("/combinations/secret-status"),
       ]);
 
       if (!cancelled) {
         setAssets(assetsData);
         setUsers(usersData.map(({ nickname }) => nickname));
         setHighscore(usersData);
+        setSecretStatus(secretData);
         setLoading(false);
       }
     })().catch((e) => {
@@ -129,6 +133,8 @@ function App() {
 
         <TechnologiesSection />
 
+        {secretStatus && <SecretStatusBlock status={secretStatus} />}
+
         <Text fs="italic" ta="center">{t('try_discovering')}</Text>
         <Center style={{ marginTop: "8px" }}><Button onClick={() => setShowScore((prev) => !prev)}>{showScore ? t('hide_scores') : t('show_scores')}</Button></Center>
         <div style={{ marginTop: "24px" }}>
@@ -173,6 +179,7 @@ function App() {
               {assets.length > 0 && (
                 <>
                   <SimpleGrid
+                    id="formations-section"
                     cols={{ xs: 1, sm: 2, md: 3, lg: 4 }}
                     spacing="md"
                     style={{ margin: "24px" }}

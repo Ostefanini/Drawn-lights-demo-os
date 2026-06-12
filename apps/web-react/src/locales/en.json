@@ -22,5 +22,11 @@
     "save": "Save",
     "success": "Success",
     "discovery_recorded": "Your discovery has been recorded!",
-    "technologies_used": "Technologies used"
+    "technologies_used": "Technologies used",
+    "secret_not_found_title": "Nobody has found it yet!",
+    "secret_not_found_subtitle": "The chocolate bar is waiting for you.",
+    "secret_cta_challenge": "I'm up for the challenge",
+    "secret_found_title": "The secret combination has been found!",
+    "secret_found_subtitle": "The game is over — thanks for playing.",
+    "secret_cta_watch": "Watch the winning show"
 }
