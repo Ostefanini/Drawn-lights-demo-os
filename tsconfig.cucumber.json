@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "types": ["node"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "tests-e2e-playwright/actions/**/*.ts",
+    "tests-e2e-gherkin/**/*.ts"
+  ],
+  "ts-node": {
+    "transpileOnly": true
+  }
+}
