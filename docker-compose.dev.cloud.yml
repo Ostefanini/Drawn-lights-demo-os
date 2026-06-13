@@ -15,8 +15,7 @@ services:
     image: ghcr.io/ostefanini/drawn-lights-game/web-react:dev-cloud-latest
     container_name: "dev_cloud_web"
     volumes:
-      - ${CERTS_DIR}:/certs:ro
-      - ./nginx.dev.cloud.generated.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.dev.cloud.conf:/etc/nginx/nginx.conf:ro
     expose:
       - "80"
     networks:
@@ -25,8 +24,6 @@ services:
           - dev-game-web-react
     env_file:
       - .env.dev.cloud
-    environment:
-      - CERTS_DIR=${CERTS_DIR}
     depends_on:
       api:
         condition: service_started

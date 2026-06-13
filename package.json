@@ -22,7 +22,7 @@
         "stack:tests:e2e": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml --profile e2e up -d --build",
         "stack:tests:e2e:down": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml --profile e2e down --remove-orphans",
         "stack:tests:down": "dotenv -e .env.test -- docker compose -f docker-compose.tests.yml down --remove-orphans",
-        "stack:dev:cloud": "dotenv -e .env.dev.cloud -- sh -c 'sed \"s|\\${SERVER_NAME}|$SERVER_NAME|g\" nginx.dev.cloud.conf > nginx.dev.cloud.generated.conf && docker compose -f docker-compose.dev.cloud.yml -f docker-compose.dev.cloud.ports.yml up -d --wait'",
+        "stack:dev:cloud": "dotenv -e .env.dev.cloud -- docker compose -f docker-compose.dev.cloud.yml up -d --wait",
         "stack:dev:cloud:down": "dotenv -e .env.dev.cloud -- docker compose -f docker-compose.dev.cloud.yml down"
     },
     "devDependencies": {
