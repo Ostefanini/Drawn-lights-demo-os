@@ -6,7 +6,7 @@ services:
     env_file:
       - .env.dev.cloud
     networks:
-      - public
+      - internal
     depends_on:
       postgres:
         condition: service_healthy
@@ -19,7 +19,7 @@ services:
     expose:
       - "80"
     networks:
-      public:
+      internal:
         aliases:
           - dev-game-web-react
     env_file:
@@ -36,7 +36,7 @@ services:
     ports:
       - 127.0.0.1:4001:4000
     networks:
-      - public
+      - internal
     depends_on:
       postgres:
         condition: service_healthy
@@ -49,7 +49,7 @@ services:
     env_file:
       - .env.dev.cloud
     networks:
-      - public
+      - internal
     environment:
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
@@ -72,7 +72,7 @@ services:
     ports:
       - "127.0.0.1:5051:8081"
     networks:
-      - public
+      - internal
     depends_on:
       postgres:
         condition: service_healthy
@@ -81,5 +81,7 @@ volumes:
   dev_cloud_postgres_data:
 
 networks:
+  internal:
+    driver: bridge
   public:
     external: true
