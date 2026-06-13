@@ -45,7 +45,7 @@ services:
       migrate:
         condition: service_completed_successfully
 
-  postgres:
+  postgres-dev:
     image: postgres:16
     container_name: dev_cloud_postgres  
     env_file:
@@ -53,7 +53,7 @@ services:
     networks:
       public:
         aliases:
-          - postgres
+          - postgres-dev
     environment:
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
@@ -78,7 +78,7 @@ services:
     networks:
       - public
     depends_on:
-      postgres:
+      postgres-dev:
         condition: service_healthy
   
 volumes:
