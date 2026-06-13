@@ -40,7 +40,7 @@ services:
         aliases:
           - api
     depends_on:
-      postgres:
+      postgres-dev:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
