@@ -92,6 +92,6 @@ jobs:
             set -e
             cd "game_dev"
             git pull
-            dotenv -e .env.dev.cloud -- docker compose -f docker-compose.dev.cloud.yml pull
-            dotenv -e .env.dev.cloud -- docker compose -f docker-compose.dev.cloud.yml up -d --force-recreate --remove-orphans
+            /home/deploy/.nvm/versions/node/v20.18.3/bin/dotenv -e .env.dev.cloud -- docker compose -f docker-compose.dev.cloud.yml pull
+            /home/deploy/.nvm/versions/node/v20.18.3/bin/dotenv -e .env.dev.cloud -- docker compose -f docker-compose.dev.cloud.yml up -d --force-recreate --remove-orphans
             docker image prune -f
