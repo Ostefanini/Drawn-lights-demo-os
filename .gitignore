@@ -39,6 +39,9 @@ pids
 !.env.*example
 *.local
 
+# Generated configs
+*.generated.conf
+
 # Certificates
 certs/*
 !certs/.gitkeep

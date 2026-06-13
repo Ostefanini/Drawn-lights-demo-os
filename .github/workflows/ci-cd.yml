@@ -26,8 +26,8 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: Create .env.dev from example
-        run: cp .env.test.example .env.dev
+      - name: Create .env.dev.local from example
+        run: cp .env.test.example .env.dev.local
 
       - run: pnpm -v
       - run: pnpm install --frozen-lockfile
