@@ -28,7 +28,7 @@ jobs:
   build_and_push:
     needs: authorize
     runs-on: ubuntu-latest
-    environment: production
+    environment: dev-cloud
     strategy:
       fail-fast: false
       matrix:
@@ -79,7 +79,7 @@ jobs:
   deploy:
     needs: build_and_push
     runs-on: ubuntu-latest
-    environment: production
+    environment: dev-cloud
     steps:
       - name: Deploy dev-cloud stack (SSH -> docker compose)
         uses: appleboy/ssh-action@v1.0.3
