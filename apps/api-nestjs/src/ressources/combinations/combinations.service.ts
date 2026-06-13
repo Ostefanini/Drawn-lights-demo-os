@@ -1,5 +1,8 @@
 import { AssetName } from '@drawn-lights-game/prisma';
-import { CombinationStatus } from '@drawn-lights-game/shared';
+import {
+  CombinationStatus,
+  SecretCombinationStatus,
+} from '@drawn-lights-game/shared';
 import isProfane from '@idrisay/profanity-check';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CombinationsRepository } from './combinations.repository.js';
@@ -9,8 +12,6 @@ import { SecretCombinationsRepository } from './secret-combinations.repository.j
 const ERRORS = {
   COMBINATION_EXISTS: 'Combination already exists',
   NICKNAME_PROFANE: 'Nickname contains profanity',
-  EMAIL_SECRET_ONLY:
-    'Email can only be provided if the combination is the secret one',
   SECRET_MARK_FAILED: 'Failed to mark the secret combination as found.',
   ASSETS_NOT_FOUND: 'One or more assets do not exist in the database',
   ASSETS_NOT_CONTINUOUS: 'Assets must be continuous',
@@ -38,38 +39,32 @@ export class CombinationsService {
       throw new BadRequestException(ERRORS.NICKNAME_PROFANE);
     }
 
-    if (!email) {
+    const isSecretCombinationFound =
+      await this.secretCombinationsRepository.isSecretCombinationFound(params);
+
+    if (isSecretCombinationFound) {
       this.logger.log(
-        `Creating non-secret new combination for nickname: ${nickname} 🎉`,
+        `Marking secret combination as found for nickname: ${nickname} 🎉`,
       );
-      await this.combinationsRepository.createCombination(params, nickname);
+      const result =
+        await this.secretCombinationsRepository.markSecretCombinationAsFound(
+          params,
+          nickname,
+          email,
+        );
+      if (!result) {
+        throw new BadRequestException(ERRORS.SECRET_MARK_FAILED);
+      }
       return;
     }
 
-    const isSecretCombinationFound =
-      await this.secretCombinationsRepository.isSecretCombinationFound(params);
-    if (!isSecretCombinationFound) {
-      throw new BadRequestException(ERRORS.EMAIL_SECRET_ONLY);
-    }
-
     this.logger.log(
-      `Marking secret combination as found for nickname: ${nickname} 🎉`,
+      `Creating non-secret new combination for nickname: ${nickname} 🎉`,
     );
-    const result =
-      await this.secretCombinationsRepository.markSecretCombinationAsFound(
-        params,
-        nickname,
-        email,
-      );
-    if (!result) {
-      throw new BadRequestException(ERRORS.SECRET_MARK_FAILED);
-    }
+    await this.combinationsRepository.createCombination(params, nickname);
   }
 
-  public async getSecretCombinationStatus(): Promise<{
-    found: boolean;
-    foundByNickname: string | null;
-  }> {
+  public async getSecretCombinationStatus(): Promise<SecretCombinationStatus> {
     return this.secretCombinationsRepository.getSecretCombinationStatus();
   }
 

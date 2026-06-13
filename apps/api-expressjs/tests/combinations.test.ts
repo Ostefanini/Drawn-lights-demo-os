@@ -1,9 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
 import request from "supertest";
 
-import { prismaMock } from "./setup/prisma.mock.js";
 import app from "../src/index.js";
 import { AssetName, Sound } from "../src/services/prisma.js";
+import { prismaMock } from "./setup/prisma.mock.js";
 
 describe('Combinations endpoints', () => {
     const validAssets = [
@@ -204,6 +204,27 @@ describe('Combinations endpoints', () => {
             expect(response.body).toHaveProperty('error', 'Nickname contains inappropriate language');
         });
 
+        test('responds with 201 when discovering the secret combination without email', async () => {
+            prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
+            prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce({ id: 'secret1' } as any);
+            prismaMock.user.upsert.calledWith(expect.any(Object) as any).mockResolvedValueOnce({ id: 'user1', nickname: 'SecretFinder' } as any);
+            prismaMock.secretCombination.update.calledWith(expect.any(Object) as any).mockResolvedValueOnce({} as any);
+
+            const response = await request(app)
+                .post('/combinations/attribute')
+                .query({
+                    assetOne: AssetName.TRIANGLE,
+                    assetTwo: AssetName.SQUARE,
+                    sound: 'none'
+                })
+                .send({
+                    userNickname: 'SecretFinder'
+                });
+
+            expect(response.status).toBe(201);
+        });
+
         test('responds with 201 when discovering the secret combination with email', async () => {
             prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
             prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
@@ -226,10 +247,11 @@ describe('Combinations endpoints', () => {
             expect(response.status).toBe(201);
         });
 
-        test('responds with 400 when email is provided but params do not match the secret combination', async () => {
+        test('responds with 201 when submitting a non-secret combination with email (email is ignored)', async () => {
             prismaMock.asset.findMany.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validAssets as any);
             prismaMock.combination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
             prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+            prismaMock.combination.create.calledWith(expect.any(Object) as any).mockResolvedValueOnce(validCombination as any);
 
             const response = await request(app)
                 .post('/combinations/attribute')
@@ -239,12 +261,81 @@ describe('Combinations endpoints', () => {
                     sound: 'none'
                 })
                 .send({
-                    userNickname: 'Player1',
-                    email: 'player1@example.com'
+                    userNickname: 'RegularPlayer',
+                    email: 'player@example.com'
                 });
 
-            expect(response.status).toBe(400);
-            expect(response.body).toHaveProperty('error', 'Email can only be provided if the combination is the secret one');
+            expect(response.status).toBe(201);
+        });
+    });
+
+    describe('GET /combinations/secret-status', () => {
+        test('responds with 200 and found: false when secret combination has not been claimed', async () => {
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce(null);
+
+            const response = await request(app)
+                .get('/combinations/secret-status');
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({
+                found: false,
+                foundByNickname: null,
+                winningCombination: null,
+            });
+        });
+
+        test('responds with 200 and found: true with winning combination after secret combination is claimed', async () => {
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce({
+                id: 'secret1',
+                assetOne: AssetName.TRIANGLE,
+                assetTwo: AssetName.SQUARE,
+                assetThree: null,
+                assetFour: null,
+                sound: Sound.NONE,
+                foundById: 'user1',
+                foundBy: {
+                    nickname: 'secretWinner'
+                }
+            } as any);
+
+            const response = await request(app)
+                .get('/combinations/secret-status');
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({
+                found: true,
+                foundByNickname: 'secretWinner',
+                winningCombination: {
+                    assetOne: AssetName.TRIANGLE,
+                    assetTwo: AssetName.SQUARE,
+                    assetThree: null,
+                    assetFour: null,
+                    sound: Sound.NONE,
+                },
+            });
+        });
+
+        test('responds with 200 and found: true with null winning combination when secret exists but foundById is null', async () => {
+            prismaMock.secretCombination.findFirst.calledWith(expect.any(Object) as any).mockResolvedValueOnce({
+                id: 'secret1',
+                assetOne: AssetName.TRIANGLE,
+                assetTwo: AssetName.SQUARE,
+                assetThree: null,
+                assetFour: null,
+                sound: Sound.NONE,
+                foundById: null,
+                foundBy: null
+            } as any);
+
+            const response = await request(app)
+                .get('/combinations/secret-status');
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({
+                found: false,
+                foundByNickname: null,
+                winningCombination: null,
+            });
         });
     });
 });
