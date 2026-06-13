@@ -20,7 +20,9 @@ services:
     expose:
       - "80"
     networks:
-      - public
+      public:
+        aliases:
+          - dev-game-web-react
     env_file:
       - .env.dev.cloud
     environment:
