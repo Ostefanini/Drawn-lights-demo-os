@@ -8,7 +8,7 @@ services:
     networks:
       - public
     depends_on:
-      postgres:
+      postgres-dev:
         condition: service_healthy
 
   web:
