@@ -181,8 +181,24 @@ function App() {
 
   if (loading) return <div>{t('loading')}</div>;
 
+  const isProduction = window.location.hostname === "game.drawnlights.show";
+
   return (
     <>
+      {!isProduction && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '10px',
+            backgroundColor: '#FFD700',
+            zIndex: 9999,
+          }}
+        />
+      )}
+
       <div style={{ position: 'fixed', top: 20, left: 20, display: 'flex', gap: 10, zIndex: 1000 }}>
         <div
           onClick={() => void i18n.changeLanguage('fr-FR')}

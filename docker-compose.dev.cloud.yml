@@ -1,42 +1,43 @@
-name: drawn_lights_game-prod-local
+name: drawn_lights_game-dev-cloud
 
 services:
   migrate:
-    build:
-      context: .
-      dockerfile: packages/prisma/Dockerfile
+    image: ghcr.io/ostefanini/drawn-lights-game/prisma-migrate:dev-cloud-latest
     env_file:
-      - .env.prod.local
+      - .env.dev.cloud
+    networks:
+      - public
     depends_on:
       postgres:
         condition: service_healthy
 
   web:
-    build: 
-      context: .
-      dockerfile: apps/web-react/Dockerfile
-    # dockerfile: apps/web-nextjs/Dockerfile
-    container_name: "local_prod_web"
+    image: ghcr.io/ostefanini/drawn-lights-game/web-react:dev-cloud-latest
+    container_name: "dev_cloud_web"
     volumes:
-      - ./certs:/certs:ro
-      - ./nginx.prod.local.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - 80:80
-      - 443:443
+      - ${CERTS_DIR}:/certs:ro
+      - ./nginx.dev.cloud.generated.conf:/etc/nginx/nginx.conf:ro
+    expose:
+      - "80"
+    networks:
+      - public
+    env_file:
+      - .env.dev.cloud
+    environment:
+      - CERTS_DIR=${CERTS_DIR}
     depends_on:
       api:
         condition: service_started
 
   api:
-    build: 
-      context: .
-      #dockerfile: apps/api-expressjs/Dockerfile
-      dockerfile: apps/api-nestjs/Dockerfile
-    container_name: "local_prod_api"
+    image: ghcr.io/ostefanini/drawn-lights-game/api-nestjs:dev-cloud-latest
+    container_name: "dev_cloud_api"
     env_file:
-      - .env.prod.local
+      - .env.dev.cloud
     ports:
-      - 127.0.0.1:4000:4000
+      - 127.0.0.1:4001:4000
+    networks:
+      - public
     depends_on:
       postgres:
         condition: service_healthy
@@ -45,9 +46,11 @@ services:
 
   postgres:
     image: postgres:16
-    container_name: local_prod_postgres  
+    container_name: dev_cloud_postgres  
     env_file:
-      - .env.prod.local
+      - .env.dev.cloud
+    networks:
+      - public
     environment:
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
@@ -55,7 +58,7 @@ services:
     ports:
       - "127.0.0.1:5434:5432"
     volumes:
-      - prod_postgres_data:/var/lib/postgresql/data
+      - dev_cloud_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"${POSTGRES_USER}\" -d \"${POSTGRES_DB}\""]
       interval: 5s
@@ -64,15 +67,20 @@ services:
 
   pgweb:
     image: sosedoff/pgweb:latest
-    container_name: local_prod_pgweb
+    container_name: dev_cloud_pgweb
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
     ports:
-      - "5051:8081"
+      - "127.0.0.1:5051:8081"
+    networks:
+      - public
     depends_on:
       postgres:
         condition: service_healthy
   
 volumes:
-  prod_postgres_data:
+  dev_cloud_postgres_data:
 
+networks:
+  public:
+    external: true

@@ -17,7 +17,7 @@ import { VideoModule } from './ressources/video/video.module.js';
       ignoreEnvFile:
         process.env.NODE_ENV === 'test' ||
         process.env.NODE_ENV === 'production',
-      envFilePath: '../../.env.dev',
+      envFilePath: '../../.env.dev.local',
     }),
     PrismaModule,
     AssetsModule,
