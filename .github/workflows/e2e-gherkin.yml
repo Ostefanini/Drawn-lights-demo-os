@@ -38,12 +38,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Create .env.test from example
-        run: cp .env.test.example .env.test
-
       - run: pnpm install --frozen-lockfile
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+
+      - name: Create .env.test from example
+        run: cp .env.test.example .env.test
 
       - name: Start E2E Gherkin test stack
         run: pnpm run stack:tests:e2e
