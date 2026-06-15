@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if user is authorized
-        if: github.actor != 'ostefanini'
+        if: github.actor != 'ostefanini' && github.actor != 'karinemajda'
         run: |
-          echo "❌ Only ostefanini can trigger this workflow"
+          echo "❌ Only ostefanini and karinemajda can trigger this workflow"
           exit 1
       - name: ✅ Authorization passed
         run: echo "User ostefanini is authorized"
