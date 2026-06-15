@@ -1,35 +1,37 @@
 import {
-    type Asset, type CombinationStatus, combinationStatusSchema,
-    demoPlaystationModels, type Sound,
-    type UserListHighscore
+  combinationStatusSchema,
+  demoPlaystationModels,
+  type Asset, type CombinationStatus, type SecretCombinationStatus,
+  type Sound,
+  type UserListHighscore
 } from "@drawn-lights-game/shared";
 import {
-    Button,
-    Center,
-    Group,
-    Radio,
-    SimpleGrid,
-    Stack,
-    Text,
-    Title
+  Button,
+  Center,
+  Group,
+  Radio,
+  SimpleGrid,
+  Stack,
+  Title
 } from '@mantine/core';
 import '@mantine/core/styles.css';
 import {
-    IconBrandFigma,
-    IconBrandGithub,
-    IconBrandNotion,
-    IconDatabase
+  IconBrandFigma,
+  IconBrandGithub,
+  IconBrandNotion,
+  IconDatabase
 } from "@tabler/icons-react";
 import { emojiBlasts } from "emoji-blast";
 import { serialize } from 'object-to-formdata';
 import { useEffect, useRef, useState } from "react";
 import {
-    CircleMenu
+  CircleMenu
 } from "react-circular-menu";
 import { useTranslation } from "react-i18next";
 
 import { AboutModal } from "./components/AboutModal.js";
 import { AssetCard } from "./components/AssetCard.js";
+import { CombinationStatusBlock } from "./components/CombinationStatusBlock.js";
 import { ComputeMenu } from "./components/ComputeMenu.js";
 import { HighscoreTable } from "./components/HighscoreTable.js";
 import { renderCircleMenuItem } from "./components/renderCircleMenuItem.js";
@@ -59,21 +61,24 @@ function App() {
   const [computationResult, setComputationResult] = useState<CombinationStatus | null>(null);
   const [showScore, setShowScore] = useState(false);
   const [highscore, setHighscore] = useState<UserListHighscore[]>([]);
+  const [secretStatus, setSecretStatus] = useState<SecretCombinationStatus | null>(null);
   const introRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
-      const [{ data: assetsData }, { data: usersData }] = await Promise.all([
+      const [{ data: assetsData }, { data: usersData }, { data: secretData }] = await Promise.all([
         api.get<Asset[]>("/assets"),
-        api.get<UserListHighscore[]>("/users")
+        api.get<UserListHighscore[]>("/users"),
+        api.get<SecretCombinationStatus>("/combinations/secret-status")
       ]);
 
       if (!cancelled) {
         setAssets(assetsData);
         setUsers(usersData.map(({ nickname }) => nickname));
         setHighscore(usersData);
+        setSecretStatus(secretData);
         setLoading(false);
       }
     })().catch((e) => {
@@ -107,6 +112,15 @@ function App() {
     setTimeout(cancel, 600);
   }, [emojisInstructions])
 
+  const loadSecretStatus = async () => {
+    try {
+      const { data } = await api.get<SecretCombinationStatus>("/combinations/secret-status");
+      setSecretStatus(data);
+    } catch (e) {
+      console.error("Failed to load secret status", e);
+    }
+  };
+
   const reset = () => {
     setShowVideo(null);
     setPlaylist([]);
@@ -118,6 +132,7 @@ function App() {
       try {
         const { data: assetsData } = await api.get<Asset[]>("/assets");
         setAssets(assetsData);
+        await loadSecretStatus();
       } catch (e) {
         console.error("Failed to reload assets", e);
       }
@@ -174,6 +189,9 @@ function App() {
           document.getElementById("videoFrame")?.scrollIntoView({ behavior: "smooth" });
         }, 100);
       }
+      
+      // Charger le secret status après la validation
+      await loadSecretStatus();
     } catch (e) {
       console.error("Failed to compute show", e);
     }
@@ -271,11 +289,12 @@ function App() {
 
         <TeamInformations setOpenAboutModal={setOpenAboutModal} />
         <AboutModal opened={openAboutModal} onClose={() => setOpenAboutModal(false)} />
+        <CombinationStatusBlock 
+          secretStatus={secretStatus} 
+          showScores={showScore}
+          onToggleScores={() => setShowScore((prev) => !prev)}
+        />
             
-        {/* <TechnologiesSection /> */}
-
-        <Text ref={introRef} style={{marginTop: "16px"}} fs="italic" ta="center">{t('try_discovering')}</Text>
-        <Center style={{ marginTop: "8px" }}><Button onClick={() => setShowScore((prev) => !prev)}>{showScore ? t('hide_scores') : t('show_scores')}</Button></Center>
         <div style={{ marginTop: "24px" }}>
           {!showScore && (
             <div>

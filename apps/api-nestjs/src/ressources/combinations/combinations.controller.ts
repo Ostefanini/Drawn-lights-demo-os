@@ -111,6 +111,20 @@ export class CombinationsController {
       properties: {
         found: { type: 'boolean' },
         foundByNickname: { type: 'string', nullable: true },
+        winningCombination: {
+          type: 'object',
+          nullable: true,
+          properties: {
+            assetOne: { type: 'string' },
+            assetTwo: { type: 'string', nullable: true },
+            assetThree: { type: 'string', nullable: true },
+            assetFour: { type: 'string', nullable: true },
+            sound: {
+              type: 'string',
+              enum: ['healing', 'emerveille', 'glossy', 'none'],
+            },
+          },
+        },
       },
     },
   })

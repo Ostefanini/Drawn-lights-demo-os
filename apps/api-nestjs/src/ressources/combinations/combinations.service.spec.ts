@@ -149,7 +149,7 @@ describe('CombinationsService', () => {
       expect(repository.createCombination).not.toHaveBeenCalled();
     });
 
-    it('should throw BadRequestException when email is provided but params do not match the secret combination', async () => {
+    it('should create a regular combination when email is provided but params do not match the secret combination', async () => {
       const params: CombinationQuery = {
         assetOne: AssetName.TRIANGLE,
         sound: 'healing',
@@ -164,14 +164,14 @@ describe('CombinationsService', () => {
       secretCombinationsRepository.isSecretCombinationFound.mockResolvedValue(
         false,
       );
+      repository.createCombination.mockResolvedValue({} as any);
 
-      await expect(
-        service.attributeCombination(params, nickname, email),
-      ).rejects.toThrow(BadRequestException);
-      await expect(
-        service.attributeCombination(params, nickname, email),
-      ).rejects.toThrow(
-        'Email can only be provided if the combination is the secret one',
+      await service.attributeCombination(params, nickname, email);
+
+      // Should create a regular combination, ignoring the email
+      expect(repository.createCombination).toHaveBeenCalledWith(
+        params,
+        nickname,
       );
     });
 
@@ -295,12 +295,17 @@ describe('CombinationsService', () => {
         {
           found: false,
           foundByNickname: null,
+          winningCombination: null,
         },
       );
 
       const result = await service.getSecretCombinationStatus();
 
-      expect(result).toEqual({ found: false, foundByNickname: null });
+      expect(result).toEqual({
+        found: false,
+        foundByNickname: null,
+        winningCombination: null,
+      });
       expect(
         secretCombinationsRepository.getSecretCombinationStatus,
       ).toHaveBeenCalled();
@@ -311,12 +316,29 @@ describe('CombinationsService', () => {
         {
           found: true,
           foundByNickname: 'heroPlayer',
+          winningCombination: {
+            assetOne: 'TRIANGLE',
+            assetTwo: 'SQUARE',
+            assetThree: null,
+            assetFour: null,
+            sound: 'healing',
+          },
         },
       );
 
       const result = await service.getSecretCombinationStatus();
 
-      expect(result).toEqual({ found: true, foundByNickname: 'heroPlayer' });
+      expect(result).toEqual({
+        found: true,
+        foundByNickname: 'heroPlayer',
+        winningCombination: {
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          assetThree: null,
+          assetFour: null,
+          sound: 'healing',
+        },
+      });
     });
   });
 });

@@ -1,4 +1,4 @@
-import { CombinationStatus, combinationAttributionBodySchema } from "@drawn-lights-game/shared";
+import { CombinationStatus, SecretCombinationStatus, combinationAttributionBodySchema } from "@drawn-lights-game/shared";
 import isProfane from '@idrisay/profanity-check';
 import express, { Request, Response } from "express";
 
@@ -31,6 +31,43 @@ combinationsRouter.get("/is-found",
     }
 );
 
+combinationsRouter.get("/secret-status",
+    async (_req: Request, res: Response) => {
+        try {
+            const secret = await prisma.secretCombination.findFirst({
+                include: { foundBy: true },
+            });
+
+            if (!secret) {
+                const data: SecretCombinationStatus = {
+                    found: false,
+                    foundByNickname: null,
+                    winningCombination: null,
+                };
+                res.json(data);
+                return;
+            }
+
+            const isFound = secret.foundById !== null;
+            const data: SecretCombinationStatus = {
+                found: isFound,
+                foundByNickname: secret.foundBy?.nickname ?? null,
+                winningCombination: isFound ? {
+                    assetOne: secret.assetOne,
+                    assetTwo: secret.assetTwo,
+                    assetThree: secret.assetThree,
+                    assetFour: secret.assetFour,
+                    sound: secret.sound,
+                } : null,
+            };
+            res.json(data);
+        } catch (error) {
+            console.error(error);
+            res.sendStatus(500);
+        }
+    }
+);
+
 combinationsRouter.post("/attribute",
     validateCombinationQuery,
     checkCombination,
@@ -52,24 +89,21 @@ combinationsRouter.post("/attribute",
                 return;
             }
 
-            if (body.data.email) {
-                const secret = await prisma.secretCombination.findFirst({
-                    where: {
-                        assetOne: res.locals.assetOne,
-                        assetTwo: res.locals.assetTwo ?? null,
-                        assetThree: res.locals.assetThree ?? null,
-                        assetFour: res.locals.assetFour ?? null,
-                        sound: formatSound(res.locals.sound || "none"),
-                        foundById: null,
-                    },
-                    select: { id: true },
-                });
+            // Check if the combination matches the secret combination
+            const secret = await prisma.secretCombination.findFirst({
+                where: {
+                    assetOne: res.locals.assetOne,
+                    assetTwo: res.locals.assetTwo ?? null,
+                    assetThree: res.locals.assetThree ?? null,
+                    assetFour: res.locals.assetFour ?? null,
+                    sound: formatSound(res.locals.sound || "none"),
+                    foundById: null,
+                },
+                select: { id: true },
+            });
 
-                if (!secret) {
-                    res.status(400).json({ error: "Email can only be provided if the combination is the secret one" });
-                    return;
-                }
-
+            if (secret) {
+                // This is the secret combination, mark it as found
                 const user = await prisma.user.upsert({
                     where: { nickname: body.data.userNickname },
                     create: { nickname: body.data.userNickname },
@@ -80,7 +114,7 @@ combinationsRouter.post("/attribute",
                     where: { id: secret.id },
                     data: {
                         foundById: user.id,
-                        foundByEmail: body.data.email,
+                        foundByEmail: body.data.email ?? null,
                         foundAt: new Date(),
                     },
                 });
@@ -89,6 +123,7 @@ combinationsRouter.post("/attribute",
                 return;
             }
 
+            // This is a regular combination, create it
             await prisma.combination.create({
                 data: {
                     assetOne: res.locals.assetOne,
