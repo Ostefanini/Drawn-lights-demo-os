@@ -402,11 +402,44 @@ describe('CombinationsController (e2e)', () => {
         .get('/combinations/secret-status')
         .expect(200);
 
-      expect(response.body).toEqual({ found: false, foundByNickname: null });
+      expect(response.body).toEqual({
+        found: false,
+        foundByNickname: null,
+        winningCombination: null,
+      });
     });
 
-    it('should return found:true with the nickname after the secret combination is claimed', async () => {
-      // Claim the secret combination (TRIANGLE + SQUARE with HEALING sound)
+    it('should return found:true with the nickname and winning combination after the secret combination is claimed without email', async () => {
+      // Claim the secret combination (TRIANGLE + SQUARE with HEALING sound) without email
+      await request(app.getHttpServer())
+        .post('/combinations/attribute')
+        .query({
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          sound: 'healing',
+        })
+        .send({ userNickname: 'secretWinner' })
+        .expect(201);
+
+      const response = await request(app.getHttpServer())
+        .get('/combinations/secret-status')
+        .expect(200);
+
+      expect(response.body).toEqual({
+        found: true,
+        foundByNickname: 'secretWinner',
+        winningCombination: {
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          assetThree: null,
+          assetFour: null,
+          sound: 'healing',
+        },
+      });
+    });
+
+    it('should return found:true with the nickname and winning combination after the secret combination is claimed with email', async () => {
+      // Claim the secret combination (TRIANGLE + SQUARE with HEALING sound) with email
       await request(app.getHttpServer())
         .post('/combinations/attribute')
         .query({
@@ -424,7 +457,43 @@ describe('CombinationsController (e2e)', () => {
       expect(response.body).toEqual({
         found: true,
         foundByNickname: 'secretWinner',
+        winningCombination: {
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          assetThree: null,
+          assetFour: null,
+          sound: 'healing',
+        },
       });
+    });
+
+    it('should create a regular combination when submitting a non-secret combination with email', async () => {
+      // Submit a non-secret combination with email (email is ignored)
+      await request(app.getHttpServer())
+        .post('/combinations/attribute')
+        .query({
+          assetOne: 'CIRCLE',
+          sound: 'none',
+        })
+        .send({ userNickname: 'regularPlayer', email: 'someone@example.com' })
+        .expect(201);
+
+      // Verify it was created as a regular combination, not a secret one
+      const combination = await prismaTest.combination.findFirst({
+        where: {
+          assetOne: AssetName.CIRCLE,
+          sound: Sound.NONE,
+        },
+        include: { foundBy: true },
+      });
+      expect(combination).toBeTruthy();
+      expect(combination?.foundBy.nickname).toBe('regularPlayer');
+
+      // Verify the secret combination status is still not found
+      const secretStatus = await request(app.getHttpServer())
+        .get('/combinations/secret-status')
+        .expect(200);
+      expect(secretStatus.body.found).toBe(false);
     });
   });
 });

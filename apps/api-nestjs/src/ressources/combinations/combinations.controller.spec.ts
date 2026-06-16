@@ -106,11 +106,16 @@ describe('CombinationsController', () => {
       service.getSecretCombinationStatus.mockResolvedValue({
         found: false,
         foundByNickname: null,
+        winningCombination: null,
       });
 
       const result = await controller.getSecretCombinationStatus();
 
-      expect(result).toEqual({ found: false, foundByNickname: null });
+      expect(result).toEqual({
+        found: false,
+        foundByNickname: null,
+        winningCombination: null,
+      });
       expect(service.getSecretCombinationStatus).toHaveBeenCalled();
     });
 
@@ -118,11 +123,28 @@ describe('CombinationsController', () => {
       service.getSecretCombinationStatus.mockResolvedValue({
         found: true,
         foundByNickname: 'heroPlayer',
+        winningCombination: {
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          assetThree: null,
+          assetFour: null,
+          sound: 'healing',
+        },
       });
 
       const result = await controller.getSecretCombinationStatus();
 
-      expect(result).toEqual({ found: true, foundByNickname: 'heroPlayer' });
+      expect(result).toEqual({
+        found: true,
+        foundByNickname: 'heroPlayer',
+        winningCombination: {
+          assetOne: 'TRIANGLE',
+          assetTwo: 'SQUARE',
+          assetThree: null,
+          assetFour: null,
+          sound: 'healing',
+        },
+      });
     });
   });
 });
