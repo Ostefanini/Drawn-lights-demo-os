@@ -39,3 +39,4 @@ networks:
 
 volumes:
   dev_postgres_data:
+
