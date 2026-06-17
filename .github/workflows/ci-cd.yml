@@ -117,6 +117,9 @@ jobs:
         working-directory: apps/api-nestjs
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+          FORCE_SECRET_COMBINATION: "TRIANGLE,SQUARE,CIRCLE,NULL,GLOSSY"
+          NODE_ENV: test
+          OTEL_ENABLED: "false"
 
       - name: Unit coverage badges (api-expressjs)
         run: pnpm exec jest --coverage && npx jest-coverage-badges --output ./badges

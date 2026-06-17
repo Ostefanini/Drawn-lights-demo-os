@@ -433,7 +433,7 @@ describe('CombinationsController (e2e)', () => {
           assetTwo: 'SQUARE',
           assetThree: null,
           assetFour: null,
-          sound: 'healing',
+          sound: 'HEALING',
         },
       });
     });
@@ -462,7 +462,7 @@ describe('CombinationsController (e2e)', () => {
           assetTwo: 'SQUARE',
           assetThree: null,
           assetFour: null,
-          sound: 'healing',
+          sound: 'HEALING',
         },
       });
     });
