@@ -11,7 +11,8 @@
         "generate": "dotenv -e ../../.env.dev.local -- prisma generate",
         "studio": "prisma studio",
         "migrate:dev": "prisma migrate dev",
-        "migrate:deploy": "prisma migrate deploy"
+        "migrate:deploy": "prisma migrate deploy",
+        "migrate:reset": "prisma migrate reset"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^7.8.0",

@@ -15,7 +15,7 @@ async function globalSetup() {
     const command =
       'dotenv -e .env.test -- docker compose -f docker-compose.tests.yml up -d postgres-test migrate-test --force-recreate';
 
-    const { stdout, stderr } = await execAsync(command);
+    const { stderr } = await execAsync(command);
 
     if (stderr && !stderr.includes('done')) {
       console.warn('⚠️  Warnings during reset:', stderr);

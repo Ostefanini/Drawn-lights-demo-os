@@ -14,8 +14,10 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
-  // Replace the default NestJS logger with nestjs-pino (JSON structured logs)
-  app.useLogger(app.get(Logger));
+  // Use nestjs-pino logger only if OTEL is enabled, otherwise use default NestJS logger
+  if (process.env.OTEL_ENABLED === 'true') {
+    app.useLogger(app.get(Logger));
+  }
 
   // Exception filter global
   app.useGlobalFilters(new HttpExceptionFilter());
