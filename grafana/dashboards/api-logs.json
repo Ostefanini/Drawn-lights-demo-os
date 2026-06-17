@@ -154,7 +154,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum by (detected_level) (count_over_time({deployment_environment=\"$env\", service_name=\"$service\"}[$__interval]))",
+          "expr": "sum by (detected_level) (count_over_time({deployment_environment=\"$env\", service_name=\"$service\"} | json | drop __error__ [$__interval]))",
           "legendFormat": "{{detected_level}}"
         }
       ],
@@ -192,7 +192,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum by (detected_level) (count_over_time({deployment_environment=\"$env\", service_name=\"$service\"}[$__range]))",
+          "expr": "sum by (detected_level) (count_over_time({deployment_environment=\"$env\", service_name=\"$service\"} | json | drop __error__ [$__range]))",
           "legendFormat": "{{detected_level}}"
         }
       ],
@@ -248,69 +248,14 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({deployment_environment=\"$env\", service_name=\"$service\", detected_level=\"error\"}[$__range]))",
+          "expr": "sum(count_over_time({deployment_environment=\"$env\", service_name=\"$service\"} | json | drop __error__ | detected_level=\"error\" [$__range]))",
           "legendFormat": "errors"
         }
       ],
       "title": "Total Errors (range)",
       "type": "stat"
     },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 13
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ]
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "sum(count_over_time({deployment_environment=\"$env\", service_name=\"$service\", detected_level=\"warn\"}[$__range]))",
-          "legendFormat": "warnings"
-        }
-      ],
-      "title": "Total Warnings (range)",
-      "type": "stat"
-    },
+
     {
       "collapsed": false,
       "gridPos": {
@@ -320,7 +265,7 @@
         "y": 17
       },
       "id": 201,
-      "title": "Errors & Warnings",
+      "title": "Errors",
       "type": "row"
     },
     {
@@ -348,45 +293,14 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "{deployment_environment=\"$env\", service_name=\"$service\", detected_level=\"error\"}",
+          "expr": "{deployment_environment=\"$env\", service_name=\"$service\"} | json | drop __error__ | detected_level=\"error\"",
           "legendFormat": ""
         }
       ],
       "title": "Error Logs",
       "type": "logs"
     },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 30
-      },
-      "id": 6,
-      "options": {
-        "dedupStrategy": "none",
-        "showLabels": true,
-        "showTime": true,
-        "sortOrder": "Descending",
-        "wrapLogMessage": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "{deployment_environment=\"$env\", service_name=\"$service\", detected_level=\"warn\"}",
-          "legendFormat": ""
-        }
-      ],
-      "title": "Warning Logs",
-      "type": "logs"
-    },
+
     {
       "collapsed": false,
       "gridPos": {

@@ -1,0 +1,18 @@
+groups:
+  - name: api-nestjs-http-500-errors
+    interval: 1m
+    rules:
+      - alert: HTTP500ErrorsDetected
+        expr: |
+          rate(http_server_duration_milliseconds_count{deployment_environment="prod", http_status_code=~"5.."}[5m]) > 0
+        for: 1m
+        annotations:
+          summary: "HTTP 500 errors detected in {{ $labels.service }}"
+          description: "Service {{ $labels.service }} is returning HTTP 500 errors in production environment"
+          runbook_url: "https://wiki.example.com/runbooks/http-500-errors"
+        labels:
+          severity: critical
+          team: platform
+          environment: prod
+          service: api-nestjs
+          alert_type: http_error

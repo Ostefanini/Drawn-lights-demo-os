@@ -626,7 +626,7 @@
             "type": "tempo",
             "uid": "${DS_TEMPO}"
           },
-          "query": "{resource.service.name=\"${SVC}\" && resource.deployment.environment=\"${ENV}\"}",
+          "query": "{resource.service.name=\"${service}\" && resource.deployment.environment=\"${env}\"}",
           "queryType": "traceql",
           "limit": 20,
           "tableType": "traces",
@@ -696,7 +696,7 @@
             "type": "tempo",
             "uid": "${DS_TEMPO}"
           },
-          "query": "{resource.service.name=\"${SVC}\" && resource.deployment.environment=\"${ENV}\" && span.http.status_code >= 500}",
+          "query": "{resource.service.name=\"${service}\" && resource.deployment.environment=\"${env}\" && span.http.status_code >= 500}",
           "queryType": "traceql",
           "limit": 20,
           "tableType": "traces",
@@ -754,7 +754,7 @@
             "type": "tempo",
             "uid": "${DS_TEMPO}"
           },
-          "query": "{resource.service.name=\"${SVC}\" && resource.deployment.environment=\"${ENV}\" && duration > 1s}",
+          "query": "{resource.service.name=\"${service}\" && resource.deployment.environment=\"${env}\" && duration > 1s}",
           "queryType": "traceql",
           "limit": 20,
           "tableType": "traces",

@@ -65,6 +65,14 @@ Node.js + Nest.js + Typescript + lodash [here](./apps/api-nestjs/)
 
 CI/CD + Docker files/compose (hardened images)
 
+## Observability
+
+Grafana content stored in the grafana folder.
+
+[Traces](https://jovialbeet1186.grafana.net/dashboard/snapshot/m6kZ8jYVEgvezx3kkc7XHsrbYyWLcAu0) + [Metrics](https://jovialbeet1186.grafana.net/dashboard/snapshot/m6kZ8jYVEgvezx3kkc7XHsrbYyWLcAu0) + [Logs](https://jovialbeet1186.grafana.net/dashboard/snapshot/0omZU56ZidBueIuwUSS0KRxockp1mUDR) + [Alerting working](./grafana/alert-works.png)
+
+(5XX Errors were explicitely done using /error-test endpoint to prove alerting working.)
+
 # Development
 
 ## Quick Start
@@ -73,15 +81,15 @@ CI/CD + Docker files/compose (hardened images)
 # Install dependencies
 pnpm install
 
-# Start development database
+# Start development requirements
 pnpm run stack:dev
 
-# Run migrations
+# Run db migrations
 pnpm migrate
 
 # Start any application
-cd apps/api-nestjs && pnpm dev
-cd apps/web-react && pnpm dev
+pnpm --filter api-nestjs dev
+pnpm --filter web-react dev
 
 # Stopping everything
 pnpm run stack:dev:down
@@ -89,22 +97,23 @@ pnpm run stack:dev:down
 
 ## Testing
 
-Integration tests are available for the NestJS API. See [apps/api-nestjs/TESTING.md](./apps/api-nestjs/TESTING.md) for details.
-
 ### Running Tests Locally
 
 ```bash
-# Start test database + migrations (one command)
-pnpm stack:tests
+# Start tests requirements
+pnpm stack:tests:e2e
 
-# Run all tests
+# Run all tests (unit, integrations)
 pnpm test
+
+pnpm test:e2e-playwright
+pnpm test:e2e-gherkin
 
 # Run tests with coverage
 pnpm test:cov:badges  # Generates badges in apps/*/badges/
 
 # Stop test database
-pnpm test:db:down
+pnpm stack:tests:e2e:down
 ```
 
 ### Coverage Badges
@@ -128,6 +137,7 @@ pnpm stack:tests
 pnpm lint                 # Lint all apps
 pnpm test                 # Run all tests
 pnpm typecheck            # Run all typechecks
+pnpm fullcheck            # Run code quality + all tests types
 ```
 
 # Contributors
