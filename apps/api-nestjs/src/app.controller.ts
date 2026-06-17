@@ -9,4 +9,9 @@ export class AppController {
   ping(): string {
     return this.appService.pong();
   }
+
+  @Get('error-test')
+  errorTest(): void {
+    this.appService.triggerError();
+  }
 }
