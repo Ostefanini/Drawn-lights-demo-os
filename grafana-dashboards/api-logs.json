@@ -51,42 +51,36 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "dev-local",
-          "value": "dev-local"
-        },
-        "hide": 0,
-        "includeAll": false,
         "name": "env",
-        "options": [
-          {
-            "selected": true,
-            "text": "dev-local",
-            "value": "dev-local"
-          }
-        ],
-        "query": "dev-local",
-        "type": "custom",
-        "label": "Environment"
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "query": "label_values(deployment_environment)",
+        "refresh": 1,
+        "hide": 0,
+        "current": {
+          "value": "",
+          "text": ""
+        },
+        "options": []
       },
       {
-        "current": {
-          "text": "api-nestjs",
-          "value": "api-nestjs"
-        },
-        "hide": 0,
-        "includeAll": false,
         "name": "service",
-        "options": [
-          {
-            "selected": true,
-            "text": "api-nestjs",
-            "value": "api-nestjs"
-          }
-        ],
-        "query": "api-nestjs",
-        "type": "custom",
-        "label": "Service"
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "query": "label_values(service_name)",
+        "refresh": 1,
+        "hide": 0,
+        "current": {
+          "value": "",
+          "text": ""
+        },
+        "options": []
       },
       {
         "allowCustomValue": true,

@@ -935,7 +935,7 @@
         "y": 50
       },
       "id": 206,
-      "title": "Node.js Runtime",
+      "title": "Resource Consumption per Request",
       "type": "row"
     },
     {
@@ -951,7 +951,7 @@
           "custom": {
             "lineWidth": 2
           },
-          "unit": "bytes"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -964,8 +964,11 @@
       "id": 16,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
           "placement": "bottom"
         },
         "tooltip": {
@@ -978,19 +981,11 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(v8js_heap_space_used_size{deployment_environment=\"$env\", service_name=\"$service\"})",
-          "legendFormat": "heap used"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "expr": "sum(v8js_heap_space_physical_size{deployment_environment=\"$env\", service_name=\"$service\"})",
-          "legendFormat": "heap physical"
+          "expr": "histogram_quantile(0.95, sum by (le, http_route, http_method) (rate(http_server_duration_milliseconds_bucket{deployment_environment=\"$env\", service_name=\"$service\"}[$__rate_interval])))",
+          "legendFormat": "{{http_method}} {{http_route}}"
         }
       ],
-      "title": "V8 Heap Used vs Total",
+      "title": "p95 Latency per Route (ms per request)",
       "type": "timeseries"
     },
     {
@@ -1006,7 +1001,7 @@
           "custom": {
             "lineWidth": 2
           },
-          "unit": "s"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -1019,8 +1014,11 @@
       "id": 17,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
           "placement": "bottom"
         },
         "tooltip": {
@@ -1033,72 +1031,11 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum by (v8js_gc_type) (rate(v8js_gc_duration_seconds_sum{deployment_environment=\"$env\", service_name=\"$service\"}[$__rate_interval]))",
-          "legendFormat": "GC {{v8js_gc_type}}"
+          "expr": "(histogram_quantile(0.95, sum by (le, http_route, http_method) (rate(http_server_duration_milliseconds_bucket{deployment_environment=\"$env\", service_name=\"$service\"}[$__rate_interval]))) * sum by (http_route, http_method) (rate(http_server_duration_milliseconds_count{deployment_environment=\"$env\", service_name=\"$service\"}[$__rate_interval]))) / 1000",
+          "legendFormat": "{{http_method}} {{http_route}}"
         }
       ],
-      "title": "V8 GC Duration (rate)",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 59 },
-      "id": 207,
-      "title": "CPU",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 2 },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 60 },
-      "id": 18,
-      "options": {
-        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" },
-        "tooltip": { "mode": "multi" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (cpu_mode) (rate(process_cpu_time_seconds_total{deployment_environment=\"$env\", service_name=\"$service\"}[$__rate_interval]))",
-          "legendFormat": "CPU {{cpu_mode}}"
-        }
-      ],
-      "title": "CPU Time Rate (user / system)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 2 },
-          "unit": "percentunit",
-          "min": 0,
-          "max": 1
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 60 },
-      "id": 19,
-      "options": {
-        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" },
-        "tooltip": { "mode": "multi" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (cpu_mode) (process_cpu_utilization{deployment_environment=\"$env\", service_name=\"$service\"})",
-          "legendFormat": "utilization {{cpu_mode}}"
-        }
-      ],
-      "title": "CPU Utilization (user / system)",
+      "title": "Resource Cost Index per Route (latency·throughput)",
       "type": "timeseries"
     }
   ]
