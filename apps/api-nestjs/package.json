@@ -21,9 +21,9 @@
     "test:unit:cov": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
     "test:cov": "pnpm run test:integration:cov",
     "test:cov:badges": "pnpm run test:integration:cov && npx jest-coverage-badges --output ./badges",
-    "test:integration": "NODE_OPTIONS='--experimental-vm-modules' dotenv -e ../../.env.test -- pnpm exec jest --config ./test/jest-e2e.json --runInBand",
-    "test:integration:watch": "NODE_OPTIONS='--experimental-vm-modules' dotenv -e ../../.env.test -- pnpm exec jest --config ./test/jest-e2e.json --watch --runInBand",
-    "test:integration:cov": "NODE_OPTIONS='--experimental-vm-modules' dotenv -e ../../.env.test -- pnpm exec jest --config ./test/jest-e2e.json --coverage --runInBand"
+    "test:integration": "NODE_OPTIONS='--experimental-vm-modules' dotenv -e ../../.env.test --no-override -- pnpm exec jest --config ./test/jest-e2e.json --runInBand",
+    "test:integration:watch": "NODE_OPTIONS='--experimental-vm-modules' dotenv -e ../../.env.test --no-override -- pnpm exec jest --config ./test/jest-e2e.json --watch --runInBand",
+    "test:integration:cov": "NODE_OPTIONS='--experimental-vm-modules' dotenv -e ../../.env.test --no-override -- pnpm exec jest --config ./test/jest-e2e.json --coverage --runInBand"
   },
   "dependencies": {
     "@drawn-lights-game/prisma": "workspace:*",
