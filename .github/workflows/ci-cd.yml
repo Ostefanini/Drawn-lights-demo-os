@@ -110,10 +110,9 @@ jobs:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Integration coverage badges
-        run: pnpm exec jest --config ./test/jest-e2e.json --coverage --coverageDirectory=./coverage --runInBand && npx jest-coverage-badges --output ./badges
+        run: NODE_OPTIONS="--experimental-vm-modules" npx jest --config ./test/jest-e2e.json --coverage --coverageDirectory=./coverage --runInBand && npx jest-coverage-badges --output ./badges
         working-directory: apps/api-nestjs
         env:
-          NODE_OPTIONS: "--experimental-vm-modules"
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
 
       - name: Unit coverage badges (api-expressjs)

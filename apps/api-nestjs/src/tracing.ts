@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 /**
  * OpenTelemetry SDK initialization.
  * This file MUST be the first import in main.ts so that instrumentation patches
@@ -45,8 +44,11 @@ const appEnv = process.env.APP_ENV ?? 'development';
 const serviceName = process.env.OTEL_SERVICE_NAME ?? 'api-nestjs';
 const otlpEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT ?? '';
 // OTEL_EXPORTER_OTLP_HEADERS is read automatically by all OTLP exporters
+const otelEnabled = process.env.OTEL_ENABLED === 'true';
 const hasCredentials = !!(
-  otlpEndpoint && process.env.OTEL_EXPORTER_OTLP_HEADERS
+  otelEnabled &&
+  otlpEndpoint &&
+  process.env.OTEL_EXPORTER_OTLP_HEADERS
 );
 
 // Typed loosely to avoid TS structural errors from conflicting OTel peer dep versions.
@@ -78,7 +80,7 @@ if (hasCredentials) {
 
     exporter: new OTLPMetricExporter({
       url: `${otlpEndpoint}/v1/metrics`,
-    }) as any,
+    }),
   });
 
   sdkOptions['logRecordProcessor'] = new BatchLogRecordProcessor(
@@ -96,6 +98,9 @@ if (hasCredentials) {
   console.warn(
     '[OTel] Exporters NOT configured - telemetry collected but not exported.',
   );
+  if (!otelEnabled) {
+    console.warn('[OTel]   reason: OTEL_ENABLED=false');
+  }
   if (!otlpEndpoint) {
     console.warn('[OTel]   missing: OTEL_EXPORTER_OTLP_ENDPOINT');
   }
@@ -106,18 +111,20 @@ if (hasCredentials) {
 
 const sdk = new NodeSDK(sdkOptions);
 
-sdk.start();
+if (otelEnabled) {
+  sdk.start();
 
-async function flushAndShutdown(signal: string): Promise<void> {
-  console.log(`[OTel] ${signal} received - flushing and shutting down...`);
-  try {
-    await sdk.shutdown();
-    console.log('[OTel] Flush complete, SDK shut down cleanly.');
-  } catch (err) {
-    console.error('[OTel] Shutdown error:', err);
+  async function flushAndShutdown(signal: string): Promise<void> {
+    console.log(`[OTel] ${signal} received - flushing and shutting down...`);
+    try {
+      await sdk.shutdown();
+      console.log('[OTel] Flush complete, SDK shut down cleanly.');
+    } catch (err) {
+      console.error('[OTel] Shutdown error:', err);
+    }
+    process.exit(0);
   }
-  process.exit(0);
-}
 
-process.on('SIGTERM', () => void flushAndShutdown('SIGTERM'));
-process.on('SIGINT', () => void flushAndShutdown('SIGINT'));
+  process.on('SIGTERM', () => void flushAndShutdown('SIGTERM'));
+  process.on('SIGINT', () => void flushAndShutdown('SIGINT'));
+}
