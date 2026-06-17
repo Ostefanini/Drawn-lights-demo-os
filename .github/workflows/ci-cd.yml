@@ -108,6 +108,9 @@ jobs:
         run: pnpm --filter api-nestjs test:integration
         env:
           DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/drawn_lights_game_test"
+          FORCE_SECRET_COMBINATION: "TRIANGLE,SQUARE,CIRCLE,NULL,GLOSSY"
+          NODE_ENV: test
+          OTEL_ENABLED: "false"
 
       - name: Integration coverage badges
         run: NODE_OPTIONS="--experimental-vm-modules" npx jest --config ./test/jest-e2e.json --coverage --coverageDirectory=./coverage --runInBand && npx jest-coverage-badges --output ./badges
