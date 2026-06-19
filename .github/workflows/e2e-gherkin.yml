@@ -66,6 +66,8 @@ jobs:
 
       - name: Run E2E Gherkin tests
         run: pnpm run test:e2e-gherkin
+        env:
+          FORCE_SECRET_COMBINATION: "TRIANGLE,SQUARE,CIRCLE,NULL,GLOSSY"
 
       - name: Upload Cucumber Report
         uses: actions/upload-artifact@v4
